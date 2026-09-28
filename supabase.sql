@@ -22,14 +22,24 @@ language plpgsql
 security definer
 set search_path = public
 as $$
+declare
+  user_role text;
 begin
+  user_role := case
+    when new.email = 'rofidinilyasumc@gmail.com' then 'admin'
+    else 'user'
+  end;
+
   insert into public.profiles (id, full_name, role)
   values (
     new.id,
     coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email, '@', 1)),
-    'user'
+    user_role
   )
-  on conflict (id) do nothing;
+  on conflict (id) do update
+  set role = excluded.role,
+      full_name = coalesce(excluded.full_name, public.profiles.full_name);
+
   return new;
 end;
 $$;
@@ -102,6 +112,11 @@ using (
   )
 );
 
--- Optional: promote a user to admin manually with SQL
--- update public.profiles set role = 'admin' where id = '<user-id>';
+-- Ensure the specific admin email always has admin role.
+update public.profiles
+set role = 'admin'
+where id in (
+  select id from auth.users where email = 'rofidinilyasumc@gmail.com'
+);
 
+-- If the user is not yet created, this will create the profile when they sign up.
