@@ -23,8 +23,8 @@ drop policy if exists "Users can view own active admin profile" on public.admin_
 create policy "Users can view own active admin profile" on public.admin_profiles
 for select to authenticated
 using (auth_user_id = (select auth.uid()) and is_active = true);
+revoke all on table public.admin_profiles from anon, authenticated;
 grant select on table public.admin_profiles to authenticated;
-revoke insert, update, delete on table public.admin_profiles from anon, authenticated;
 
 -- Only explicitly published profiles are public; signed-in users may read their own row.
 drop policy if exists "Public profiles are readable by everyone" on public.profiles;
@@ -42,11 +42,19 @@ for insert to authenticated with check ((select auth.uid()) = id and is_public =
 create policy "Users can update their own profile" on public.profiles
 for update to authenticated using ((select auth.uid()) = id) with check ((select auth.uid()) = id);
 
-grant select on table public.profiles to anon, authenticated;
-grant insert on table public.profiles to authenticated;
-revoke update on table public.profiles from authenticated;
-grant update (full_name,bio,location,whatsapp_url,tiktok_username,instagram_username,avatar_url,avatar_path)
-on table public.profiles to authenticated;
+revoke all on table public.profiles from anon;
+grant select on table public.profiles to anon;
+
+revoke all on table public.profiles from authenticated;
+grant select on table public.profiles to authenticated;
+grant insert (
+  id, full_name, bio, location, whatsapp_url,
+  tiktok_username, instagram_username, avatar_url, avatar_path
+) on table public.profiles to authenticated;
+grant update (
+  full_name, bio, location, whatsapp_url,
+  tiktok_username, instagram_username, avatar_url, avatar_path
+) on table public.profiles to authenticated;
 
 -- Keep updated_at server-controlled.
 create or replace function public.set_updated_at() returns trigger
