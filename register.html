@@ -5,7 +5,8 @@
   <title>Register | Rofidin Ilyas</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}body{min-height:100vh;font-family:Arial,sans-serif;background:radial-gradient(circle at 20% 20%,rgba(0,140,255,.18),transparent 35%),radial-gradient(circle at 80% 80%,rgba(0,255,170,.14),transparent 35%),linear-gradient(135deg,#07111f,#0c1830 50%,#111827)}.grid{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:24px 24px;mask-image:radial-gradient(circle at center,black 40%,transparent 100%)}.register-box{position:relative;z-index:1;width:min(420px,calc(100% - 32px));margin:50px auto;padding:32px 24px;border:1px solid rgba(0,217,255,.24);border-radius:24px;background:rgba(8,15,28,.82);box-shadow:0 0 40px rgba(0,119,255,.14);backdrop-filter:blur(14px)}.logo{width:54px;height:54px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border-radius:18px;background:linear-gradient(135deg,#00d9ff,#008cff);color:#02111f;font-weight:800;font-size:1.4rem;box-shadow:0 0 20px rgba(0,217,255,.35)}h1{text-align:center;color:#ebf7ff;margin-bottom:6px;font-size:2rem}p.subtitle{text-align:center;color:#95b5d6;margin-bottom:26px;font-size:.92rem;line-height:1.5}.input-group{margin-bottom:18px}.input-group label{display:block;color:#d5f1ff;margin-bottom:8px;font-size:.88rem;font-weight:700}.input-group input{width:100%;padding:13px 14px;border:1px solid rgba(0,217,255,.25);border-radius:12px;background:#071827;color:#edf9ff;outline:none;font-size:1rem}.input-group input:focus{border-color:#00d9ff;box-shadow:0 0 0 3px rgba(0,217,255,.18)}button{width:100%;padding:14px;border:none;border-radius:999px;background:linear-gradient(135deg,#00d9ff,#00a8ff);color:#02111f;font-size:1rem;font-weight:800;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}.button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 0 22px rgba(0,184,255,.35)}button:disabled{opacity:.65;cursor:not-allowed}.message{display:none;margin-top:18px;padding:12px 14px;border-radius:12px;text-align:center;font-size:.9rem;line-height:1.5}.message.error{display:block;background:rgba(255,0,80,.12);border:1px solid rgba(255,0,80,.3);color:#ffb5c7}.message.success{display:block;background:rgba(26,214,124,.12);border:1px solid rgba(26,214,124,.3);color:#baf4d4}.login-link,.security{margin-top:18px;text-align:center;font-size:.9rem;color:#9fc2db}.login-link a{color:#3edbff;text-decoration:none}.login-link a:hover{text-decoration:underline}.security{margin-top:12px;letter-spacing:.08em;text-transform:uppercase;font-size:.75rem;color:#79d9ff;font-weight:700}@media(max-width:480px){.register-box{margin:24px auto;padding:24px 18px}.logo{margin-bottom:10px}}  </style>
+    *{box-sizing:border-box;margin:0;padding:0}body{min-height:100vh;font-family:Arial,sans-serif;background:radial-gradient(circle at 20% 20%,rgba(0,140,255,.18),transparent 35%),radial-gradient(circle at 80% 80%,rgba(0,255,170,.14),transparent 35%),linear-gradient(135deg,#07111f,#0c1830 50%,#111827)}.grid{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:24px 24px;mask-image:radial-gradient(circle at center,black 40%,transparent 100%)}.register-box{position:relative;z-index:1;width:min(420px,calc(100% - 32px));margin:50px auto;padding:32px 24px;border:1px solid rgba(0,217,255,.24);border-radius:24px;background:rgba(8,15,28,.82);box-shadow:0 0 40px rgba(0,119,255,.14);backdrop-filter:blur(14px)}.logo{width:54px;height:54px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border-radius:18px;background:linear-gradient(135deg,#00d9ff,#008cff);color:#02111f;font-weight:800;font-size:1.4rem;box-shadow:0 0 20px rgba(0,217,255,.35)}h1{text-align:center;color:#ebf7ff;margin-bottom:6px;font-size:2rem}p.subtitle{text-align:center;color:#95b5d6;margin-bottom:26px;font-size:.92rem;line-height:1.5}.input-group{margin-bottom:18px}.input-group label{display:block;color:#d5f1ff;margin-bottom:8px;font-size:.88rem;font-weight:700}.input-group input{width:100%;padding:13px 14px;border:1px solid rgba(0,217,255,.25);border-radius:12px;background:#071827;color:#edf9ff;outline:none;font-size:1rem}.input-group input:focus{border-color:#00d9ff;box-shadow:0 0 0 3px rgba(0,217,255,.18)}.password-wrapper{position:relative}.password-wrapper input{padding-right:50px}.toggle-password{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:0;border-radius:8px;background:transparent;color:#8fdff5;font-size:1.15rem;line-height:1;cursor:pointer}.toggle-password:hover{background:rgba(0,217,255,.12);color:#fff}.toggle-password:focus-visible{outline:2px solid #00d9ff;outline-offset:2px}button[type="submit"]{width:100%;padding:14px;border:none;border-radius:999px;background:linear-gradient(135deg,#00d9ff,#00a8ff);color:#02111f;font-size:1rem;font-weight:800;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}.button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 0 22px rgba(0,184,255,.35)}button:disabled{opacity:.65;cursor:not-allowed}.message{display:none;margin-top:18px;padding:12px 14px;border-radius:12px;text-align:center;font-size:.9rem;line-height:1.5}.message.error{display:block;background:rgba(255,0,80,.12);border:1px solid rgba(255,0,80,.3);color:#ffb5c7}.message.success{display:block;background:rgba(26,214,124,.12);border:1px solid rgba(26,214,124,.3);color:#baf4d4}.login-link,.security{margin-top:18px;text-align:center;font-size:.9rem;color:#9fc2db}.login-link a{color:#3edbff;text-decoration:none}.login-link a:hover{text-decoration:underline}.security{margin-top:12px;letter-spacing:.08em;text-transform:uppercase;font-size:.75rem;color:#79d9ff;font-weight:700}@media(max-width:480px){.register-box{margin:24px auto;padding:24px 18px}.logo{margin-bottom:10px}}
+  </style>
 </head>
 <body>
   <div class="grid"></div>
@@ -15,14 +16,14 @@
     <p class="subtitle">Daftar untuk mengakses Rofidin Ilyas Portfolio</p>
 
     <form id="registerForm">
-      <div class="input-group"><label for="fullName">Nama Lengkap</label><input type="text" id="fullName" placeholder="Masukkan nama lengkap" required></div>
-      <div class="input-group"><label for="email">Email</label><input type="email" id="email" placeholder="nama@email.com" required></div>
-      <div class="input-group"><label for="password">Password</label><input type="password" id="password" placeholder="Minimal 8 karakter" minlength="8" required></div>
-      <div class="input-group"><label for="confirmPassword">Konfirmasi Password</label><input type="password" id="confirmPassword" placeholder="Masukkan kembali password" minlength="8" required></div>
+      <div class="input-group"><label for="fullName">Nama Lengkap</label><input type="text" id="fullName" placeholder="Masukkan nama lengkap" autocomplete="name" required></div>
+      <div class="input-group"><label for="email">Email</label><input type="email" id="email" placeholder="nama@email.com" autocomplete="email" required></div>
+      <div class="input-group"><label for="password">Password</label><div class="password-wrapper"><input type="password" id="password" placeholder="Minimal 8 karakter" minlength="8" autocomplete="new-password" required><button type="button" class="toggle-password" data-target="password" aria-label="Tampilkan password" aria-pressed="false">👁️</button></div></div>
+      <div class="input-group"><label for="confirmPassword">Konfirmasi Password</label><div class="password-wrapper"><input type="password" id="confirmPassword" placeholder="Masukkan kembali password" minlength="8" autocomplete="new-password" required><button type="button" class="toggle-password" data-target="confirmPassword" aria-label="Tampilkan konfirmasi password" aria-pressed="false">👁️</button></div></div>
       <button type="submit" id="registerButton">CREATE ACCOUNT</button>
     </form>
 
-    <div id="message" class="message"></div>
+    <div id="message" class="message" role="alert" aria-live="polite"></div>
     <div class="login-link">Sudah punya akun? <a href="login.html">Login di sini</a></div>
     <div class="security">🔒 SECURE ACCOUNT REGISTRATION</div>
   </div>
@@ -37,6 +38,17 @@
     const button = document.getElementById("registerButton");
     const message = document.getElementById("message");
 
+    document.querySelectorAll(".toggle-password").forEach((toggle) => {
+      toggle.addEventListener("click", () => {
+        const input = document.getElementById(toggle.dataset.target);
+        const visible = input.type === "text";
+        input.type = visible ? "password" : "text";
+        toggle.textContent = visible ? "👁️" : "🙈";
+        toggle.setAttribute("aria-label", visible ? "Tampilkan password" : "Sembunyikan password");
+        toggle.setAttribute("aria-pressed", String(!visible));
+      });
+    });
+
     function showMessage(text, type) {
       message.textContent = text;
       message.className = "message " + type;
@@ -44,15 +56,9 @@
 
     function errorText(e) {
       const msg = (e && e.message ? e.message : "Pendaftaran gagal.").toLowerCase();
-      if (msg.includes("already registered") || msg.includes("already exists") || msg.includes("already in use")) {
-        return "Email tersebut sudah terdaftar. Silakan login atau gunakan email lain.";
-      }
-      if (msg.includes("password")) {
-        return "Password minimal 8 karakter dan harus aman.";
-      }
-      if (msg.includes("invalid email")) {
-        return "Format email tidak valid.";
-      }
+      if (msg.includes("already registered") || msg.includes("already exists") || msg.includes("already in use")) return "Email tersebut sudah terdaftar. Silakan login atau gunakan email lain.";
+      if (msg.includes("password")) return "Password minimal 8 karakter dan harus aman.";
+      if (msg.includes("invalid email")) return "Format email tidak valid.";
       return "Pendaftaran gagal. Silakan coba lagi.";
     }
 
@@ -62,56 +68,26 @@
     } else {
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
-
-        if (!form.checkValidity()) {
-          form.reportValidity();
-          return;
-        }
+        if (!form.checkValidity()) { form.reportValidity(); return; }
 
         const fullName = document.getElementById("fullName").value.trim();
         const email = document.getElementById("email").value.trim().toLowerCase();
         const password = document.getElementById("password").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
 
-        if (!fullName) {
-          showMessage("Nama lengkap harus diisi.", "error");
-          return;
-        }
-
-        if (password.length < 8) {
-          showMessage("Password minimal 8 karakter.", "error");
-          return;
-        }
-
-        if (password !== confirmPassword) {
-          showMessage("Konfirmasi password tidak sama.", "error");
-          return;
-        }
+        if (!fullName) { showMessage("Nama lengkap harus diisi.", "error"); return; }
+        if (password.length < 8) { showMessage("Password minimal 8 karakter.", "error"); return; }
+        if (password !== confirmPassword) { showMessage("Konfirmasi password tidak sama.", "error"); return; }
 
         button.disabled = true;
         button.textContent = "MEMPROSES...";
-
         try {
-          const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-              emailRedirectTo: LOGIN_URL,
-              data: { full_name: fullName }
-            }
-          });
-
+          const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: LOGIN_URL, data: { full_name: fullName } } });
           if (error) throw error;
-
-          if (!data?.user) {
-            throw new Error("Akun tidak berhasil dibuat.");
-          }
-
+          if (!data?.user) throw new Error("Akun tidak berhasil dibuat.");
           showMessage("Registrasi berhasil! Silakan cek email dan klik tautan verifikasi. Setelah verifikasi selesai, silakan login.", "success");
           form.reset();
-          setTimeout(() => {
-            window.location.href = LOGIN_URL;
-          }, 2500);
+          setTimeout(() => { window.location.href = LOGIN_URL; }, 2500);
         } catch (err) {
           console.error(err);
           showMessage(errorText(err), "error");
@@ -124,5 +100,3 @@
   </script>
 </body>
 </html>
-
-
