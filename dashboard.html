@@ -161,7 +161,7 @@ $("logoutButton").addEventListener("click",async()=>{
 });
 
 supabase.auth.onAuthStateChange((event,session)=>{
- if(event==="SIGNED_OUT"||!session) window.location.replace("login.html");
+ if(event==="SIGNED_OUT") window.location.replace("login.html");
 });
 init();
 </script>
