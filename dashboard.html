@@ -92,9 +92,27 @@ function showNotice(text){
 }
 
 async function init(){
- const {data:{user},error}=await supabase.auth.getUser();
- if(error||!user){window.location.replace("login.html");return}
- currentUser=user;
+ // Tunggu Supabase memulihkan session dari localStorage setelah perpindahan halaman.
+ const {data:{session},error}=await supabase.auth.getSession();
+ if(error){
+   console.error("Session error:",error);
+   showNotice("Session login tidak dapat dibaca.");
+   setTimeout(()=>window.location.replace("login.html"),1800);
+   return;
+ }
+ if(!session?.user){
+   // Beri auth client sedikit waktu untuk menyelesaikan pemulihan session.
+   await new Promise(resolve=>setTimeout(resolve,800));
+   const {data:{session:retrySession}}=await supabase.auth.getSession();
+   if(!retrySession?.user){
+     window.location.replace("login.html");
+     return;
+   }
+   currentUser=retrySession.user;
+ } else {
+   currentUser=session.user;
+ }
+ const user=currentUser;
  $("userEmail").textContent=user.email||"Akun";
 
  const {data:profile}=await supabase.from("profiles")
