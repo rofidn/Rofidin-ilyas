@@ -106,7 +106,10 @@
       if (msg.includes("invalid login credentials")) return "Email atau password salah.";
       if (msg.includes("too many requests") || msg.includes("rate limit")) return "Terlalu banyak percobaan login. Tunggu beberapa saat lalu coba lagi.";
       if (msg.includes("user not found")) return "Akun dengan email tersebut tidak ditemukan.";
-      return "Login gagal. Silakan periksa email dan password Anda.";\n    }\n\n    function isValidEmail(email) {
+      return "Login gagal. Silakan periksa email dan password Anda.";
+    }
+
+    function isValidEmail(email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     }
