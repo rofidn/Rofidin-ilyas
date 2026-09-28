@@ -146,4 +146,257 @@
 
     .message {
       display: none;
-      margin-top: 17
+      margin-top: 17px;
+padding: 12px;  
+      border-radius: 10px;  
+      font-size: 13px;  
+      line-height: 1.5;  
+      text-align: center;  
+    }  
+success {  
+      display: block;  
+      background: rgba(0, 190, 130, 0.1);  
+      border: 1px solid rgba(0, 220, 150, 0.3);  
+      color: #6fffc8;  
+    }  
+  
+    .error {  
+      display: block;  
+      background: rgba(255, 50, 80, 0.1);  
+      border: 1px solid rgba(255, 70, 90, 0.3);  
+      color: #ff8799;  
+    }  
+  
+    .login-link {  
+      text-align: center;  
+      margin-top: 22px;  
+      font-size: 13px;  
+      color: #7893ad;  
+    }  
+  
+    .login-link a {  
+      color: #4fcaff;  
+      text-decoration: none;  
+      font-weight: bold;  
+    }  
+  
+    .login-link a:hover {  
+      text-decoration: underline;  
+    }  
+
+    .security {  
+      text-align: center;  
+      margin-top: 20px;  
+      font-size: 11px;  
+      color: #526b84;  
+      letter-spacing: 0.5px;  
+    }  
+  
+    @media (max-width: 480px) {  
+      body {  
+        padding: 15px;  
+      }  
+  
+      .register-box {  
+        padding: 28px 20px;  
+      }  
+  
+      h1 {  
+        font-size: 24px;  
+      }  
+    }  
+  </style>  </head>  <body>    <div class="grid"></div>    <div class="register-box">  <div class="logo">RI</div>  
+
+<h1>Create Account</h1>  
+<p class="subtitle">Daftar untuk mengakses Rofidin Ilyas Portfolio</p>  
+
+<form id="registerForm">  
+
+  <div class="input-group">  
+    <label for="fullName">Nama Lengkap</label>  
+    <input  
+      type="text"  
+      id="fullName"  
+      placeholder="Masukkan nama lengkap"  
+      required  
+    >  
+  </div>  
+
+  <div class="input-group">  
+    <label for="email">Email</label>  
+    <input  
+      type="email"  
+      id="email"  
+      placeholder="nama@email.com"  
+      required  
+    >  
+  </div>  
+
+  <div class="input-group">  
+    <label for="password">Password</label>  
+    <input  
+      type="password"  
+      id="password"  
+      placeholder="Minimal 8 karakter"  
+      minlength="8"  
+      required  
+    >  
+  </div>  
+
+  <div class="input-group">  
+    <label for="confirmPassword">Konfirmasi Password</label>  
+    <input  
+      type="password"  
+      id="confirmPassword"  
+      placeholder="Masukkan kembali password"  
+      minlength="8"  
+      required  
+    >  
+  </div>  
+
+  <button type="submit" id="registerButton">  
+    CREATE ACCOUNT  
+  </button>  
+
+</form>  
+
+<div id="message" class="message"></div>  
+
+<div class="login-link">  
+  Sudah punya akun?  
+  <a href="login.html">Login di sini</a>  
+</div>  
+
+<div class="security">  
+  🔒 SECURE ACCOUNT REGISTRATION  
+</div>
+
+  </div>    <script>  
+    const SUPABASE_URL =  
+      "https://vufpdlobkoeyjjxjhhzr.supabase.co";  
+  
+    const SUPABASE_PUBLISHABLE_KEY =  
+      "sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";  
+  
+    const supabaseClient =  
+      window.supabase.createClient(  
+        SUPABASE_URL,  
+        SUPABASE_PUBLISHABLE_KEY  
+      );  
+  
+    const form = document.getElementById("registerForm");  
+    const button = document.getElementById("registerButton");  
+    const message = document.getElementById("message");  
+  
+    function showMessage(text, type) {  
+      message.textContent = text;  
+      message.className = "message " + type;  
+    }  
+  
+    form.addEventListener("submit", async function(event) {  
+  
+      event.preventDefault();  
+  
+      const fullName =  
+        document.getElementById("fullName").value.trim();  
+  
+      const email =  
+        document.getElementById("email").value.trim();  
+  
+      const password =  
+        document.getElementById("password").value;  
+  
+      const confirmPassword =  
+        document.getElementById("confirmPassword").value;  
+  
+      if (password.length < 8) {  
+        showMessage(  
+          "Password harus minimal 8 karakter.",  
+          "error"  
+        );  
+        return;  
+      }  
+  
+      if (password !== confirmPassword) {  
+        showMessage(  
+          "Konfirmasi password tidak sama.",  
+          "error"  
+        );  
+        return;  
+      }  
+  
+      button.disabled = true;  
+      button.textContent = "CREATING ACCOUNT...";  
+      message.className = "message";  
+      message.textContent = "";  
+  
+      try {  
+  
+        const redirectTo =  
+          "https://rofidn.github.io/Rofidin-ilyas/login.html";  
+  
+        const { data, error } =  
+          await supabaseClient.auth.signUp({  
+            email: email,  
+            password: password,  
+  
+            options: {  
+              emailRedirectTo: redirectTo,  
+  
+              data: {  
+                full_name: fullName  
+              }  
+            }  
+          });  
+  
+        if (error) {  
+          throw error;  
+        }  
+  
+        if (data.session) {  
+  
+          showMessage(  
+            "Akun berhasil dibuat. Mengarahkan ke halaman login...",  
+            "success"  
+          );  
+  
+          setTimeout(() => {  
+            window.location.href = "login.html";  
+          }, 1500);  
+  
+        } else {  
+  
+          showMessage(  
+            "Pendaftaran berhasil. Silakan cek email untuk verifikasi akun sebelum login.",  
+            "success"  
+          );  
+  
+          form.reset();  
+        }  
+  
+      } catch (error) {  
+  
+        console.error(error);  
+  
+        let errorMessage =  
+          error.message || "Pendaftaran gagal.";  
+  
+        if (  
+          errorMessage.toLowerCase().includes("already registered")  
+        ) {  
+          errorMessage =  
+            "Email tersebut sudah terdaftar. Silakan gunakan email lain atau login.";  
+        }  
+  
+        showMessage(errorMessage, "error");  
+  
+      } finally {  
+  
+        button.disabled = false;  
+        button.textContent = "CREATE ACCOUNT";  
+  
+      }  
+  
+    });  
+  </script>  </body>  
+</html>
