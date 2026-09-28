@@ -299,16 +299,6 @@
     return emailRegex.test(email);
   }
 
-  async function checkSession() {
-    const { data: { session } } = await supabase.auth.getSession();
-
-    if (session) {
-      window.location.href = "dashboard.html";
-    }
-  }
-
-  checkSession();
-
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -345,9 +335,7 @@
       if (data?.session) {
         showMessage("Login berhasil. Mengalihkan ke dashboard...", "success");
 
-        setTimeout(() => {
-          window.location.href = "dashboard.html";
-        }, 1000);
+        window.location.replace("dashboard.html");
       }
     } catch (err) {
       showMessage("Terjadi kesalahan: " + err.message, "error");
