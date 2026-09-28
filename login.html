@@ -3,17 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login ke dashboard portfolio Rofidin Ilyas">
 
   <title>Login | Rofidin Ilyas</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
     body {
@@ -35,7 +39,7 @@
       padding: 35px 28px;
       border: 1px solid #00d9ff44;
       border-radius: 25px;
-      background: rgba(5, 20, 40, 0.75);
+      background: rgba(5, 20, 40, 0.78);
       backdrop-filter: blur(15px);
       box-shadow: 0 0 45px #0077ff22;
     }
@@ -43,7 +47,7 @@
     .logo {
       text-align: center;
       font-size: 42px;
-      font-weight: bold;
+      font-weight: 700;
       color: #00d9ff;
       text-shadow: 0 0 20px #00d9ff;
       margin-bottom: 10px;
@@ -52,12 +56,16 @@
     h1 {
       text-align: center;
       margin-bottom: 8px;
+      font-size: 28px;
+      font-weight: 600;
     }
 
     .subtitle {
       text-align: center;
       color: #91aac3;
       margin-bottom: 30px;
+      line-height: 1.5;
+      font-size: 14px;
     }
 
     label {
@@ -65,6 +73,7 @@
       margin-bottom: 8px;
       color: #bdefff;
       font-size: 14px;
+      font-weight: 500;
     }
 
     input {
@@ -77,6 +86,11 @@
       background: #061426;
       color: white;
       font-size: 15px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input::placeholder {
+      color: #5a7a8f;
     }
 
     input:focus {
@@ -92,13 +106,15 @@
       background: #00bfff;
       color: #00101c;
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 600;
       cursor: pointer;
       box-shadow: 0 0 20px #00bfff55;
+      transition: opacity 0.2s, transform 0.2s;
     }
 
-    button:hover {
+    button:hover:not(:disabled) {
       transform: translateY(-2px);
+      box-shadow: 0 0 30px #00bfff77;
     }
 
     button:disabled {
@@ -113,6 +129,19 @@
       border-radius: 10px;
       text-align: center;
       font-size: 14px;
+      line-height: 1.5;
+      animation: slideDown 0.25s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .error {
@@ -133,14 +162,17 @@
       margin-top: 25px;
       text-align: center;
       line-height: 2;
+      font-size: 14px;
     }
 
     .links a {
       color: #00d9ff;
       text-decoration: none;
+      transition: opacity 0.2s;
     }
 
     .links a:hover {
+      opacity: 0.8;
       text-decoration: underline;
     }
 
@@ -148,6 +180,35 @@
       display: block;
       margin-top: 18px;
       color: #71869d !important;
+      font-size: 13px;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background: currentColor;
+      border-radius: 50%;
+      animation: blink 1.4s infinite;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+
+    .loading:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .loading:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes blink {
+      0%, 60%, 100% {
+        opacity: 0.3;
+      }
+      30% {
+        opacity: 1;
+      }
     }
   </style>
 </head>
@@ -172,6 +233,7 @@
         type="email"
         id="email"
         placeholder="Masukkan email"
+        autocomplete="email"
         required
       >
 
@@ -181,6 +243,7 @@
         type="password"
         id="password"
         placeholder="Masukkan password"
+        autocomplete="current-password"
         required
       >
 
@@ -190,7 +253,7 @@
 
     </form>
 
-    <div id="message" class="message"></div>
+    <div id="message" class="message" role="alert" aria-live="polite" aria-atomic="true"></div>
 
     <div class="links">
 
@@ -214,11 +277,8 @@
   </div>
 
 <script>
-  const SUPABASE_URL =
-    "https://vufpdlobkoeyjjxjhhzr.supabase.co";
-
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
+  const SUPABASE_URL = "https://vufpdlobkoeyjjxjhhzr.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
 
   const supabase = window.supabase.createClient(
     SUPABASE_URL,
@@ -234,50 +294,67 @@
     message.className = "message " + type;
   }
 
-  form.addEventListener("submit", async (event) => {
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
 
+  async function checkSession() {
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (session) {
+      window.location.href = "dashboard.html";
+    }
+  }
+
+  checkSession();
+
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const email =
-      document.getElementById("email").value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
 
-    const password =
-      document.getElementById("password").value;
+    if (!email || !isValidEmail(email)) {
+      showMessage("Format email tidak valid.", "error");
+      return;
+    }
+
+    if (!password) {
+      showMessage("Password harus diisi.", "error");
+      return;
+    }
 
     button.disabled = true;
-    button.textContent = "Memproses...";
+    button.innerHTML = 'Memproses<span class="loading"></span><span class="loading"></span><span class="loading"></span>';
 
     message.className = "message";
     message.textContent = "";
 
-    const { data, error } =
-      await supabase.auth.signInWithPassword({
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
 
-    if (error) {
+      if (error) {
+        showMessage("Login gagal: " + error.message, "error");
+        return;
+      }
 
-      showMessage(
-        "Login gagal: " + error.message,
-        "error"
-      );
+      if (data?.session) {
+        showMessage("Login berhasil. Mengalihkan ke dashboard...", "success");
 
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 1000);
+      }
+    } catch (err) {
+      showMessage("Terjadi kesalahan: " + err.message, "error");
+    } finally {
       button.disabled = false;
       button.textContent = "Login";
-
-      return;
     }
-
-    showMessage(
-      "Login berhasil. Mengalihkan...",
-      "success"
-    );
-
-    setTimeout(() => {
-      window.location.href = "dashboard.html";
-    }, 1000);
-
   });
 </script>
 
