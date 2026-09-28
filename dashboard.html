@@ -1,151 +1,308 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Dashboard | Rofidin Ilyas</title>
+<title>Dashboard | Rofidin Ilyas</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<style>
 
-    body {
-      min-height: 100vh;
-      color: white;
-      background:
-        radial-gradient(circle at top right, #003b73, transparent 35%),
-        radial-gradient(circle at bottom left, #001f3f, transparent 35%),
-        #020817;
-    }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
 
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 25px 20px;
-    }
+body {
+  min-height: 100vh;
+  color: white;
+  background:
+    radial-gradient(circle at top right, #004b8d, transparent 35%),
+    radial-gradient(circle at bottom left, #001f3f, transparent 40%),
+    #020817;
+}
 
-    nav { 
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0 30px;
-    }
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+  padding: 25px 20px;
+}
 
-    .logo {
-      font-size: 34px;
-      font-weight: bold;
-      color: #00d9ff;
-      text-shadow: 0 0 20px #00d9ff;
-    }
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
 
-    .logout {
-      border: 1px solid #00d9ff66;
-      background: transparent;
-      color: #bdefff;
-      padding: 12px 22px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 15px;
-    }
+.logo {
+  font-size: 40px;
+  font-weight: bold;
+  color: #00d9ff;
+  text-shadow: 0 0 20px #00d9ff;
+}
 
-    .welcome {
-      padding: 35px;
-      border-radius: 25px;
-      border: 1px solid #00d9ff44;
-      background: rgba(5, 20, 40, 0.75);
-      backdrop-filter: blur(15px);
-      box-shadow: 0 0 40px #0077ff22;
-      margin-bottom: 25px;
-    }
+.logout {
+  padding: 12px 22px;
+  border-radius: 25px;
+  border: 1px solid #00d9ff66;
+  background: transparent;
+  color: #bdefff;
+  font-size: 15px;
+}
 
-    .badge {
-      display: inline-block;
-      padding: 8px 16px;
-      border-radius: 20px;
-      border: 1px solid #00d9ff66;
-      color: #00d9ff;
-      font-size: 13px;
-      margin-bottom: 20px;
-    }
+.welcome {
+  padding: 35px;
+  border-radius: 25px;
+  border: 1px solid #00d9ff44;
+  background: rgba(5,20,40,0.75);
+  box-shadow: 0 0 40px #0077ff22;
+  margin-bottom: 25px;
+}
 
-    h1 {
-      font-size: clamp(30px, 7vw, 52px);
-      margin-bottom: 12px;
-    }
+.badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #00d9ff66;
+  color: #00d9ff;
+  margin-bottom: 20px;
+}
 
-    h1 span {
-      color: #00d9ff;
-      text-shadow: 0 0 15px #00d9ff66;
-    }
+h1 {
+  font-size: 38px;
+  margin-bottom: 12px;
+}
 
-    .email {
-      color: #8faac2;
-      margin-bottom: 22px;
-      word-break: break-word;
-    }
+h1 span {
+  color: #00d9ff;
+}
 
-    .description {
-      color: #c1d1df;
-      line-height: 1.7;
-    }
+.email {
+  color: #8faac2;
+  margin-bottom: 20px;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
+.description {
+  color: #c1d1df;
+  line-height: 1.7;
+}
 
-    .card {
-      padding: 25px;
-      border-radius: 20px;
-      border: 1px solid #00d9ff33;
-      background: rgba(5, 20, 40, 0.65);
-      backdrop-filter: blur(10px);
-    }
+.status {
+  margin-top: 22px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #00d9ff33;
+  color: #8feaff;
+}
 
-    .card h2 {
-      color: #00d9ff;
-      margin-bottom: 12px;
-      font-size: 20px;
-    }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
 
-    .card p {
-      color: #9db2c7;
-      line-height: 1.6;
-    }
+.card {
+  padding: 25px;
+  border-radius: 20px;
+  border: 1px solid #00d9ff33;
+  background: rgba(5,20,40,0.65);
+}
 
-    .status {
-      margin-top: 25px;
-      padding: 15px;
-      border-radius: 12px;
-      background: #00d9ff0d;
-      border: 1px solid #00d9ff33;
-      color: #8feaff;
-    }
+.card h2 {
+  color: #00d9ff;
+  margin-bottom: 12px;
+  font-size: 20px;
+}
 
-    footer {
-      text-align: center;
-      color: #647a90;
-      padding: 35px 0 20px;
-      font-size: 13px;
-    }
-  </style>
+.card p {
+  color: #9db2c7;
+  line-height: 1.6;
+}
+
+footer {
+  text-align: center;
+  color: #647a90;
+  padding: 35px 0 20px;
+  font-size: 13px;
+}
+
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-  <nav>
-    <div class="logo">RI</div>
+<nav>
 
+<div class="logo">RI</div>
+
+<button class="logout" id="logoutButton">
+Logout
+</button>
+
+</nav>
+
+
+<section class="welcome">
+
+<div class="badge">
+USER DASHBOARD
+</div>
+
+<h1>
+Selamat datang,
+<span id="userName">User</span>
+</h1>
+
+<p class="email" id="userEmail">
+Memuat akun...
+</p>
+
+<p class="description">
+Selamat datang di dashboard pribadi Rofidin Ilyas.
+Di sini kamu dapat melihat informasi akun dan portfolio.
+</p>
+
+<div class="status">
+● Status akun: <strong>Aktif</strong>
+</div>
+
+</section>
+
+
+<section class="grid">
+
+<div class="card">
+
+<h2>Quality Control</h2>
+
+<p>
+Pengalaman Regional Quality Control,
+pemeriksaan kualitas pekerjaan,
+standar operasional, dan keselamatan kerja.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>Telecommunication</h2>
+
+<p>
+Pengalaman dalam proyek telekomunikasi,
+BTS, dokumentasi pekerjaan,
+dan administrasi proyek.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>Administration</h2>
+
+<p>
+Pengalaman Timekeeping,
+administrasi, pengelolaan data,
+dan koordinasi dengan tim.
+</p>
+
+</div>
+
+</section>
+
+
+<footer>
+© 2026 Rofidin Ilyas • Portfolio
+</footer>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://vufpdlobkoeyjjxjhhzr.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
+
+const supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
+);
+
+
+async function loadDashboard() {
+
+const result =
+await supabaseClient.auth.getSession();
+
+const session =
+result.data.session;
+
+if (!session) {
+
+window.location.href = "login.html";
+
+return;
+
+}
+
+const user = session.user;
+
+
+document.getElementById("userEmail").textContent =
+user.email || "Email tidak tersedia";
+
+
+let name = "User";
+
+if (user.user_metadata) {
+
+name =
+user.user_metadata.full_name ||
+user.user_metadata.name ||
+name;
+
+}
+
+if (name === "User" && user.email) {
+
+name =
+user.email.split("@")[0];
+
+}
+
+document.getElementById("userName").textContent =
+name;
+
+}
+
+
+document
+.getElementById("logoutButton")
+.addEventListener("click", async function() {
+
+await supabaseClient.auth.signOut();
+
+window.location.href = "login.html";
+
+});
+
+
+loadDashboard();
+
+</script>
 
 </body>
 </html>
