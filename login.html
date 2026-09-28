@@ -118,9 +118,34 @@
       showMessage("Sistem login gagal dimuat. Silakan refresh halaman.", "error");
       button.disabled = true;
     } else {
+      async function redirectIfAdmin(session) {
+        if (!session?.user) return false;
+
+        const { data: adminProfile, error } = await supabase
+          .from("admin_profiles")
+          .select("role,is_active")
+          .eq("auth_user_id", session.user.id)
+          .eq("is_active", true)
+          .maybeSingle();
+
+        if (error) {
+          console.error("Admin authorization check failed:", error);
+          showMessage("Login berhasil, tetapi akses dashboard belum dapat diverifikasi. Silakan coba lagi.", "error");
+          return false;
+        }
+
+        if (!adminProfile || adminProfile.role !== "super_admin") {
+          showMessage("Akun berhasil login, tetapi tidak memiliki akses ke dashboard admin.", "error");
+          return false;
+        }
+
+        window.location.replace(new URL("dashboard.html", window.location.href).href);
+        return true;
+      }
+
       supabase.auth.onAuthStateChange((event, session) => {
         if (event === "SIGNED_IN" && session) {
-          window.location.href = new URL("dashboard.html", window.location.href).href;
+          void redirectIfAdmin(session);
         }
       });
 
@@ -154,14 +179,8 @@
           }
 
           if (data?.session) {
-            showMessage("Login berhasil. Mengalihkan ke dashboard...", "success");
-            const { data: sessionData } = await supabase.auth.getSession();
-
-            if (sessionData?.session) {
-              window.location.href = new URL("dashboard.html", window.location.href).href;
-            } else {
-              showMessage("Login berhasil, tetapi sesi belum tersimpan. Silakan coba lagi.", "error");
-            }
+            showMessage("Login berhasil. Memverifikasi akses dashboard...", "success");
+            await redirectIfAdmin(data.session);
           }
         } catch (err) {
           showMessage("Terjadi kesalahan saat login. Silakan coba lagi.", "error");
