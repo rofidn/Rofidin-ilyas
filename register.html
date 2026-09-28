@@ -3,17 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Daftar untuk mengakses Portfolio Rofidin Ilyas">
 
   <title>Register | Rofidin Ilyas</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
     body {
@@ -22,9 +26,7 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
-
       color: white;
-
       background:
         radial-gradient(circle at top right, #003b73, transparent 35%),
         radial-gradient(circle at bottom left, #001f3f, transparent 35%),
@@ -34,37 +36,30 @@
     .register-box {
       width: 100%;
       max-width: 430px;
-
       padding: 35px 28px;
-
       border: 1px solid #00d9ff44;
       border-radius: 25px;
-
       background: rgba(5, 20, 40, 0.78);
-
       backdrop-filter: blur(15px);
-
       box-shadow: 0 0 45px #0077ff22;
     }
 
     .logo {
       text-align: center;
-
       font-size: 42px;
-      font-weight: bold;
-
+      font-weight: 700;
       color: #00d9ff;
-
       text-shadow:
         0 0 10px #00d9ff,
         0 0 25px #00d9ff;
-
       margin-bottom: 10px;
     }
 
     h1 {
       text-align: center;
       margin-bottom: 8px;
+      font-size: 28px;
+      font-weight: 600;
     }
 
     .subtitle {
@@ -72,64 +67,60 @@
       color: #91aac3;
       margin-bottom: 30px;
       line-height: 1.5;
+      font-size: 14px;
     }
 
     label {
       display: block;
-
       margin-bottom: 8px;
-
       color: #bdefff;
-
       font-size: 14px;
+      font-weight: 500;
     }
 
     input {
       width: 100%;
-
       padding: 14px;
-
       margin-bottom: 18px;
-
       border-radius: 12px;
-
       border: 1px solid #00d9ff44;
-
       outline: none;
-
       background: #061426;
-
       color: white;
-
       font-size: 15px;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     input:focus {
       border-color: #00d9ff;
-
       box-shadow: 0 0 12px #00d9ff33;
+    }
+
+    input::placeholder {
+      color: #5a7a8f;
     }
 
     button {
       width: 100%;
-
       padding: 14px;
-
       border: none;
-
       border-radius: 25px;
-
       background: #00bfff;
-
       color: #00101c;
-
       font-size: 16px;
-
-      font-weight: bold;
-
+      font-weight: 600;
       cursor: pointer;
-
       box-shadow: 0 0 20px #00bfff55;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px #00bfff77;
+    }
+
+    button:active:not(:disabled) {
+      transform: translateY(0);
     }
 
     button:disabled {
@@ -139,64 +130,119 @@
 
     .message {
       display: none;
-
       margin-top: 18px;
-
       padding: 13px;
-
       border-radius: 10px;
-
       text-align: center;
-
       font-size: 14px;
-
       line-height: 1.5;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .error {
       display: block;
-
       background: #ff003322;
-
       border: 1px solid #ff446655;
-
       color: #ff9b9b;
     }
 
     .success {
       display: block;
-
       background: #00ff9922;
-
       border: 1px solid #00ff9966;
-
       color: #8affc1;
     }
 
     .links {
       margin-top: 25px;
-
       text-align: center;
-
       line-height: 2;
+      font-size: 14px;
     }
 
     .links a {
       color: #00d9ff;
-
       text-decoration: none;
+      transition: opacity 0.2s;
     }
 
     .links a:hover {
+      opacity: 0.8;
       text-decoration: underline;
     }
 
     .back {
       display: block;
-
       margin-top: 15px;
-
       color: #71869d !important;
+      font-size: 13px;
+    }
+
+    .password-strength {
+      margin: -16px 0 18px 0;
+      height: 4px;
+      background: #1a3a52;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .password-strength-bar {
+      height: 100%;
+      width: 0;
+      transition: width 0.3s, background-color 0.3s;
+      background-color: #ff6b6b;
+    }
+
+    .password-strength-bar.weak {
+      width: 33%;
+      background-color: #ff6b6b;
+    }
+
+    .password-strength-bar.medium {
+      width: 66%;
+      background-color: #ffa500;
+    }
+
+    .password-strength-bar.strong {
+      width: 100%;
+      background-color: #00ff99;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background: currentColor;
+      border-radius: 50%;
+      animation: blink 1.4s infinite;
+    }
+
+    .loading:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .loading:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes blink {
+      0%, 60%, 100% {
+        opacity: 0.3;
+      }
+      30% {
+        opacity: 1;
+      }
     }
   </style>
 </head>
@@ -217,7 +263,6 @@
     Daftar untuk mengakses Portfolio Rofidin Ilyas
   </p>
 
-
   <form id="registerForm">
 
     <label for="fullName">
@@ -228,9 +273,9 @@
       type="text"
       id="fullName"
       placeholder="Masukkan nama lengkap"
+      autocomplete="name"
       required
     >
-
 
     <label for="email">
       Email
@@ -240,9 +285,9 @@
       type="email"
       id="email"
       placeholder="Masukkan email"
+      autocomplete="email"
       required
     >
-
 
     <label for="password">
       Password
@@ -252,10 +297,14 @@
       type="password"
       id="password"
       placeholder="Minimal 8 karakter"
+      autocomplete="new-password"
       minlength="8"
       required
     >
 
+    <div class="password-strength">
+      <div class="password-strength-bar" id="passwordStrengthBar"></div>
+    </div>
 
     <label for="confirmPassword">
       Konfirmasi Password
@@ -265,10 +314,10 @@
       type="password"
       id="confirmPassword"
       placeholder="Masukkan ulang password"
+      autocomplete="new-password"
       minlength="8"
       required
     >
-
 
     <button
       type="submit"
@@ -279,12 +328,13 @@
 
   </form>
 
-
   <div
     id="message"
     class="message"
+    role="alert"
+    aria-live="polite"
+    aria-atomic="true"
   ></div>
-
 
   <div class="links">
 
@@ -305,198 +355,170 @@
 
 </div>
 
-
 <script>
+  // Konfigurasi Supabase
+  const SUPABASE_URL = "https://vufpdlobkoeyjjxjhhzr.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
 
-const SUPABASE_URL =
-"https://vufpdlobkoeyjjxjhhzr.supabase.co";
+  const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
 
-const SUPABASE_PUBLISHABLE_KEY =
-"sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
+  // Elemen DOM
+  const form = document.getElementById("registerForm");
+  const button = document.getElementById("registerButton");
+  const message = document.getElementById("message");
+  const passwordInput = document.getElementById("password");
+  const passwordStrengthBar = document.getElementById("passwordStrengthBar");
 
+  // Fungsi untuk menampilkan pesan
+  function showMessage(text, type) {
+    message.textContent = text;
+    message.className = `message ${type}`;
+    // Scroll ke pesan
+    message.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
 
-const supabase =
-window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+  // Fungsi untuk validasi email
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
 
+  // Fungsi untuk mengecek kekuatan password
+  function checkPasswordStrength(password) {
+    let strength = 0;
 
-const form =
-document.getElementById("registerForm");
+    if (password.length >= 8) strength++;
+    if (password.length >= 12) strength++;
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+    if (/\d/.test(password)) strength++;
+    if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) strength++;
 
-const button =
-document.getElementById("registerButton");
+    return strength;
+  }
 
-const message =
-document.getElementById("message");
+  // Update visual password strength
+  passwordInput.addEventListener("input", function() {
+    const strength = checkPasswordStrength(this.value);
+    const bar = passwordStrengthBar;
 
+    bar.className = "password-strength-bar";
 
-function showMessage(text, type) {
+    if (this.value.length < 8) {
+      bar.style.width = "0";
+    } else if (strength <= 2) {
+      bar.classList.add("weak");
+    } else if (strength <= 3) {
+      bar.classList.add("medium");
+    } else {
+      bar.classList.add("strong");
+    }
+  });
 
-  message.textContent = text;
-
-  message.className =
-    "message " + type;
-
-}
-
-
-form.addEventListener(
-  "submit",
-  async function(event) {
-
+  // Event listener untuk form submission
+  form.addEventListener("submit", async function(event) {
     event.preventDefault();
 
+    // Ambil dan validasi input
+    const fullName = document.getElementById("fullName").value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
 
-    const fullName =
-      document
-        .getElementById("fullName")
-        .value
-        .trim();
+    // Validasi nama lengkap
+    if (!fullName || fullName.length < 2) {
+      showMessage("Nama lengkap minimal 2 karakter.", "error");
+      return;
+    }
 
+    // Validasi email
+    if (!isValidEmail(email)) {
+      showMessage("Format email tidak valid. Silakan masukkan email yang benar.", "error");
+      return;
+    }
 
-    const email =
-      document
-        .getElementById("email")
-        .value
-        .trim()
-        .toLowerCase();
-
-
-    const password =
-      document
-        .getElementById("password")
-        .value;
-
-
-    const confirmPassword =
-      document
-        .getElementById("confirmPassword")
-        .value;
-
-
+    // Validasi password
     if (password.length < 8) {
-
-      showMessage(
-        "Password minimal 8 karakter.",
-        "error"
-      );
-
+      showMessage("Password minimal 8 karakter.", "error");
       return;
     }
 
-
+    // Validasi konfirmasi password
     if (password !== confirmPassword) {
-
-      showMessage(
-        "Konfirmasi password tidak sama.",
-        "error"
-      );
-
+      showMessage("Konfirmasi password tidak sama.", "error");
       return;
     }
 
-
+    // Disable button dan ubah text
     button.disabled = true;
+    button.innerHTML = 'Mendaftarkan<span class="loading"></span><span class="loading"></span><span class="loading"></span>';
 
-    button.textContent =
-      "Mendaftarkan...";
+    // Hapus pesan sebelumnya
+    message.className = "message";
 
+    try {
+      // Gunakan URL redirect yang dinamis berdasarkan domain saat ini
+      const redirectTo = window.location.origin + (window.location.pathname.includes("/Rofidin-ilyas/") 
+        ? "/Rofidin-ilyas" 
+        : "") + "/login.html";
 
-    message.className =
-      "message";
-
-
-    /*
-      Setelah email diverifikasi,
-      pengguna diarahkan kembali ke login.
-    */
-
-    const redirectTo =
-      "https://rofidn.github.io/Rofidin-ilyas/login.html";
-
-
-    const { data, error } =
-      await supabase.auth.signUp({
-
+      // Sign up ke Supabase
+      const { data, error } = await supabase.auth.signUp({
         email: email,
-
         password: password,
-
         options: {
-
           emailRedirectTo: redirectTo,
-
           data: {
-
             full_name: fullName
-
           }
-
         }
-
       });
 
+      if (error) {
+        showMessage(`Pendaftaran gagal: ${error.message}`, "error");
+        return;
+      }
 
-    if (error) {
+      // Jika membutuhkan verifikasi email (session null)
+      if (data.user && !data.session) {
+        showMessage(
+          "✓ Akun berhasil dibuat! Silakan cek email Anda dan klik link verifikasi untuk menyelesaikan pendaftaran.",
+          "success"
+        );
+      } else {
+        // Jika langsung bisa login (auto-confirm enabled)
+        showMessage(
+          "✓ Pendaftaran berhasil. Mengalihkan ke halaman Login...",
+          "success"
+        );
 
-      showMessage(
-        "Pendaftaran gagal: " +
-        error.message,
-        "error"
-      );
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 1500);
+      }
 
+    } catch (err) {
+      showMessage(`Terjadi kesalahan: ${err.message}`, "error");
+    } finally {
+      // Re-enable button
       button.disabled = false;
-
-      button.textContent =
-        "Daftar";
-
-      return;
+      button.textContent = "Daftar";
     }
+  });
 
-
-    /*
-      Jika Supabase meminta
-      verifikasi email.
-    */
-
-    if (
-      data.user &&
-      !data.session
-    ) {
-
-      showMessage(
-        "Pendaftaran berhasil! Silakan cek email kamu dan klik link verifikasi. Setelah terverifikasi, kembali ke halaman Login.",
-        "success"
-      );
-
-    } else {
-
-      showMessage(
-        "Pendaftaran berhasil. Mengalihkan ke Login...",
-        "success"
-      );
-
-
-      setTimeout(
-        function() {
-
-          window.location.href =
-            "login.html";
-
-        },
-        1500
-      );
-
+  // Clear pesan ketika user mulai mengetik
+  document.getElementById("fullName").addEventListener("input", () => {
+    if (message.textContent) {
+      message.className = "message";
     }
+  });
 
-
-    button.disabled = false;
-
-    button.textContent =
-      "Daftar";
-
+  document.getElementById("email").addEventListener("input", () => {
+    if (message.textContent) {
+      message.className = "message";
+    }
   });
 
 </script>
