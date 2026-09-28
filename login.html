@@ -299,6 +299,13 @@
     return emailRegex.test(email);
   }
 
+  // Jika Supabase sudah membuat session, langsung lanjut ke dashboard.
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_IN" && session) {
+      window.location.href = new URL("dashboard.html", window.location.href).href;
+    }
+  });
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -335,7 +342,14 @@
       if (data?.session) {
         showMessage("Login berhasil. Mengalihkan ke dashboard...", "success");
 
-        window.location.replace("dashboard.html");
+        // Beri Supabase waktu menyimpan session sebelum pindah halaman.
+        const { data: sessionData } = await supabase.auth.getSession();
+
+        if (sessionData?.session) {
+          window.location.href = new URL("dashboard.html", window.location.href).href;
+        } else {
+          showMessage("Login berhasil, tetapi session belum tersimpan. Silakan coba lagi.", "error");
+        }
       }
     } catch (err) {
       showMessage("Terjadi kesalahan: " + err.message, "error");
