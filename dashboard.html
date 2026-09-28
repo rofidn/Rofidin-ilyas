@@ -99,6 +99,7 @@
       <button class="tab-btn active" data-tab="editor">📝 Editor Profile</button>
       <button class="tab-btn" data-tab="preview">👁️ Preview</button>
       <button class="tab-btn" data-tab="registrations">👥 Registrasi User</button>
+      <button class="tab-btn" data-tab="password">🔐 Reset Password Admin</button>
     </div>
 
     <div id="editor" class="tab-content active">
@@ -186,6 +187,39 @@
             <tbody id="registrationBody"></tbody>
           </table>
         </div>
+      </div>
+    </div>
+
+    <div id="password" class="tab-content">
+      <div class="panel">
+        <h2 style="color:#00d9ff;margin-bottom:8px">🔐 Reset Password Admin</h2>
+        <p style="color:#71869d;font-size:13px;margin-bottom:22px">
+          Gunakan form ini untuk mengubah password akun admin melalui Supabase Edge Function.
+          Password tidak dikirim ke Rani dan tidak disimpan di database.
+        </p>
+
+        <div class="form-group">
+          <label for="resetEmail">Email Admin</label>
+          <input type="email" id="resetEmail" placeholder="Email akun admin" autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="newAdminPassword">Password Baru</label>
+          <input type="password" id="newAdminPassword" placeholder="Minimal 8 karakter" minlength="8" maxlength="128" autocomplete="new-password">
+        </div>
+
+        <div class="form-group">
+          <label for="confirmAdminPassword">Konfirmasi Password Baru</label>
+          <input type="password" id="confirmAdminPassword" placeholder="Ulangi password baru" minlength="8" maxlength="128" autocomplete="new-password">
+        </div>
+
+        <button class="btn" id="resetAdminPasswordBtn" type="button" style="width:100%">
+          🔐 Ubah Password Admin
+        </button>
+
+        <p style="color:#71869d;font-size:11px;line-height:1.6;margin-top:14px">
+          Setelah berhasil, gunakan password baru saat login berikutnya.
+        </p>
       </div>
     </div>
 
@@ -450,6 +484,77 @@
     }
 
     $('refreshRegistrationsBtn').addEventListener('click', loadRegistrations);
+    // Admin password reset via authenticated Edge Function
+    $('resetAdminPasswordBtn').addEventListener('click', async () => {
+      if (!supabase || !currentUser) return;
+
+      const email = $('resetEmail').value.trim().toLowerCase();
+      const password = $('newAdminPassword').value;
+      const confirmPassword = $('confirmAdminPassword').value;
+      const button = $('resetAdminPasswordBtn');
+
+      if (!email || !email.includes('@')) {
+        showNotice('Masukkan email admin yang valid.', 'error');
+        return;
+      }
+      if (password.length < 8) {
+        showNotice('Password baru minimal 8 karakter.', 'error');
+        return;
+      }
+      if (password !== confirmPassword) {
+        showNotice('Konfirmasi password tidak cocok.', 'error');
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = '🔐 Memproses...';
+
+      try {
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        if (sessionError || !session?.access_token) {
+          throw new Error('Sesi login admin tidak ditemukan atau sudah berakhir.');
+        }
+
+        const { data, error } = await supabase.functions.invoke('bright-process-', {
+          body: {
+            action: 'reset_password',
+            email,
+            new_password: password
+          },
+          headers: {
+            Authorization: `Bearer ${session.access_token}`
+          }
+        });
+
+        if (error) {
+          let detail = error.message || 'Gagal menghubungi server.';
+          try {
+            if (error.context?.body) {
+              const body = typeof error.context.body === 'string'
+                ? JSON.parse(error.context.body)
+                : error.context.body;
+              detail = body.pesan || body.message || detail;
+            }
+          } catch (_) {}
+          throw new Error(detail);
+        }
+
+        if (data?.success === false) {
+          throw new Error(data.pesan || data.message || 'Password gagal diubah.');
+        }
+
+        $('newAdminPassword').value = '';
+        $('confirmAdminPassword').value = '';
+        showNotice('✅ Password admin berhasil diubah.', 'success');
+      } catch (error) {
+        console.error('Admin password reset failed:', error);
+        showNotice('❌ ' + (error.message || 'Gagal mengubah password admin.'), 'error');
+      } finally {
+        button.disabled = false;
+        button.textContent = '🔐 Ubah Password Admin';
+      }
+    });
+
 
     // Tab switching
     document.querySelectorAll('.tab-btn').forEach(btn => {
