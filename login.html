@@ -31,8 +31,8 @@
     <form id="loginForm">
       <label for="fullName">Nama</label>
       <input type="text" id="fullName" placeholder="Nama admin" autocomplete="name" required>
-      <label for="phone">Nomor HP</label>
-      <input type="tel" id="phone" inputmode="tel" placeholder="08xxxxxxxxxx" autocomplete="tel" required>
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="email admin" autocomplete="username" required>
       <label for="password">Password</label>
       <input type="password" id="password" placeholder="Masukkan password" autocomplete="current-password" required>
       <button type="submit" id="loginButton">Login</button>
@@ -48,16 +48,10 @@
     const form=document.getElementById("loginForm"),button=document.getElementById("loginButton"),message=document.getElementById("message");
 
     function showMessage(text,type){message.textContent=text;message.className="message "+type}
-    function normalizePhone(value){
-      const digits=value.replace(/\D/g,"");
-      if(digits.startsWith("62")) return "+"+digits;
-      if(digits.startsWith("0")) return "+62"+digits.slice(1);
-      return "";
-    }
     function errorText(error){
       const msg=(error?.message||"").toLowerCase();
       if(msg.includes("too many requests")||msg.includes("rate limit")) return "Terlalu banyak percobaan login. Tunggu beberapa saat lalu coba lagi.";
-      if(msg.includes("invalid login credentials")) return "Nama, nomor HP, atau password salah.";
+      if(msg.includes("invalid login credentials")) return "Nama, email, atau password salah.";
       return "Login gagal. Silakan periksa data login Anda.";
     }
 
@@ -95,15 +89,15 @@
       form.addEventListener("submit",async(event)=>{
         event.preventDefault();
         const enteredName=document.getElementById("fullName").value.trim();
-        const phone=normalizePhone(document.getElementById("phone").value);
+        const email=document.getElementById("email").value.trim().toLowerCase();
         const password=document.getElementById("password").value;
         if(enteredName.length<2){showMessage("Nama admin harus diisi.","error");return}
-        if(!/^\+62\d{9,13}$/.test(phone)){showMessage("Nomor HP tidak valid.","error");return}
+        if(!/^\S+@\S+\.\S+$/.test(email)){showMessage("Format email tidak valid.","error");return}
         if(!password){showMessage("Password harus diisi.","error");return}
         sessionStorage.setItem("adminLoginName",enteredName);
         button.disabled=true;button.innerHTML='Memproses<span class="loading"></span><span class="loading"></span><span class="loading"></span>';message.className="message";message.textContent="";
         try{
-          const {data,error}=await supabase.auth.signInWithPassword({phone,password});
+          const {data,error}=await supabase.auth.signInWithPassword({email,password});
           if(error){showMessage(errorText(error),"error");sessionStorage.removeItem("adminLoginName");return}
           if(data?.session){
             showMessage("Login berhasil. Memverifikasi akses admin...","success");
