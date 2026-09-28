@@ -173,8 +173,8 @@
   <script>
     const SUPABASE_URL = "https://vufpdlobkoeyjjxjhhzr.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
-    const STORAGE_BUCKET = 'avatars';
-    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    const STORAGE_BUCKET = 'profile-avatars';
+    const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB (matches Supabase Storage bucket)
 
     const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
     const $ = (id) => document.getElementById(id);
@@ -205,16 +205,17 @@
         }
         if (session?.user) {
           const { data: profile, error: profileError } = await supabase
-            .from('profiles')
-            .select('role')
-            .eq('id', session.user.id)
+            .from('admin_profiles')
+            .select('role,is_active')
+            .eq('auth_user_id', session.user.id)
+            .eq('is_active', true)
             .maybeSingle();
 
           if (profileError) {
             console.error('Profile role error:', profileError);
           }
 
-          if (!profile || profile.role !== 'admin') {
+          if (!profile || profile.role !== 'super_admin') {
             showNotice("Akses ditolak. Hanya admin yang bisa membuka dashboard.", 'error');
             setTimeout(() => window.location.replace("index.html"), 1800);
             return null;
@@ -275,6 +276,7 @@
 
       try {
         let avatarUrl = originalData.avatar_url || null;
+        let avatarPath = originalData.avatar_path || null;
 
         // Upload avatar jika ada file baru
         if (selectedFile) {
@@ -284,7 +286,8 @@
             await supabase.storage.from(STORAGE_BUCKET).remove([`${currentUser.id}/${oldPath}`]);
           }
 
-          const fileExt = selectedFile.name.split('.').pop();
+          const mimeToExt = {'image/jpeg':'jpg','image/png':'png','image/webp':'webp'};
+          const fileExt = mimeToExt[selectedFile.type];
           const fileName = `${Date.now()}.${fileExt}`;
           const filePath = `${currentUser.id}/${fileName}`;
 
@@ -296,6 +299,7 @@
 
           const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(filePath);
           avatarUrl = data.publicUrl;
+          avatarPath = filePath;
         }
 
         const { error } = await supabase
@@ -307,7 +311,8 @@
             whatsapp_url: $('whatsappUrl').value.trim(),
             tiktok_username: $('tiktokUsername').value.trim(),
             instagram_username: $('instagramUsername').value.trim(),
-            avatar_url: avatarUrl
+            avatar_url: avatarUrl,
+            avatar_path: avatarPath
           })
           .eq('id', currentUser.id);
 
@@ -348,12 +353,12 @@
       if (!file) return;
 
       if (file.size > MAX_FILE_SIZE) {
-        showNotice('File terlalu besar. Maksimal 5MB.', 'error');
+        showNotice('File terlalu besar. Maksimal 2MB.', 'error');
         return;
       }
 
       if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-        showNotice('Format file tidak didukung. Gunakan JPG atau PNG.', 'error');
+        showNotice('Format file tidak didukung. Gunakan JPG, PNG, atau WEBP.', 'error');
         return;
       }
 
