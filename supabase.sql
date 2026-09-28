@@ -1,5 +1,11 @@
+-- ============================================
+-- SUPABASE SCHEMA SETUP & RLS POLICIES
+-- ============================================
+
+-- 1. CREATE EXTENSION
 create extension if not exists pgcrypto;
 
+-- 2. CREATE PROFILES TABLE
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   full_name text,
@@ -16,6 +22,7 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
+-- 3. PROFILES TRIGGERS
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
@@ -64,6 +71,7 @@ create trigger profiles_set_updated_at
 before update on public.profiles
 for each row execute function public.set_updated_at();
 
+-- 4. PROFILES RLS POLICIES
 create policy "Public profiles are readable by everyone"
 on public.profiles
 for select
@@ -112,11 +120,84 @@ using (
   )
 );
 
--- Ensure the specific admin email always has admin role.
-update public.profiles
-set role = 'admin'
-where id in (
-  select id from auth.users where email = 'rofidinilyasumc@gmail.com'
+-- ============================================
+-- STORAGE BUCKET SETUP
+-- ============================================
+
+-- 5. CREATE AVATARS BUCKET (if not exists)
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values (
+  'avatars',
+  'avatars',
+  true,
+  5242880,
+  array['image/jpeg', 'image/png', 'image/webp']
+)
+on conflict (id) do update
+set public = true,
+    file_size_limit = 5242880,
+    allowed_mime_types = array['image/jpeg', 'image/png', 'image/webp'];
+
+-- 6. STORAGE RLS POLICIES FOR AVATARS BUCKET
+
+-- Allow everyone to read/view avatars
+create policy "Public can read avatars"
+on storage.objects
+for select
+using (bucket_id = 'avatars');
+
+-- Allow admins to upload avatars to their own folder
+create policy "Admins can upload their own avatars"
+on storage.objects
+for insert
+with check (
+  bucket_id = 'avatars'
+  and auth.uid()::text = (storage.foldername(name))[1]
+  and exists (
+    select 1 from public.profiles p
+    where p.id = auth.uid() and p.role = 'admin'
+  )
 );
 
--- If the user is not yet created, this will create the profile when they sign up.
+-- Allow admins to update their own avatars
+create policy "Admins can update their own avatars"
+on storage.objects
+for update
+using (
+  bucket_id = 'avatars'
+  and auth.uid()::text = (storage.foldername(name))[1]
+  and exists (
+    select 1 from public.profiles p
+    where p.id = auth.uid() and p.role = 'admin'
+  )
+)
+with check (
+  bucket_id = 'avatars'
+  and auth.uid()::text = (storage.foldername(name))[1]
+  and exists (
+    select 1 from public.profiles p
+    where p.id = auth.uid() and p.role = 'admin'
+  )
+);
+
+-- Allow admins to delete their own avatars
+create policy "Admins can delete their own avatars"
+on storage.objects
+for delete
+using (
+  bucket_id = 'avatars'
+  and auth.uid()::text = (storage.foldername(name))[1]
+  and exists (
+    select 1 from public.profiles p
+    where p.id = auth.uid() and p.role = 'admin'
+  )
+);
+
+-- ============================================
+-- OPTIONAL: PROMOTE EXISTING USERS TO ADMIN
+-- ============================================
+
+-- Uncomment and run if user already exists:
+-- UPDATE public.profiles
+-- SET role = 'admin'
+-- WHERE id IN (SELECT id FROM auth.users WHERE email = 'rofidinilyasumc@gmail.com');
