@@ -2,121 +2,106 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register | Rofidin Ilyas</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
+  <meta name="description" content="Registrasi user Rofidin Ilyas">
+  <title>Registrasi User | Rofidin Ilyas</title>
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}body{min-height:100vh;font-family:Arial,sans-serif;background:radial-gradient(circle at 20% 20%,rgba(0,140,255,.18),transparent 35%),radial-gradient(circle at 80% 80%,rgba(0,255,170,.14),transparent 35%),linear-gradient(135deg,#07111f,#0c1830 50%,#111827)}.grid{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:24px 24px;mask-image:radial-gradient(circle at center,black 40%,transparent 100%)}.register-box{position:relative;z-index:1;width:min(420px,calc(100% - 32px));margin:50px auto;padding:32px 24px;border:1px solid rgba(0,217,255,.24);border-radius:24px;background:rgba(8,15,28,.82);box-shadow:0 0 40px rgba(0,119,255,.14);backdrop-filter:blur(14px)}.logo{width:54px;height:54px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border-radius:18px;background:linear-gradient(135deg,#00d9ff,#008cff);color:#02111f;font-weight:800;font-size:1.4rem;box-shadow:0 0 20px rgba(0,217,255,.35)}h1{text-align:center;color:#ebf7ff;margin-bottom:6px;font-size:2rem}p.subtitle{text-align:center;color:#95b5d6;margin-bottom:26px;font-size:.92rem;line-height:1.5}.input-group{margin-bottom:18px}.input-group label{display:block;color:#d5f1ff;margin-bottom:8px;font-size:.88rem;font-weight:700}.input-group input{width:100%;padding:13px 14px;border:1px solid rgba(0,217,255,.25);border-radius:12px;background:#071827;color:#edf9ff;outline:none;font-size:1rem}.input-group input:focus{border-color:#00d9ff;box-shadow:0 0 0 3px rgba(0,217,255,.18)}.password-wrapper{position:relative}.password-wrapper input{padding-right:50px}.toggle-password{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:0;border-radius:8px;background:transparent;color:#8fdff5;font-size:1.15rem;line-height:1;cursor:pointer}.toggle-password:hover{background:rgba(0,217,255,.12);color:#fff}.toggle-password:focus-visible{outline:2px solid #00d9ff;outline-offset:2px}button[type="submit"]{width:100%;padding:14px;border:none;border-radius:999px;background:linear-gradient(135deg,#00d9ff,#00a8ff);color:#02111f;font-size:1rem;font-weight:800;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}.button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 0 22px rgba(0,184,255,.35)}button:disabled{opacity:.65;cursor:not-allowed}.message{display:none;margin-top:18px;padding:12px 14px;border-radius:12px;text-align:center;font-size:.9rem;line-height:1.5}.message.error{display:block;background:rgba(255,0,80,.12);border:1px solid rgba(255,0,80,.3);color:#ffb5c7}.message.success{display:block;background:rgba(26,214,124,.12);border:1px solid rgba(26,214,124,.3);color:#baf4d4}.login-link,.security{margin-top:18px;text-align:center;font-size:.9rem;color:#9fc2db}.login-link a{color:#3edbff;text-decoration:none}.login-link a:hover{text-decoration:underline}.security{margin-top:12px;letter-spacing:.08em;text-transform:uppercase;font-size:.75rem;color:#79d9ff;font-weight:700}@media(max-width:480px){.register-box{margin:24px auto;padding:24px 18px}.logo{margin-bottom:10px}}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{min-height:100vh;font-family:Arial,sans-serif;background:radial-gradient(circle at 20% 20%,rgba(0,140,255,.18),transparent 35%),radial-gradient(circle at 80% 80%,rgba(0,255,170,.14),transparent 35%),linear-gradient(135deg,#07111f,#0c1830 50%,#111827);color:#ebf7ff}
+    .grid{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:24px 24px;mask-image:radial-gradient(circle at center,black 40%,transparent 100%)}
+    .register-box{position:relative;z-index:1;width:min(440px,calc(100% - 32px));margin:40px auto;padding:32px 24px;border:1px solid rgba(0,217,255,.24);border-radius:24px;background:rgba(8,15,28,.86);box-shadow:0 0 40px rgba(0,119,255,.14);backdrop-filter:blur(14px)}
+    .logo{width:54px;height:54px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border-radius:18px;background:linear-gradient(135deg,#00d9ff,#008cff);color:#02111f;font-weight:800;font-size:1.4rem}
+    h1{text-align:center;margin-bottom:7px;font-size:1.9rem}p.subtitle{text-align:center;color:#95b5d6;margin-bottom:24px;font-size:.92rem;line-height:1.5}
+    .input-group{margin-bottom:16px}.input-group label{display:block;color:#d5f1ff;margin-bottom:7px;font-size:.88rem;font-weight:700}
+    input,select{width:100%;padding:13px 14px;border:1px solid rgba(0,217,255,.25);border-radius:12px;background:#071827;color:#edf9ff;outline:none;font-size:1rem}
+    input:focus,select:focus{border-color:#00d9ff;box-shadow:0 0 0 3px rgba(0,217,255,.18)}
+    select option{background:#071827;color:#edf9ff}
+    button[type="submit"]{width:100%;padding:14px;border:none;border-radius:999px;background:linear-gradient(135deg,#00d9ff,#00a8ff);color:#02111f;font-size:1rem;font-weight:800;cursor:pointer}
+    button:disabled{opacity:.65;cursor:not-allowed}
+    .message{display:none;margin-top:18px;padding:12px 14px;border-radius:12px;text-align:center;font-size:.9rem;line-height:1.5}
+    .message.error{display:block;background:rgba(255,0,80,.12);border:1px solid rgba(255,0,80,.3);color:#ffb5c7}
+    .message.success{display:block;background:rgba(26,214,124,.12);border:1px solid rgba(26,214,124,.3);color:#baf4d4}
+    .links{margin-top:18px;text-align:center;color:#9fc2db;font-size:.9rem;line-height:1.8}.links a{color:#3edbff;text-decoration:none}
+    .privacy{margin-top:14px;color:#7897b2;font-size:.75rem;text-align:center;line-height:1.5}
+    @media(max-width:480px){.register-box{margin:22px auto;padding:24px 18px}}
   </style>
 </head>
 <body>
   <div class="grid"></div>
-  <div class="register-box">
+  <main class="register-box">
     <div class="logo">RI</div>
-    <h1>Create Account</h1>
-    <p class="subtitle">Daftar untuk mengakses Rofidin Ilyas Portfolio</p>
+    <h1>Registrasi User</h1>
+    <p class="subtitle">Isi data berikut untuk mendaftarkan diri.</p>
 
-    <form id="registerForm">
-      <div class="input-group"><label for="fullName">Nama Lengkap</label><input type="text" id="fullName" placeholder="Masukkan nama lengkap" autocomplete="name" required></div>
-      <div class="input-group"><label for="email">Email</label><input type="email" id="email" placeholder="nama@email.com" autocomplete="email" required></div>
-      <div class="input-group"><label for="password">Password</label><div class="password-wrapper"><input type="password" id="password" placeholder="Minimal 8 karakter" minlength="8" autocomplete="new-password" required><button type="button" class="toggle-password" data-target="password" aria-label="Tampilkan password" aria-pressed="false">👁️</button></div></div>
-      <div class="input-group"><label for="confirmPassword">Konfirmasi Password</label><div class="password-wrapper"><input type="password" id="confirmPassword" placeholder="Masukkan kembali password" minlength="8" autocomplete="new-password" required><button type="button" class="toggle-password" data-target="confirmPassword" aria-label="Tampilkan konfirmasi password" aria-pressed="false">👁️</button></div></div>
-      <button type="submit" id="registerButton">CREATE ACCOUNT</button>
+    <form id="registerForm" novalidate>
+      <div class="input-group"><label for="fullName">Nama Lengkap</label><input id="fullName" type="text" maxlength="120" autocomplete="name" placeholder="Masukkan nama lengkap" required></div>
+      <div class="input-group"><label for="region">Nama Daerah</label><input id="region" type="text" maxlength="100" autocomplete="address-level2" placeholder="Contoh: Cirebon" required></div>
+      <div class="input-group"><label for="phone">Nomor HP</label><input id="phone" type="tel" inputmode="tel" maxlength="16" autocomplete="tel" placeholder="08xxxxxxxxxx" required></div>
+      <div class="input-group"><label for="gender">Jenis Kelamin</label><select id="gender" required><option value="">Pilih jenis kelamin</option><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option><option value="Lainnya">Lainnya</option></select></div>
+      <div class="input-group"><label for="birthDate">Tanggal Lahir</label><input id="birthDate" type="date" required></div>
+      <button type="submit" id="registerButton">DAFTAR</button>
     </form>
 
     <div id="message" class="message" role="alert" aria-live="polite"></div>
-    <div id="verificationActions" class="login-link" style="display:none"><button type="button" id="resendButton" style="margin-top:10px;width:100%;padding:11px;border:1px solid rgba(0,217,255,.3);border-radius:999px;background:transparent;color:#7fe8ff;font-weight:700;cursor:pointer">Kirim Ulang Email Verifikasi</button></div>
-    <div class="login-link">Sudah punya akun? <a href="login.html">Login di sini</a></div>
-    <div class="security">🔒 SECURE ACCOUNT REGISTRATION</div>
-  </div>
+    <div class="links"><a href="index.html">← Kembali ke Portfolio</a><br><a href="login.html">Login Admin</a></div>
+    <div class="privacy">Data registrasi disimpan untuk keperluan administrasi website dan hanya dapat dilihat oleh admin.</div>
+  </main>
 
   <script>
     const SUPABASE_URL = "https://vufpdlobkoeyjjxjhhzr.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
-    const LOGIN_URL = new URL("login.html", window.location.href).href;
-    const resendButton = document.getElementById("resendButton");
-    const verificationActions = document.getElementById("verificationActions");
-    let registeredEmail = "";
     const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
-
     const form = document.getElementById("registerForm");
     const button = document.getElementById("registerButton");
     const message = document.getElementById("message");
+    const birthDate = document.getElementById("birthDate");
+    birthDate.max = new Date().toISOString().slice(0,10);
 
-    document.querySelectorAll(".toggle-password").forEach((toggle) => {
-      toggle.addEventListener("click", () => {
-        const input = document.getElementById(toggle.dataset.target);
-        const visible = input.type === "text";
-        input.type = visible ? "password" : "text";
-        toggle.textContent = visible ? "👁️" : "🙈";
-        toggle.setAttribute("aria-label", visible ? "Tampilkan password" : "Sembunyikan password");
-        toggle.setAttribute("aria-pressed", String(!visible));
-      });
-    });
-
-    function showMessage(text, type) {
-      message.textContent = text;
-      message.className = "message " + type;
+    function showMessage(text,type){message.textContent=text;message.className="message "+type}
+    function normalizePhone(value){
+      const digits=value.replace(/\D/g,"");
+      if(digits.startsWith("62")) return "+"+digits;
+      if(digits.startsWith("0")) return "+62"+digits.slice(1);
+      return "";
+    }
+    function errorText(error){
+      const msg=(error?.message||"").toLowerCase();
+      if(msg.includes("duplicate")||msg.includes("unique")) return "Nomor HP tersebut sudah terdaftar.";
+      if(msg.includes("rate limit")||msg.includes("too many")) return "Terlalu banyak percobaan. Silakan tunggu beberapa saat.";
+      return "Registrasi gagal. Silakan periksa data lalu coba lagi.";
     }
 
-    function errorText(e) {
-      const msg = (e && e.message ? e.message : "Pendaftaran gagal.").toLowerCase();
-      if (msg.includes("already registered") || msg.includes("already exists") || msg.includes("already in use")) return "Email tersebut sudah terdaftar. Silakan login atau gunakan email lain.";
-      if (msg.includes("password")) return "Password minimal 8 karakter dan harus aman.";
-      if (msg.includes("invalid email")) return "Format email tidak valid.";
-      return "Pendaftaran gagal. Silakan coba lagi.";
-    }
-
-    if (!supabase) {
-      showMessage("Sistem registrasi gagal dimuat. Silakan refresh halaman.", "error");
-      button.disabled = true;
-    } else {
-      form.addEventListener("submit", async (event) => {
+    if(!supabase){
+      showMessage("Sistem registrasi gagal dimuat. Silakan refresh halaman.","error");
+      button.disabled=true;
+    }else{
+      form.addEventListener("submit",async(event)=>{
         event.preventDefault();
-        if (!form.checkValidity()) { form.reportValidity(); return; }
+        const fullName=document.getElementById("fullName").value.trim();
+        const region=document.getElementById("region").value.trim();
+        const phone=normalizePhone(document.getElementById("phone").value);
+        const gender=document.getElementById("gender").value;
+        const birthDateValue=birthDate.value;
 
-        const fullName = document.getElementById("fullName").value.trim();
-        const email = document.getElementById("email").value.trim().toLowerCase();
-        const password = document.getElementById("password").value;
-        const confirmPassword = document.getElementById("confirmPassword").value;
+        if(fullName.length<2){showMessage("Nama lengkap harus diisi.","error");return}
+        if(region.length<2){showMessage("Nama daerah harus diisi.","error");return}
+        if(!/^\+62\d{9,13}$/.test(phone)){showMessage("Nomor HP tidak valid. Gunakan nomor Indonesia, contoh 0812xxxx atau +62812xxxx.","error");return}
+        if(!gender){showMessage("Silakan pilih jenis kelamin.","error");return}
+        if(!birthDateValue||birthDateValue>birthDate.max){showMessage("Tanggal lahir tidak valid.","error");return}
 
-        if (!fullName) { showMessage("Nama lengkap harus diisi.", "error"); return; }
-        if (password.length < 8) { showMessage("Password minimal 8 karakter.", "error"); return; }
-        if (password !== confirmPassword) { showMessage("Konfirmasi password tidak sama.", "error"); return; }
-
-        button.disabled = true;
-        button.textContent = "MEMPROSES...";
-        try {
-          const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: LOGIN_URL, data: { full_name: fullName } } });
-          if (error) throw error;
-          if (!data?.user) throw new Error("Akun tidak berhasil dibuat.");
-          registeredEmail = email;
-          showMessage("Registrasi berhasil! Kami sudah mengirim email verifikasi ke " + email + ". Tetap di halaman ini, buka email Anda, lalu klik tautan verifikasi. Setelah verifikasi selesai, buka halaman login.", "success");
-          verificationActions.style.display = "block";
-          form.style.display = "none";
-        } catch (err) {
-          console.error(err);
-          showMessage(errorText(err), "error");
-        } finally {
-          button.disabled = false;
-          button.textContent = "CREATE ACCOUNT";
-        }
-      });
-
-      resendButton.addEventListener("click", async () => {
-        if (!registeredEmail) return;
-        resendButton.disabled = true;
-        resendButton.textContent = "Mengirim...";
-        try {
-          const { error } = await supabase.auth.resend({ type: "signup", email: registeredEmail, options: { emailRedirectTo: LOGIN_URL } });
-          if (error) throw error;
-          showMessage("Email verifikasi berhasil dikirim ulang ke " + registeredEmail + ".", "success");
-        } catch (err) {
-          const msg = (err && err.message ? err.message : "").toLowerCase();
-          if (msg.includes("rate limit")) showMessage("Terlalu banyak permintaan. Tunggu beberapa saat sebelum mengirim ulang.", "error");
-          else showMessage("Gagal mengirim ulang email verifikasi. Silakan coba lagi nanti.", "error");
-        } finally {
-          resendButton.disabled = false;
-          resendButton.textContent = "Kirim Ulang Email Verifikasi";
+        button.disabled=true;button.textContent="MENYIMPAN...";
+        try{
+          const {error}=await supabase.from("user_registrations").insert({
+            full_name:fullName,region,phone,gender,birth_date:birthDateValue
+          });
+          if(error) throw error;
+          showMessage("Registrasi berhasil. Data Anda sudah tersimpan.","success");
+          form.reset();
+          birthDate.max=new Date().toISOString().slice(0,10);
+        }catch(error){
+          console.error(error);
+          showMessage(errorText(error),"error");
+        }finally{
+          button.disabled=false;button.textContent="DAFTAR";
         }
       });
     }
