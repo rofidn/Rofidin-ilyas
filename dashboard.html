@@ -29,20 +29,50 @@
     .dropdown .section-link{border:1px solid transparent}
     .dropdown .section-link:hover{border-color:#00d9ff2b;background:#08243c}
     .dropdown .danger{color:#ffb0b0}
+    .tabs{display:flex;gap:12px;margin-bottom:24px;border-bottom:1px solid rgba(0,217,255,.15)}
+    .tab-btn{padding:12px 16px;border:none;background:transparent;color:#91aac3;cursor:pointer;border-bottom:2px solid transparent;transition:.2s;font-weight:600}
+    .tab-btn.active{color:#00d9ff;border-bottom-color:#00d9ff}
+    .tab-content{display:none}
+    .tab-content.active{display:block}
     .viewer{background:#07192d;border:1px solid #00d9ff2e;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px #0005}
     .viewer-head{padding:16px 18px;border-bottom:1px solid #00d9ff22;display:flex;justify-content:space-between;align-items:center;gap:10px}
     .viewer-head strong{font-size:14px}
     .viewer-head span{font-size:11px;color:#71869d}
     .portfolio-frame{display:block;width:100%;height:calc(100vh - 125px);min-height:760px;border:0;background:#020817}
+    .panel{background:#07192d;border:1px solid #00d9ff2e;border-radius:20px;padding:24px;box-shadow:0 20px 60px #0005}
+    .form-group{margin-bottom:20px}
+    .form-group label{display:block;color:#bdefff;margin-bottom:8px;font-weight:600;font-size:14px}
+    .form-group input,.form-group textarea{width:100%;padding:12px;border:1px solid rgba(0,217,255,.25);border-radius:12px;background:#061426;color:#fff;font-size:14px;font-family:Inter,Arial,sans-serif}
+    .form-group input:focus,.form-group textarea:focus{border-color:#00d9ff;box-shadow:0 0 12px rgba(0,217,255,.2)}
+    .form-group textarea{resize:vertical;min-height:100px}
+    .avatar-upload{display:flex;gap:16px;align-items:flex-start}
+    .avatar-preview{width:120px;height:120px;border-radius:12px;background:rgba(13,31,53,.9);border:1px solid rgba(0,217,255,.25);display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .avatar-preview img{width:100%;height:100%;object-fit:cover}
+    .upload-area{flex:1}
+    .file-input{display:none}
+    .upload-btn{padding:12px 16px;background:rgba(0,217,255,.12);border:1px dashed rgba(0,217,255,.4);border-radius:12px;color:#00d9ff;cursor:pointer;text-align:center;transition:.2s}
+    .upload-btn:hover{background:rgba(0,217,255,.18);border-color:#00d9ff}
+    .btn{padding:12px 20px;border:none;border-radius:12px;background:linear-gradient(135deg,#00d9ff,#00a8ff);color:#00101c;font-weight:600;cursor:pointer;transition:.2s}
+    .btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 0 20px rgba(0,184,255,.3)}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .btn-secondary{background:rgba(0,217,255,.12);border:1px solid rgba(0,217,255,.3);color:#00d9ff}
+    .btn-danger{background:rgba(255,0,80,.12);border:1px solid rgba(255,0,80,.3);color:#ffb0b0}
     .notice{position:fixed;left:50%;top:78px;transform:translateX(-50%);z-index:50;background:#07192d;border:1px solid #00d9ff55;color:#dff8ff;border-radius:12px;padding:11px 15px;font-size:12px;display:none;max-width:90vw;text-align:center}
     .notice.show{display:block}
+    .notice.error{border-color:#ff446655;color:#ffb0b0}
+    .notice.success{border-color:#00ff9966;color:#8affc1}
+    .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+    .field-card{background:rgba(13,31,53,.6);border:1px solid rgba(0,217,255,.15);border-radius:16px;padding:16px}
+    .field-card h4{color:#00d9ff;margin-bottom:8px;font-size:14px}
+    .field-card input{width:100%;padding:10px;border:1px solid rgba(0,217,255,.2);border-radius:8px;background:#0a1a2e;color:#fff;font-size:13px}
+    .field-card input:focus{border-color:#00d9ff;outline:none}
     @media(max-width:600px){
       .container{width:calc(100% - 14px);padding-top:7px}
       .email{display:none}
-      .viewer{border-radius:15px}
-      .viewer-head{padding:13px}
-      .portfolio-frame{height:calc(100vh - 105px);min-height:700px}
-      .dropdown{right:0;width:225px}
+      .tabs{flex-wrap:wrap}
+      .tab-btn{padding:10px 12px;font-size:13px}
+      .panel{padding:16px}
+      .avatar-upload{flex-direction:column;align-items:center}
     }
   </style>
 </head>
@@ -55,14 +85,7 @@
         <div style="position:relative">
           <button class="menu-btn" id="menuButton" type="button" aria-label="Buka menu">☰</button>
           <nav class="dropdown" id="dropdownMenu">
-            <div class="menu-title">Navigasi CV</div>
-            <a class="section-link" href="#pengalaman" data-section="pengalaman">💼 <span>1. Pengalaman Kerja</span></a>
-            <a class="section-link" href="#keahlian" data-section="keahlian">🛠️ <span>2. Keahlian</span></a>
-            <a class="section-link" href="#sertifikat" data-section="sertifikat">🏆 <span>3. Sertifikat</span></a>
-            <div class="menu-title">Sosial</div>
-            <a href="#" id="whatsappLink" target="_blank" rel="noopener">📱 WhatsApp</a>
-            <a href="#" id="tiktokLink" target="_blank" rel="noopener">🎵 TikTok</a>
-            <a href="#" id="instagramLink" target="_blank" rel="noopener">📸 Instagram</a>
+            <div class="menu-title">Navigasi</div>
             <a href="index.html" target="_blank" rel="noopener">🌐 Portfolio Publik</a>
             <button class="danger" id="logoutButton" type="button">↪️ Logout</button>
           </nav>
@@ -72,31 +95,103 @@
 
     <div class="notice" id="notice"></div>
 
-    <section class="viewer">
-      <div class="viewer-head">
-        <strong>CV Digital / Portfolio</strong>
-        <span>Preview lengkap • pilih menu untuk slide ke bagian</span>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="editor">📝 Editor Profile</button>
+      <button class="tab-btn" data-tab="preview">👁️ Preview</button>
+    </div>
+
+    <div id="editor" class="tab-content active">
+      <div class="panel">
+        <h2 style="margin-bottom:24px;color:#00d9ff">Edit Profil Portfolio</h2>
+
+        <div class="form-group">
+          <label>Avatar</label>
+          <div class="avatar-upload">
+            <div class="avatar-preview">
+              <img id="avatarPreview" src="" alt="Avatar" style="display:none">
+              <span id="avatarPlaceholder">Tidak ada gambar</span>
+            </div>
+            <div class="upload-area">
+              <input type="file" id="fileInput" class="file-input" accept="image/*">
+              <div class="upload-btn" id="uploadBtn">📤 Pilih Foto</div>
+              <p style="font-size:12px;color:#8db3d5;margin-top:8px">Max 5MB. Format: JPG, PNG</p>
+              <button class="btn btn-secondary" id="removeAvatarBtn" style="margin-top:8px;width:100%;display:none">Hapus Foto</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="fullName">Nama Lengkap</label>
+          <input type="text" id="fullName" placeholder="Masukkan nama lengkap">
+        </div>
+
+        <div class="form-group">
+          <label for="bio">Bio / Deskripsi</label>
+          <textarea id="bio" placeholder="Deskripsikan profil Anda..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="location">Lokasi</label>
+          <input type="text" id="location" placeholder="Kota, Negara">
+        </div>
+
+        <h3 style="margin-top:28px;margin-bottom:16px;color:#00d9ff;font-size:16px">Social Media</h3>
+
+        <div class="grid-2">
+          <div class="field-card">
+            <h4>📱 WhatsApp</h4>
+            <input type="url" id="whatsappUrl" placeholder="https://wa.me/6281234567890">
+          </div>
+          <div class="field-card">
+            <h4>🎵 TikTok</h4>
+            <input type="text" id="tiktokUsername" placeholder="@username atau username">
+          </div>
+          <div class="field-card">
+            <h4>📸 Instagram</h4>
+            <input type="text" id="instagramUsername" placeholder="@username atau username">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:28px">
+          <button class="btn" id="saveBtn" style="flex:1">💾 Simpan Perubahan</button>
+          <button class="btn btn-secondary" id="resetBtn" style="flex:1">↩️ Batal</button>
+        </div>
       </div>
-      <iframe class="portfolio-frame" id="portfolioFrame" src="index.html" title="Portfolio Rofidin Ilyas"></iframe>
-    </section>
+    </div>
+
+    <div id="preview" class="tab-content">
+      <div class="viewer">
+        <div class="viewer-head">
+          <strong>Preview Portfolio</strong>
+          <span>Lihat bagaimana profil Anda ditampilkan ke publik</span>
+        </div>
+        <iframe class="portfolio-frame" id="portfolioFrame" src="index.html" title="Portfolio Rofidin Ilyas"></iframe>
+      </div>
+    </div>
   </main>
 
   <script>
     const SUPABASE_URL = "https://vufpdlobkoeyjjxjhhzr.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
+    const STORAGE_BUCKET = 'avatars';
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
     const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
     const $ = (id) => document.getElementById(id);
+    let currentUser = null;
+    let originalData = {};
+    let selectedFile = null;
 
-    function showNotice(text) {
+    function showNotice(text, type = 'info') {
       const el = $("notice");
       el.textContent = text;
-      el.classList.add("show");
+      el.className = `notice ${type} show`;
       setTimeout(() => el.classList.remove("show"), 2500);
     }
 
     async function getAuthenticatedUser() {
       if (!supabase) {
-        showNotice("Sistem dashboard gagal dimuat.");
+        showNotice("Sistem dashboard gagal dimuat.", 'error');
         setTimeout(() => window.location.replace("login.html"), 1800);
         return null;
       }
@@ -120,7 +215,7 @@
           }
 
           if (!profile || profile.role !== 'admin') {
-            showNotice("Akses ditolak. Hanya admin yang bisa membuka dashboard.");
+            showNotice("Akses ditolak. Hanya admin yang bisa membuka dashboard.", 'error');
             setTimeout(() => window.location.replace("index.html"), 1800);
             return null;
           }
@@ -134,111 +229,225 @@
       return null;
     }
 
-    async function init() {
-      const user = await getAuthenticatedUser();
-      if (!user) return;
+    async function loadProfile() {
+      if (!supabase || !currentUser) return;
 
-      $("userEmail").textContent = user.email || "Akun";
-
-      if (supabase) {
-        const { data: profile } = await supabase
+      try {
+        const { data, error } = await supabase
           .from('profiles')
-          .select('whatsapp_url,tiktok_username,instagram_username')
-          .eq('id', user.id)
+          .select('*')
+          .eq('id', currentUser.id)
           .maybeSingle();
 
-        if (profile) {
-          $("whatsappLink").href = profile.whatsapp_url || '#';
-          const tiktokUsername = profile.tiktok_username ? profile.tiktok_username.replace(/^@/, '') : '';
-          const instagramUsername = profile.instagram_username ? profile.instagram_username.replace(/^@/, '') : '';
-          $("tiktokLink").href = tiktokUsername ? `https://www.tiktok.com/@${tiktokUsername}` : '#';
-          $("instagramLink").href = instagramUsername ? `https://www.instagram.com/${instagramUsername}` : '#';
+        if (error) throw error;
+
+        if (!data) {
+          showNotice("Profil tidak ditemukan. Silakan coba beberapa saat lagi.", 'error');
+          return;
         }
+
+        originalData = { ...data };
+
+        $('fullName').value = data.full_name || '';
+        $('bio').value = data.bio || '';
+        $('location').value = data.location || '';
+        $('whatsappUrl').value = data.whatsapp_url || '';
+        $('tiktokUsername').value = data.tiktok_username || '';
+        $('instagramUsername').value = data.instagram_username || '';
+
+        if (data.avatar_url) {
+          $('avatarPreview').src = data.avatar_url;
+          $('avatarPreview').style.display = 'block';
+          $('avatarPlaceholder').style.display = 'none';
+          $('removeAvatarBtn').style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Failed to load profile:', error);
+        showNotice("Gagal memuat profil. Silakan refresh halaman.", 'error');
       }
     }
 
-    $("menuButton").addEventListener("click", () => $("dropdownMenu").classList.toggle("open"));
+    async function saveProfile() {
+      if (!supabase || !currentUser) return;
 
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest(".right")) $("dropdownMenu").classList.remove("open");
-    });
+      $("saveBtn").disabled = true;
+      $("saveBtn").textContent = '💾 Menyimpan...';
 
-    document.querySelectorAll(".section-link").forEach((link) => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        const section = link.dataset.section;
-        $("dropdownMenu").classList.remove("open");
-        const frame = $("portfolioFrame");
-        try {
-          const doc = frame.contentDocument || frame.contentWindow.document;
-          const target = doc.getElementById(section);
-          if (target) {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
-            target.animate([
-              { transform: "translateY(18px)", opacity: 0.72 },
-              { transform: "translateY(0)", opacity: 1 }
-            ], { duration: 520, easing: "cubic-bezier(.2,.8,.2,1)" });
-            return;
+      try {
+        let avatarUrl = originalData.avatar_url || null;
+
+        // Upload avatar jika ada file baru
+        if (selectedFile) {
+          // Hapus avatar lama jika ada
+          if (originalData.avatar_url) {
+            const oldPath = originalData.avatar_url.split('/').pop();
+            await supabase.storage.from(STORAGE_BUCKET).remove([`${currentUser.id}/${oldPath}`]);
           }
-        } catch (err) {}
-        showNotice("Bagian " + section + " belum tersedia di Portfolio.");
+
+          const fileExt = selectedFile.name.split('.').pop();
+          const fileName = `${Date.now()}.${fileExt}`;
+          const filePath = `${currentUser.id}/${fileName}`;
+
+          const { error: uploadError } = await supabase.storage
+            .from(STORAGE_BUCKET)
+            .upload(filePath, selectedFile);
+
+          if (uploadError) throw uploadError;
+
+          const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(filePath);
+          avatarUrl = data.publicUrl;
+        }
+
+        const { error } = await supabase
+          .from('profiles')
+          .update({
+            full_name: $('fullName').value.trim(),
+            bio: $('bio').value.trim(),
+            location: $('location').value.trim(),
+            whatsapp_url: $('whatsappUrl').value.trim(),
+            tiktok_username: $('tiktokUsername').value.trim(),
+            instagram_username: $('instagramUsername').value.trim(),
+            avatar_url: avatarUrl
+          })
+          .eq('id', currentUser.id);
+
+        if (error) throw error;
+
+        selectedFile = null;
+        await loadProfile();
+        showNotice('✅ Profil berhasil disimpan!', 'success');
+        
+        // Refresh iframe
+        const frame = $('portfolioFrame');
+        frame.src = frame.src;
+      } catch (error) {
+        console.error('Failed to save profile:', error);
+        showNotice(`❌ Gagal menyimpan: ${error.message}`, 'error');
+      } finally {
+        $("saveBtn").disabled = false;
+        $("saveBtn").textContent = '💾 Simpan Perubahan';
+      }
+    }
+
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        $(tab).classList.add('active');
       });
     });
 
-    $("whatsappLink").addEventListener("click", (e) => {
-      if ($("whatsappLink").getAttribute("href") === "#") {
-        e.preventDefault();
-        showNotice("Link WhatsApp belum diatur di Profil.");
+    // Avatar upload
+    $('uploadBtn').addEventListener('click', () => $('fileInput').click());
+
+    $('fileInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (file.size > MAX_FILE_SIZE) {
+        showNotice('File terlalu besar. Maksimal 5MB.', 'error');
+        return;
+      }
+
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+        showNotice('Format file tidak didukung. Gunakan JPG atau PNG.', 'error');
+        return;
+      }
+
+      selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        $('avatarPreview').src = event.target.result;
+        $('avatarPreview').style.display = 'block';
+        $('avatarPlaceholder').style.display = 'none';
+        $('removeAvatarBtn').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    $('removeAvatarBtn').addEventListener('click', async () => {
+      if (!supabase || !currentUser) return;
+
+      try {
+        if (originalData.avatar_url) {
+          const oldPath = originalData.avatar_url.split('/').pop();
+          await supabase.storage.from(STORAGE_BUCKET).remove([`${currentUser.id}/${oldPath}`]);
+        }
+
+        await supabase
+          .from('profiles')
+          .update({ avatar_url: null })
+          .eq('id', currentUser.id);
+
+        selectedFile = null;
+        await loadProfile();
+        showNotice('✅ Foto berhasil dihapus!', 'success');
+      } catch (error) {
+        console.error('Failed to remove avatar:', error);
+        showNotice('❌ Gagal menghapus foto.', 'error');
       }
     });
 
-    $("tiktokLink").addEventListener("click", (e) => {
-      if ($("tiktokLink").getAttribute("href") === "#") {
-        e.preventDefault();
-        showNotice("Username TikTok belum diatur di Profil.");
-      }
+    // Save & Reset buttons
+    $('saveBtn').addEventListener('click', saveProfile);
+
+    $('resetBtn').addEventListener('click', async () => {
+      selectedFile = null;
+      await loadProfile();
+      showNotice('↩️ Perubahan dibatalkan.', 'info');
     });
 
-    $("instagramLink").addEventListener("click", (e) => {
-      if ($("instagramLink").getAttribute("href") === "#") {
-        e.preventDefault();
-        showNotice("Username Instagram belum diatur di Profil.");
-      }
+    // Menu
+    $('menuButton').addEventListener('click', () => $('dropdownMenu').classList.toggle('open'));
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.right')) $('dropdownMenu').classList.remove('open');
     });
 
-    $("logoutButton").addEventListener("click", async () => {
-      const button = $("logoutButton");
+    // Logout
+    $('logoutButton').addEventListener('click', async () => {
+      const button = $('logoutButton');
       button.disabled = true;
-      button.textContent = "↪️ Logout...";
+      button.textContent = '↪️ Logout...';
 
       if (!supabase) {
-        showNotice("Logout gagal.");
+        showNotice('Logout gagal.', 'error');
         button.disabled = false;
-        button.textContent = "↪️ Logout";
+        button.textContent = '↪️ Logout';
         return;
       }
 
-      const { error } = await supabase.auth.signOut({ scope: "local" });
+      const { error } = await supabase.auth.signOut({ scope: 'local' });
       if (error) {
-        showNotice("Logout gagal.");
+        showNotice('Logout gagal.', 'error');
         button.disabled = false;
-        button.textContent = "↪️ Logout";
+        button.textContent = '↪️ Logout';
         return;
       }
-      window.location.replace("login.html");
+      window.location.replace('login.html');
     });
 
     if (supabase) {
       supabase.auth.onAuthStateChange((event, session) => {
-        if (event === "SIGNED_OUT") {
-          window.location.replace("login.html");
+        if (event === 'SIGNED_OUT') {
+          window.location.replace('login.html');
         }
       });
+    }
+
+    async function init() {
+      const user = await getAuthenticatedUser();
+      if (!user) return;
+
+      currentUser = user;
+      $('userEmail').textContent = user.email || 'Akun';
+      await loadProfile();
     }
 
     init();
   </script>
 </body>
 </html>
-
-
