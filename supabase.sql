@@ -83,16 +83,34 @@ create policy "Public can read profile avatars" on storage.objects
 for select to public using (bucket_id = 'profile-avatars');
 create policy "Super admins can upload profile avatars" on storage.objects
 for insert to authenticated with check (
- bucket_id='profile-avatars' and (storage.foldername(name))[1]=(select auth.uid())::text and
- exists (select 1 from public.admin_profiles ap where ap.auth_user_id=(select auth.uid()) and ap.role='super_admin' and ap.is_active=true)
+ bucket_id='profile-avatars'
+ and (storage.foldername(name))[1]=(select auth.uid())::text
+ and coalesce(array_length(storage.foldername(name), 1), 0) = 1
+ and lower(storage.extension(name)) in ('jpg','jpeg','png','webp')
+ and exists (
+   select 1 from public.admin_profiles ap
+   where ap.auth_user_id=(select auth.uid()) and ap.role='super_admin' and ap.is_active=true
+ )
 );
 create policy "Super admins can update profile avatars" on storage.objects
 for update to authenticated using (
- bucket_id='profile-avatars' and (storage.foldername(name))[1]=(select auth.uid())::text and
- exists (select 1 from public.admin_profiles ap where ap.auth_user_id=(select auth.uid()) and ap.role='super_admin' and ap.is_active=true)
+ bucket_id='profile-avatars'
+ and (storage.foldername(name))[1]=(select auth.uid())::text
+ and coalesce(array_length(storage.foldername(name), 1), 0) = 1
+ and lower(storage.extension(name)) in ('jpg','jpeg','png','webp')
+ and exists (
+   select 1 from public.admin_profiles ap
+   where ap.auth_user_id=(select auth.uid()) and ap.role='super_admin' and ap.is_active=true
+ )
 ) with check (
- bucket_id='profile-avatars' and (storage.foldername(name))[1]=(select auth.uid())::text and
- exists (select 1 from public.admin_profiles ap where ap.auth_user_id=(select auth.uid()) and ap.role='super_admin' and ap.is_active=true)
+ bucket_id='profile-avatars'
+ and (storage.foldername(name))[1]=(select auth.uid())::text
+ and coalesce(array_length(storage.foldername(name), 1), 0) = 1
+ and lower(storage.extension(name)) in ('jpg','jpeg','png','webp')
+ and exists (
+   select 1 from public.admin_profiles ap
+   where ap.auth_user_id=(select auth.uid()) and ap.role='super_admin' and ap.is_active=true
+ )
 );
 create policy "Super admins can delete profile avatars" on storage.objects
 for delete to authenticated using (
