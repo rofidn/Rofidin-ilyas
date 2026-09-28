@@ -100,7 +100,13 @@
       message.className = "message " + type;
     }
 
-    function isValidEmail(email) {
+    function errorText(e) {
+      const msg = (e && e.message ? e.message : "").toLowerCase();
+      if (msg.includes("email not confirmed") || msg.includes("email not verified")) return "Email belum diverifikasi. Silakan cek inbox dan klik tautan verifikasi terlebih dahulu.";
+      if (msg.includes("invalid login credentials")) return "Email atau password salah.";
+      if (msg.includes("too many requests") || msg.includes("rate limit")) return "Terlalu banyak percobaan login. Tunggu beberapa saat lalu coba lagi.";
+      if (msg.includes("user not found")) return "Akun dengan email tersebut tidak ditemukan.";
+      return "Login gagal. Silakan periksa email dan password Anda.";\n    }\n\n    function isValidEmail(email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     }
@@ -140,7 +146,7 @@
           const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
           if (error) {
-            showMessage("Login gagal: " + error.message, "error");
+            showMessage(errorText(error), "error");
             return;
           }
 
@@ -155,7 +161,7 @@
             }
           }
         } catch (err) {
-          showMessage("Terjadi kesalahan: " + (err && err.message ? err.message : "unknown error"), "error");
+          showMessage("Terjadi kesalahan saat login. Silakan coba lagi.", "error");
         } finally {
           button.disabled = false;
           button.textContent = "Login";
