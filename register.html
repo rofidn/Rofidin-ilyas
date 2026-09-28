@@ -1,35 +1,128 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register | Rofidin Ilyas</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}body{min-height:100vh;font-family:Arial,sans-serif;background:radial-gradient(circle at 20% 20%,rgba(0,140,255,.18),transparent 35%),radial-gradient(circle at 80% 80%,rgba(0,220,255,.12),transparent 35%),#020817;color:#fff;display:flex;justify-content:center;align-items:center;padding:25px}.grid{position:fixed;inset:0;background-image:linear-gradient(rgba(0,150,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,150,255,.06) 1px,transparent 1px);background-size:35px 35px;pointer-events:none}.register-box{width:100%;max-width:440px;padding:35px 30px;border:1px solid rgba(0,180,255,.35);border-radius:22px;background:rgba(5,18,38,.82);backdrop-filter:blur(15px);box-shadow:0 0 35px rgba(0,140,255,.12);position:relative;z-index:2}.logo{width:70px;height:70px;margin:0 auto 18px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:bold;letter-spacing:2px;color:#8eeaff;border:1px solid #00bfff;box-shadow:0 0 15px rgba(0,191,255,.55);background:rgba(0,130,255,.08)}h1{text-align:center;font-size:27px;margin-bottom:8px}.subtitle{text-align:center;color:#8fa9c5;font-size:14px;margin-bottom:28px}label{display:block;font-size:13px;color:#a9c5df;margin-bottom:7px}.input-group{margin-bottom:17px}input{width:100%;padding:14px 15px;border-radius:11px;border:1px solid rgba(0,170,255,.25);background:rgba(0,8,22,.75);color:#fff;outline:none;font-size:14px}input:focus{border-color:#00bfff;box-shadow:0 0 12px rgba(0,191,255,.22)}input::placeholder{color:#58718c}button{width:100%;padding:14px;border:0;border-radius:11px;background:linear-gradient(90deg,#0077ff,#00c6ff);color:#fff;font-size:15px;font-weight:bold;cursor:pointer;margin-top:5px}button:disabled{opacity:.6;cursor:not-allowed}.message{display:none;margin-top:17px;padding:12px;border-radius:10px;font-size:13px;line-height:1.5;text-align:center}.success{display:block;background:rgba(0,190,130,.1);border:1px solid rgba(0,220,150,.3);color:#6fffc8}.error{display:block;background:rgba(255,50,80,.1);border:1px solid rgba(255,70,90,.3);color:#ff8799}.login-link{text-align:center;margin-top:22px;font-size:13px;color:#7893ad}.login-link a{color:#4fcaff;text-decoration:none;font-weight:bold}.security{text-align:center;margin-top:20px;font-size:11px;color:#526b84;letter-spacing:.5px}@media(max-width:480px){body{padding:15px}.register-box{padding:28px 20px}h1{font-size:24px}}
-</style>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | Rofidin Ilyas</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}body{min-height:100vh;font-family:Arial,sans-serif;background:radial-gradient(circle at 20% 20%,rgba(0,140,255,.18),transparent 35%),radial-gradient(circle at 80% 80%,rgba(0,255,170,.14),transparent 35%),linear-gradient(135deg,#07111f,#0c1830 50%,#111827)}.grid{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:24px 24px;mask-image:radial-gradient(circle at center,black 40%,transparent 100%)}.register-box{position:relative;z-index:1;width:min(420px,calc(100% - 32px));margin:50px auto;padding:32px 24px;border:1px solid rgba(0,217,255,.24);border-radius:24px;background:rgba(8,15,28,.82);box-shadow:0 0 40px rgba(0,119,255,.14);backdrop-filter:blur(14px)}.logo{width:54px;height:54px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border-radius:18px;background:linear-gradient(135deg,#00d9ff,#008cff);color:#02111f;font-weight:800;font-size:1.4rem;box-shadow:0 0 20px rgba(0,217,255,.35)}h1{text-align:center;color:#ebf7ff;margin-bottom:6px;font-size:2rem}p.subtitle{text-align:center;color:#95b5d6;margin-bottom:26px;font-size:.92rem;line-height:1.5}.input-group{margin-bottom:18px}.input-group label{display:block;color:#d5f1ff;margin-bottom:8px;font-size:.88rem;font-weight:700}.input-group input{width:100%;padding:13px 14px;border:1px solid rgba(0,217,255,.25);border-radius:12px;background:#071827;color:#edf9ff;outline:none;font-size:1rem}.input-group input:focus{border-color:#00d9ff;box-shadow:0 0 0 3px rgba(0,217,255,.18)}button{width:100%;padding:14px;border:none;border-radius:999px;background:linear-gradient(135deg,#00d9ff,#00a8ff);color:#02111f;font-size:1rem;font-weight:800;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}.button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 0 22px rgba(0,184,255,.35)}button:disabled{opacity:.65;cursor:not-allowed}.message{display:none;margin-top:18px;padding:12px 14px;border-radius:12px;text-align:center;font-size:.9rem;line-height:1.5}.message.error{display:block;background:rgba(255,0,80,.12);border:1px solid rgba(255,0,80,.3);color:#ffb5c7}.message.success{display:block;background:rgba(26,214,124,.12);border:1px solid rgba(26,214,124,.3);color:#baf4d4}.login-link,.security{margin-top:18px;text-align:center;font-size:.9rem;color:#9fc2db}.login-link a{color:#3edbff;text-decoration:none}.login-link a:hover{text-decoration:underline}.security{margin-top:12px;letter-spacing:.08em;text-transform:uppercase;font-size:.75rem;color:#79d9ff;font-weight:700}@media(max-width:480px){.register-box{margin:24px auto;padding:24px 18px}.logo{margin-bottom:10px}}  </style>
 </head>
 <body>
-<div class="grid"></div><div class="register-box"><div class="logo">RI</div>
-<h1>Create Account</h1><p class="subtitle">Daftar untuk mengakses Rofidin Ilyas Portfolio</p>
-<form id="registerForm">
-<div class="input-group"><label for="fullName">Nama Lengkap</label><input type="text" id="fullName" placeholder="Masukkan nama lengkap" required></div>
-<div class="input-group"><label for="email">Email</label><input type="email" id="email" placeholder="nama@email.com" required></div>
-<div class="input-group"><label for="password">Password</label><input type="password" id="password" placeholder="Minimal 8 karakter" minlength="8" required></div>
-<div class="input-group"><label for="confirmPassword">Konfirmasi Password</label><input type="password" id="confirmPassword" placeholder="Masukkan kembali password" minlength="8" required></div>
-<button type="submit" id="registerButton">CREATE ACCOUNT</button></form>
-<div id="message" class="message"></div>
-<div class="login-link">Sudah punya akun? <a href="login.html">Login di sini</a></div><div class="security">🔒 SECURE ACCOUNT REGISTRATION</div></div>
-<script>
-const SUPABASE_URL="https://vufpdlobkoeyjjxjhhzr.supabase.co",SUPABASE_PUBLISHABLE_KEY="sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq",LOGIN_URL="https://rofidn.github.io/Rofidin-ilyas/login.html";
-const form=document.getElementById("registerForm"),button=document.getElementById("registerButton"),message=document.getElementById("message");
-function showMessage(text,type){message.textContent=text;message.className="message "+type}
-function errorText(e){const m=(e?.message||"Pendaftaran gagal.").toLowerCase();if(m.includes("already registered"))return"Email tersebut sudah terdaftar. Silakan login atau gunakan email lain.";if(m.includes("invalid email"))return"Format email tidak valid.";if(m.includes("redirect"))return"Registrasi gagal karena alamat pengalihan belum diizinkan di Supabase.";if(m.includes("failed to fetch")||m.includes("network"))return"Koneksi bermasalah. Periksa internet lalu coba lagi.";return e?.message||"Pendaftaran gagal."}
-if(!window.supabase){showMessage("Sistem registrasi gagal dimuat. Silakan refresh halaman.","error")}else{const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
-form.addEventListener("submit",async e=>{e.preventDefault();if(!form.checkValidity()){form.reportValidity();return}const fullName=document.getElementById("fullName").value.trim(),email=document.getElementById("email").value.trim(),password=document.getElementById("password").value,confirmPassword=document.getElementById("confirmPassword").value;if(password.length<8){showMessage("Password harus minimal 8 karakter.","error");return}if(password!==confirmPassword){showMessage("Konfirmasi password tidak sama.","error");return}button.disabled=true;button.textContent="CREATING ACCOUNT...";message.className="message";message.textContent="";
-try{const{data,error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:LOGIN_URL,data:{full_name:fullName}}});if(error)throw error;if(!data?.user)throw new Error("Akun tidak berhasil dibuat. Silakan coba lagi.");
-showMessage("Registrasi berhasil! Silakan cek email dan klik tautan verifikasi. Setelah verifikasi selesai, silakan login.","success");form.reset();button.disabled=false;button.textContent="CREATE ACCOUNT";
-}catch(err){console.error(err);showMessage(errorText(err),"error");button.disabled=false;button.textContent="CREATE ACCOUNT"}});
-}
-</script>
+  <div class="grid"></div>
+  <div class="register-box">
+    <div class="logo">RI</div>
+    <h1>Create Account</h1>
+    <p class="subtitle">Daftar untuk mengakses Rofidin Ilyas Portfolio</p>
+
+    <form id="registerForm">
+      <div class="input-group"><label for="fullName">Nama Lengkap</label><input type="text" id="fullName" placeholder="Masukkan nama lengkap" required></div>
+      <div class="input-group"><label for="email">Email</label><input type="email" id="email" placeholder="nama@email.com" required></div>
+      <div class="input-group"><label for="password">Password</label><input type="password" id="password" placeholder="Minimal 8 karakter" minlength="8" required></div>
+      <div class="input-group"><label for="confirmPassword">Konfirmasi Password</label><input type="password" id="confirmPassword" placeholder="Masukkan kembali password" minlength="8" required></div>
+      <button type="submit" id="registerButton">CREATE ACCOUNT</button>
+    </form>
+
+    <div id="message" class="message"></div>
+    <div class="login-link">Sudah punya akun? <a href="login.html">Login di sini</a></div>
+    <div class="security">🔒 SECURE ACCOUNT REGISTRATION</div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://vufpdlobkoeyjjxjhhzr.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
+    const LOGIN_URL = new URL("login.html", window.location.href).href;
+    const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
+
+    const form = document.getElementById("registerForm");
+    const button = document.getElementById("registerButton");
+    const message = document.getElementById("message");
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = "message " + type;
+    }
+
+    function errorText(e) {
+      const msg = (e && e.message ? e.message : "Pendaftaran gagal.").toLowerCase();
+      if (msg.includes("already registered") || msg.includes("already exists") || msg.includes("already in use")) {
+        return "Email tersebut sudah terdaftar. Silakan login atau gunakan email lain.";
+      }
+      if (msg.includes("password")) {
+        return "Password minimal 8 karakter dan harus aman.";
+      }
+      if (msg.includes("invalid email")) {
+        return "Format email tidak valid.";
+      }
+      return "Pendaftaran gagal. Silakan coba lagi.";
+    }
+
+    if (!supabase) {
+      showMessage("Sistem registrasi gagal dimuat. Silakan refresh halaman.", "error");
+      button.disabled = true;
+    } else {
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        const fullName = document.getElementById("fullName").value.trim();
+        const email = document.getElementById("email").value.trim().toLowerCase();
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (!fullName) {
+          showMessage("Nama lengkap harus diisi.", "error");
+          return;
+        }
+
+        if (password.length < 8) {
+          showMessage("Password minimal 8 karakter.", "error");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showMessage("Konfirmasi password tidak sama.", "error");
+          return;
+        }
+
+        button.disabled = true;
+        button.textContent = "MEMPROSES...";
+
+        try {
+          const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              emailRedirectTo: LOGIN_URL,
+              data: { full_name: fullName }
+            }
+          });
+
+          if (error) throw error;
+
+          if (!data?.user) {
+            throw new Error("Akun tidak berhasil dibuat.");
+          }
+
+          showMessage("Registrasi berhasil! Silakan cek email dan klik tautan verifikasi. Setelah verifikasi selesai, silakan login.", "success");
+          form.reset();
+          setTimeout(() => {
+            window.location.href = LOGIN_URL;
+          }, 2500);
+        } catch (err) {
+          console.error(err);
+          showMessage(errorText(err), "error");
+        } finally {
+          button.disabled = false;
+          button.textContent = "CREATE ACCOUNT";
+        }
+      });
+    }
+  </script>
 </body>
 </html>
+
+

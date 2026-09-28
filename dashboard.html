@@ -1,187 +1,233 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Dashboard | Portofolio Rofidin Ilyas</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
-html{scroll-behavior:smooth}
-body{min-height:100vh;background:#020817;color:#fff}
-button,a{font:inherit}
-.container{width:min(1180px,calc(100% - 24px));margin:auto;padding:14px 0 30px}
-.top{height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;z-index:20}
-.logo{font-size:25px;font-weight:800;color:#00d9ff}
-.right{display:flex;align-items:center;gap:10px}
-.email{font-size:12px;color:#91aac3;max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.menu-btn{width:44px;height:44px;border-radius:12px;border:1px solid #00d9ff44;background:#07192d;color:#fff;font-size:22px;cursor:pointer;transition:.2s}
-.menu-btn:hover{border-color:#00d9ff99;transform:translateY(-1px)}
-.dropdown{position:absolute;right:0;top:55px;width:250px;background:#07192d;border:1px solid #00d9ff44;border-radius:16px;padding:8px;display:none;box-shadow:0 18px 45px #0008;backdrop-filter:blur(14px)}
-.dropdown.open{display:block;animation:menuIn .18s ease-out}
-@keyframes menuIn{from{opacity:0;transform:translateY(-7px) scale(.98)}to{opacity:1;transform:none}}
-.dropdown .menu-title{padding:9px 12px 6px;font-size:10px;font-weight:800;letter-spacing:1.2px;color:#5e86a4;text-transform:uppercase}
-.dropdown a,.dropdown button{display:flex;width:100%;align-items:center;gap:11px;padding:12px;border:0;border-radius:10px;background:transparent;color:#dcefff;text-decoration:none;text-align:left;cursor:pointer;transition:.18s}
-.dropdown a:hover,.dropdown button:hover{background:#0b2239;transform:translateX(2px)}
-.dropdown .section-link{border:1px solid transparent}
-.dropdown .section-link:hover{border-color:#00d9ff2b;background:#08243c}
-.dropdown .danger{color:#ffb0b0}
-.viewer{background:#07192d;border:1px solid #00d9ff2e;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px #0005}
-.viewer-head{padding:16px 18px;border-bottom:1px solid #00d9ff22;display:flex;justify-content:space-between;align-items:center;gap:10px}
-.viewer-head strong{font-size:14px}
-.viewer-head span{font-size:11px;color:#71869d}
-.portfolio-frame{display:block;width:100%;height:calc(100vh - 125px);min-height:760px;border:0;background:#020817}
-.notice{position:fixed;left:50%;top:78px;transform:translateX(-50%);z-index:50;background:#07192d;border:1px solid #00d9ff55;color:#dff8ff;border-radius:12px;padding:11px 15px;font-size:12px;display:none;box-shadow:0 12px 35px #0008}
-.notice.show{display:block}
-@media(max-width:600px){
-.container{width:calc(100% - 14px);padding-top:7px}
-.email{display:none}
-.viewer{border-radius:15px}
-.viewer-head{padding:13px}
-.portfolio-frame{height:calc(100vh - 105px);min-height:700px}
-.dropdown{right:0;width:225px}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Dashboard | Portofolio Rofidin Ilyas</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
+    html{scroll-behavior:smooth}
+    body{min-height:100vh;background:#020817;color:#fff}
+    button,a{font:inherit}
+    .container{width:min(1180px,calc(100% - 24px));margin:auto;padding:14px 0 30px}
+    .top{height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;z-index:20}
+    .logo{font-size:25px;font-weight:800;color:#00d9ff}
+    .right{display:flex;align-items:center;gap:10px}
+    .email{font-size:12px;color:#91aac3;max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .menu-btn{width:44px;height:44px;border-radius:12px;border:1px solid #00d9ff44;background:#07192d;color:#fff;font-size:22px;cursor:pointer;transition:.2s}
+    .menu-btn:hover{border-color:#00d9ff99;transform:translateY(-1px)}
+    .dropdown{position:absolute;right:0;top:55px;width:250px;background:#07192d;border:1px solid #00d9ff44;border-radius:16px;padding:8px;display:none;box-shadow:0 18px 45px #0008;backdrop-filter:blur(12px)}
+    .dropdown.open{display:block;animation:menuIn .18s ease-out}
+    @keyframes menuIn{from{opacity:0;transform:translateY(-7px) scale(.98)}to{opacity:1;transform:none}}
+    .dropdown .menu-title{padding:9px 12px 6px;font-size:10px;font-weight:800;letter-spacing:1.2px;color:#5e86a4;text-transform:uppercase}
+    .dropdown a,.dropdown button{display:flex;width:100%;align-items:center;gap:11px;padding:12px;border:0;border-radius:10px;background:transparent;color:#dcefff;text-decoration:none;text-align:left;cursor:pointer;transition:.2s}
+    .dropdown a:hover,.dropdown button:hover{background:#0b2239;transform:translateX(2px)}
+    .dropdown .section-link{border:1px solid transparent}
+    .dropdown .section-link:hover{border-color:#00d9ff2b;background:#08243c}
+    .dropdown .danger{color:#ffb0b0}
+    .viewer{background:#07192d;border:1px solid #00d9ff2e;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px #0005}
+    .viewer-head{padding:16px 18px;border-bottom:1px solid #00d9ff22;display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .viewer-head strong{font-size:14px}
+    .viewer-head span{font-size:11px;color:#71869d}
+    .portfolio-frame{display:block;width:100%;height:calc(100vh - 125px);min-height:760px;border:0;background:#020817}
+    .notice{position:fixed;left:50%;top:78px;transform:translateX(-50%);z-index:50;background:#07192d;border:1px solid #00d9ff55;color:#dff8ff;border-radius:12px;padding:11px 15px;font-size:12px;display:none;max-width:90vw;text-align:center}
+    .notice.show{display:block}
+    @media(max-width:600px){
+      .container{width:calc(100% - 14px);padding-top:7px}
+      .email{display:none}
+      .viewer{border-radius:15px}
+      .viewer-head{padding:13px}
+      .portfolio-frame{height:calc(100vh - 105px);min-height:700px}
+      .dropdown{right:0;width:225px}
+    }
+  </style>
 </head>
 <body>
-<main class="container">
-<header class="top">
-<div class="logo">ROFIDIN ILYAS</div>
-<div class="right">
-<div class="email" id="userEmail">Memuat...</div>
-<div style="position:relative">
-<button class="menu-btn" id="menuButton" type="button" aria-label="Buka menu">☰</button>
-<nav class="dropdown" id="dropdownMenu">
-<div class="menu-title">Navigasi CV</div>
-<a class="section-link" href="#pengalaman" data-section="pengalaman">💼 <span>1. Pengalaman Kerja</span></a>
-<a class="section-link" href="#keahlian" data-section="keahlian">🛠️ <span>2. Keahlian</span></a>
-<a class="section-link" href="#sertifikat" data-section="sertifikat">🏆 <span>3. Sertifikat</span></a>
-<div class="menu-title">Sosial</div>
-<a href="https://wa.me/" id="whatsappLink" target="_blank" rel="noopener">📱 WhatsApp</a>
-<a href="#" id="tiktokLink" target="_blank" rel="noopener">🎵 TikTok</a>
-<a href="#" id="instagramLink" target="_blank" rel="noopener">📸 Instagram</a>
-<a href="index.html" target="_blank" rel="noopener">🌐 Portfolio Publik</a>
-<button class="danger" id="logoutButton" type="button">↪️ Logout</button>
-</nav>
-</div>
-</div>
-</header>
+  <main class="container">
+    <header class="top">
+      <div class="logo">ROFIDIN ILYAS</div>
+      <div class="right">
+        <div class="email" id="userEmail">Memuat...</div>
+        <div style="position:relative">
+          <button class="menu-btn" id="menuButton" type="button" aria-label="Buka menu">☰</button>
+          <nav class="dropdown" id="dropdownMenu">
+            <div class="menu-title">Navigasi CV</div>
+            <a class="section-link" href="#pengalaman" data-section="pengalaman">💼 <span>1. Pengalaman Kerja</span></a>
+            <a class="section-link" href="#keahlian" data-section="keahlian">🛠️ <span>2. Keahlian</span></a>
+            <a class="section-link" href="#sertifikat" data-section="sertifikat">🏆 <span>3. Sertifikat</span></a>
+            <div class="menu-title">Sosial</div>
+            <a href="#" id="whatsappLink" target="_blank" rel="noopener">📱 WhatsApp</a>
+            <a href="#" id="tiktokLink" target="_blank" rel="noopener">🎵 TikTok</a>
+            <a href="#" id="instagramLink" target="_blank" rel="noopener">📸 Instagram</a>
+            <a href="index.html" target="_blank" rel="noopener">🌐 Portfolio Publik</a>
+            <button class="danger" id="logoutButton" type="button">↪️ Logout</button>
+          </nav>
+        </div>
+      </div>
+    </header>
 
-<div class="notice" id="notice"></div>
+    <div class="notice" id="notice"></div>
 
-<section class="viewer">
-<div class="viewer-head">
-<strong>CV Digital / Portfolio</strong>
-<span>Preview lengkap • pilih menu untuk slide ke bagian</span>
-</div>
-<iframe class="portfolio-frame" id="portfolioFrame" src="index.html" title="Portfolio Rofidin Ilyas"></iframe>
-</section>
-</main>
+    <section class="viewer">
+      <div class="viewer-head">
+        <strong>CV Digital / Portfolio</strong>
+        <span>Preview lengkap • pilih menu untuk slide ke bagian</span>
+      </div>
+      <iframe class="portfolio-frame" id="portfolioFrame" src="index.html" title="Portfolio Rofidin Ilyas"></iframe>
+    </section>
+  </main>
 
-<script>
-const supabase=window.supabase.createClient("https://vufpdlobkoeyjjxjhhzr.supabase.co","sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq");
-const $=id=>document.getElementById(id);
-let currentUser=null;
+  <script>
+    const SUPABASE_URL = "https://vufpdlobkoeyjjxjhhzr.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
+    const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
+    const $ = (id) => document.getElementById(id);
+    let currentUser = null;
 
-function showNotice(text){
- const el=$("notice");el.textContent=text;el.classList.add("show");
- setTimeout(()=>el.classList.remove("show"),2500);
-}
+    function showNotice(text) {
+      const el = $("notice");
+      el.textContent = text;
+      el.classList.add("show");
+      setTimeout(() => el.classList.remove("show"), 2500);
+    }
 
-async function init(){
- // Tunggu Supabase memulihkan session dari localStorage setelah perpindahan halaman.
- const {data:{session},error}=await supabase.auth.getSession();
- if(error){
-   console.error("Session error:",error);
-   showNotice("Session login tidak dapat dibaca.");
-   setTimeout(()=>window.location.replace("login.html"),1800);
-   return;
- }
- if(!session?.user){
-   // Beri auth client sedikit waktu untuk menyelesaikan pemulihan session.
-   await new Promise(resolve=>setTimeout(resolve,800));
-   const {data:{session:retrySession}}=await supabase.auth.getSession();
-   if(!retrySession?.user){
-     window.location.replace("login.html");
-     return;
-   }
-   currentUser=retrySession.user;
- } else {
-   currentUser=session.user;
- }
- const user=currentUser;
- $("userEmail").textContent=user.email||"Akun";
+    async function loadSessionWithRetry() {
+      if (!supabase) {
+        showNotice("Sistem dashboard gagal dimuat.");
+        setTimeout(() => window.location.replace("login.html"), 1800);
+        return null;
+      }
 
- const {data:profile}=await supabase.from("profiles")
- .select("whatsapp_url,tiktok_username,instagram_username")
- .eq("id",user.id).maybeSingle();
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error) {
+          console.error("Session error:", error);
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          continue;
+        }
+        if (session?.user) {
+          return session.user;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+      return null;
+    }
 
- if(profile){
-   if(profile.whatsapp_url) $("whatsappLink").href=profile.whatsapp_url;
-   else $("whatsappLink").href="#";
-   if(profile.tiktok_username){
-     const u=profile.tiktok_username.replace(/^@/,"");
-     $("tiktokLink").href="https://www.tiktok.com/@"+u;
-   }
-   if(profile.instagram_username){
-     const u=profile.instagram_username.replace(/^@/,"");
-     $("instagramLink").href="https://www.instagram.com/"+u;
-   }
- }
-}
+    async function init() {
+      const user = await loadSessionWithRetry();
+      if (!user) {
+        window.location.replace("login.html");
+        return;
+      }
 
-$("menuButton").addEventListener("click",()=>$("dropdownMenu").classList.toggle("open"));
+      currentUser = user;
+      $("userEmail").textContent = user.email || "Akun";
 
-document.addEventListener("click",e=>{
- if(!e.target.closest(".right")) $("dropdownMenu").classList.remove("open");
-});
+      if (supabase) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("whatsapp_url,tiktok_username,instagram_username")
+          .eq("id", user.id)
+          .maybeSingle();
 
-document.querySelectorAll(".section-link").forEach(link=>{
- link.addEventListener("click",e=>{
-   e.preventDefault();
-   const section=link.dataset.section;
-   $("dropdownMenu").classList.remove("open");
-   const frame=$("portfolioFrame");
-   try{
-     const doc=frame.contentDocument||frame.contentWindow.document;
-     const target=doc.getElementById(section);
-     if(target){
-       target.scrollIntoView({behavior:"smooth",block:"start"});
-       target.animate([
-         {transform:"translateY(18px)",opacity:.72},
-         {transform:"translateY(0)",opacity:1}
-       ],{duration:520,easing:"cubic-bezier(.2,.8,.2,1)"});
-       return;
-     }
-   }catch(err){}
-   showNotice("Bagian "+section+" belum tersedia di Portfolio.");
- });
-});
+        if (profile) {
+          const whatsappUrl = profile.whatsapp_url || "#";
+          const tiktokUsername = profile.tiktok_username ? profile.tiktok_username.replace(/^@/, "") : "";
+          const instagramUsername = profile.instagram_username ? profile.instagram_username.replace(/^@/, "") : "";
 
-$("whatsappLink").addEventListener("click",e=>{
- if($("whatsappLink").getAttribute("href")==="#"){e.preventDefault();showNotice("Link WhatsApp belum diatur di Profil.");}
-});
-$("tiktokLink").addEventListener("click",e=>{
- if($("tiktokLink").getAttribute("href")==="#"){e.preventDefault();showNotice("Username TikTok belum diatur di Profil.");}
-});
-$("instagramLink").addEventListener("click",e=>{
- if($("instagramLink").getAttribute("href")==="#"){e.preventDefault();showNotice("Username Instagram belum diatur di Profil.");}
-});
+          $("whatsappLink").href = whatsappUrl;
+          $("tiktokLink").href = tiktokUsername ? `https://www.tiktok.com/@${tiktokUsername}` : "#";
+          $("instagramLink").href = instagramUsername ? `https://www.instagram.com/${instagramUsername}` : "#";
+        }
+      }
+    }
 
-$("logoutButton").addEventListener("click",async()=>{
- const b=$("logoutButton");b.disabled=true;b.textContent="↪️ Logout...";
- const {error}=await supabase.auth.signOut({scope:"local"});
- if(error){showNotice("Logout gagal.");b.disabled=false;b.textContent="↪️ Logout";return}
- window.location.replace("login.html");
-});
+    $("menuButton").addEventListener("click", () => $("dropdownMenu").classList.toggle("open"));
 
-supabase.auth.onAuthStateChange((event,session)=>{
- if(event==="SIGNED_OUT") window.location.replace("login.html");
-});
-init();
-</script>
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".right")) $("dropdownMenu").classList.remove("open");
+    });
+
+    document.querySelectorAll(".section-link").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const section = link.dataset.section;
+        $("dropdownMenu").classList.remove("open");
+        const frame = $("portfolioFrame");
+        try {
+          const doc = frame.contentDocument || frame.contentWindow.document;
+          const target = doc.getElementById(section);
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            target.animate([
+              { transform: "translateY(18px)", opacity: 0.72 },
+              { transform: "translateY(0)", opacity: 1 }
+            ], { duration: 520, easing: "cubic-bezier(.2,.8,.2,1)" });
+            return;
+          }
+        } catch (err) {}
+        showNotice("Bagian " + section + " belum tersedia di Portfolio.");
+      });
+    });
+
+    $("whatsappLink").addEventListener("click", (e) => {
+      if ($("whatsappLink").getAttribute("href") === "#") {
+        e.preventDefault();
+        showNotice("Link WhatsApp belum diatur di Profil.");
+      }
+    });
+
+    $("tiktokLink").addEventListener("click", (e) => {
+      if ($("tiktokLink").getAttribute("href") === "#") {
+        e.preventDefault();
+        showNotice("Username TikTok belum diatur di Profil.");
+      }
+    });
+
+    $("instagramLink").addEventListener("click", (e) => {
+      if ($("instagramLink").getAttribute("href") === "#") {
+        e.preventDefault();
+        showNotice("Username Instagram belum diatur di Profil.");
+      }
+    });
+
+    $("logoutButton").addEventListener("click", async () => {
+      const button = $("logoutButton");
+      button.disabled = true;
+      button.textContent = "↪️ Logout...";
+
+      if (!supabase) {
+        showNotice("Logout gagal.");
+        button.disabled = false;
+        button.textContent = "↪️ Logout";
+        return;
+      }
+
+      const { error } = await supabase.auth.signOut({ scope: "local" });
+      if (error) {
+        showNotice("Logout gagal.");
+        button.disabled = false;
+        button.textContent = "↪️ Logout";
+        return;
+      }
+      window.location.replace("login.html");
+    });
+
+    if (supabase) {
+      supabase.auth.onAuthStateChange((event, session) => {
+        if (event === "SIGNED_OUT") {
+          window.location.replace("login.html");
+        }
+      });
+    }
+
+    init();
+  </script>
 </body>
 </html>
+
+
