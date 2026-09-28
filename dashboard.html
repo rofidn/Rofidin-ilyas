@@ -112,7 +112,7 @@
               <span id="avatarPlaceholder">Tidak ada gambar</span>
             </div>
             <div class="upload-area">
-              <input type="file" id="fileInput" class="file-input" accept="image/*">
+              <input type="file" id="fileInput" class="file-input" accept="image/jpeg,image/png,image/webp">
               <div class="upload-btn" id="uploadBtn">📤 Pilih Foto</div>
               <p style="font-size:12px;color:#8db3d5;margin-top:8px">Maksimal 2MB. Format: JPG, PNG, WEBP</p>
               <button class="btn btn-secondary" id="removeAvatarBtn" style="margin-top:8px;width:100%;display:none">Hapus Foto</button>
@@ -303,24 +303,29 @@
       $("saveBtn").disabled = true;
       $("saveBtn").textContent = '💾 Menyimpan...';
 
+      let uploadedAvatarPath = null;
+
       try {
         let avatarUrl = originalData.avatar_url || null;
         let avatarPath = originalData.avatar_path || null;
 
-        // Upload avatar jika ada file baru
         if (selectedFile) {
           const mimeToExt = {'image/jpeg':'jpg','image/png':'png','image/webp':'webp'};
           const fileExt = mimeToExt[selectedFile.type];
-          if (!fileExt) throw new Error('Format avatar tidak didukung.');
-          const fileName = `${Date.now()}.${fileExt}`;
-          const filePath = `${currentUser.id}/${fileName}`;
+          const fileName = fileExt ? `${crypto.randomUUID()}.${fileExt}` : '';
+          const filePath = fileExt ? `${currentUser.id}/${fileName}` : '';
+
+          if (!fileExt || selectedFile.size > MAX_FILE_SIZE) {
+            throw new Error('Format atau ukuran avatar tidak didukung.');
+          }
 
           const { error: uploadError } = await supabase.storage
             .from(STORAGE_BUCKET)
-            .upload(filePath, selectedFile);
+            .upload(filePath, selectedFile, { contentType: selectedFile.type, upsert: false });
 
           if (uploadError) throw uploadError;
 
+          uploadedAvatarPath = filePath;
           const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(filePath);
           avatarUrl = data.publicUrl;
           avatarPath = filePath;
@@ -342,16 +347,30 @@
 
         if (error) throw error;
 
+        if (uploadedAvatarPath && originalData.avatar_path && originalData.avatar_path !== uploadedAvatarPath) {
+          const { error: cleanupError } = await supabase.storage
+            .from(STORAGE_BUCKET)
+            .remove([originalData.avatar_path]);
+          if (cleanupError) console.warn('Old avatar cleanup failed:', cleanupError);
+        }
+
         selectedFile = null;
+        $('fileInput').value = '';
         await loadProfile();
         showNotice('✅ Profil berhasil disimpan!', 'success');
-        
-        // Refresh iframe
+
         const frame = $('portfolioFrame');
         frame.src = frame.src;
       } catch (error) {
+        if (uploadedAvatarPath) {
+          const { error: rollbackError } = await supabase.storage
+            .from(STORAGE_BUCKET)
+            .remove([uploadedAvatarPath]);
+          if (rollbackError) console.warn('Uploaded avatar rollback failed:', rollbackError);
+        }
+
         console.error('Failed to save profile:', error);
-        showNotice(`❌ Gagal menyimpan: ${error.message}`, 'error');
+        showNotice('❌ Gagal menyimpan profil. Periksa data dan file avatar, lalu coba lagi.', 'error');
       } finally {
         $("saveBtn").disabled = false;
         $("saveBtn").textContent = '💾 Simpan Perubahan';
@@ -376,13 +395,18 @@
       const file = e.target.files[0];
       if (!file) return;
 
+      const mimeToExt = {'image/jpeg':'jpg','image/png':'png','image/webp':'webp'};
+      const extension = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
+
       if (file.size > MAX_FILE_SIZE) {
+        e.target.value = '';
         showNotice('File terlalu besar. Maksimal 2MB.', 'error');
         return;
       }
 
-      if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-        showNotice('Format file tidak didukung. Gunakan JPG, PNG, atau WEBP.', 'error');
+      if (!mimeToExt[file.type] || extension !== mimeToExt[file.type]) {
+        e.target.value = '';
+        showNotice('Format file tidak didukung. Gunakan JPG, PNG, atau WEBP dengan ekstensi yang sesuai.', 'error');
         return;
       }
 
@@ -417,6 +441,7 @@
         }
 
         selectedFile = null;
+        $('fileInput').value = '';
         await loadProfile();
         showNotice('✅ Foto berhasil dihapus!', 'success');
       } catch (error) {
