@@ -125,6 +125,38 @@
       el.textContent = value || fallback;
     }
 
+    async function findProfile() {
+      if (!supabase) return null;
+
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (sessionData?.session?.user) {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('full_name,bio,location,whatsapp_url,tiktok_username,instagram_username,avatar_url,role')
+            .eq('id', sessionData.session.user.id)
+            .maybeSingle();
+
+          if (error) {
+            console.error('Session profile query failed:', error);
+          }
+          if (data) return data;
+        }
+
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('full_name,bio,location,whatsapp_url,tiktok_username,instagram_username,avatar_url,role')
+          .order('created_at', { ascending: true })
+          .limit(1);
+
+        if (error) throw error;
+        return Array.isArray(data) && data.length ? data[0] : null;
+      } catch (error) {
+        console.error('Failed to find profile:', error);
+        return null;
+      }
+    }
+
     async function loadPublicProfile() {
       if (!supabase) {
         setText('about', 'Profil gagal dimuat. Silakan refresh halaman.');
@@ -132,25 +164,19 @@
       }
 
       try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('full_name,bio,location,whatsapp_url,tiktok_username,instagram_username,avatar_url')
-          .eq('id', 'd95c5eb4-d0c7-45f5-9073-c501955e02a2')
-          .maybeSingle();
+        const profile = await findProfile();
 
-        if (error) throw error;
-
-        if (!data) {
+        if (!profile) {
           setText('about', 'Profil belum tersedia.');
           return;
         }
 
-        const fullName = data.full_name || 'Rofidin Ilyas';
-        const location = data.location || 'Indonesia';
-        const avatarUrl = safeUrl(data.avatar_url || '');
-        const whatsappUrl = safeUrl(data.whatsapp_url || '');
-        const tiktokUrl = social('tt', data.tiktok_username);
-        const instagramUrl = social('ig', data.instagram_username);
+        const fullName = profile.full_name || 'Rofidin Ilyas';
+        const location = profile.location || 'Indonesia';
+        const avatarUrl = safeUrl(profile.avatar_url || '');
+        const whatsappUrl = safeUrl(profile.whatsapp_url || '');
+        const tiktokUrl = social('tt', profile.tiktok_username);
+        const instagramUrl = social('ig', profile.instagram_username);
 
         const nameEl = document.getElementById('name');
         const bioEl = document.getElementById('bio');
@@ -158,8 +184,8 @@
         const avatarEl = document.getElementById('avatar');
 
         nameEl.innerHTML = fullName.replace(/\s+\S+$/, ' <span>$&</span>') || 'Rofidin <span>Ilyas</span>';
-        bioEl.textContent = data.bio || 'Portfolio digital Rofidin Ilyas.';
-        aboutEl.textContent = data.bio || 'Portfolio digital Rofidin Ilyas.';
+        bioEl.textContent = profile.bio || 'Portfolio digital Rofidin Ilyas.';
+        aboutEl.textContent = profile.bio || 'Portfolio digital Rofidin Ilyas.';
 
         if (avatarUrl) {
           avatarEl.src = avatarUrl;
@@ -183,13 +209,13 @@
 
         const { data: sessionData } = await supabase.auth.getSession();
         if (sessionData?.session && sessionData.session.user) {
-          const { data: profile } = await supabase
+          const { data: currentProfile } = await supabase
             .from('profiles')
             .select('role')
             .eq('id', sessionData.session.user.id)
             .maybeSingle();
 
-          if (profile?.role === 'admin') {
+          if (currentProfile?.role === 'admin') {
             const adminLink = document.createElement('a');
             adminLink.href = 'dashboard.html';
             adminLink.textContent = 'Open Dashboard';
@@ -214,5 +240,3 @@
   </script>
 </body>
 </html>
-
-
