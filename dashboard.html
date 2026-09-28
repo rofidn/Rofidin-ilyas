@@ -86,7 +86,6 @@
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
     const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
     const $ = (id) => document.getElementById(id);
-    let currentUser = null;
 
     function showNotice(text) {
       const el = $("notice");
@@ -95,7 +94,7 @@
       setTimeout(() => el.classList.remove("show"), 2500);
     }
 
-    async function loadSessionWithRetry() {
+    async function getAuthenticatedUser() {
       if (!supabase) {
         showNotice("Sistem dashboard gagal dimuat.");
         setTimeout(() => window.location.replace("login.html"), 1800);
@@ -110,38 +109,50 @@
           continue;
         }
         if (session?.user) {
+          const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', session.user.id)
+            .maybeSingle();
+
+          if (profileError) {
+            console.error('Profile role error:', profileError);
+          }
+
+          if (!profile || profile.role !== 'admin') {
+            showNotice("Akses ditolak. Hanya admin yang bisa membuka dashboard.");
+            setTimeout(() => window.location.replace("index.html"), 1800);
+            return null;
+          }
+
           return session.user;
         }
         await new Promise((resolve) => setTimeout(resolve, 500));
       }
+
+      window.location.replace("login.html");
       return null;
     }
 
     async function init() {
-      const user = await loadSessionWithRetry();
-      if (!user) {
-        window.location.replace("login.html");
-        return;
-      }
+      const user = await getAuthenticatedUser();
+      if (!user) return;
 
-      currentUser = user;
       $("userEmail").textContent = user.email || "Akun";
 
       if (supabase) {
         const { data: profile } = await supabase
-          .from("profiles")
-          .select("whatsapp_url,tiktok_username,instagram_username")
-          .eq("id", user.id)
+          .from('profiles')
+          .select('whatsapp_url,tiktok_username,instagram_username')
+          .eq('id', user.id)
           .maybeSingle();
 
         if (profile) {
-          const whatsappUrl = profile.whatsapp_url || "#";
-          const tiktokUsername = profile.tiktok_username ? profile.tiktok_username.replace(/^@/, "") : "";
-          const instagramUsername = profile.instagram_username ? profile.instagram_username.replace(/^@/, "") : "";
-
-          $("whatsappLink").href = whatsappUrl;
-          $("tiktokLink").href = tiktokUsername ? `https://www.tiktok.com/@${tiktokUsername}` : "#";
-          $("instagramLink").href = instagramUsername ? `https://www.instagram.com/${instagramUsername}` : "#";
+          $("whatsappLink").href = profile.whatsapp_url || '#';
+          const tiktokUsername = profile.tiktok_username ? profile.tiktok_username.replace(/^@/, '') : '';
+          const instagramUsername = profile.instagram_username ? profile.instagram_username.replace(/^@/, '') : '';
+          $("tiktokLink").href = tiktokUsername ? `https://www.tiktok.com/@${tiktokUsername}` : '#';
+          $("instagramLink").href = instagramUsername ? `https://www.instagram.com/${instagramUsername}` : '#';
         }
       }
     }

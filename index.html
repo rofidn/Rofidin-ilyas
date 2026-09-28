@@ -1,21 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Rofidin Ilyas | Portfolio</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
   <style>
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;background:#07111f;color:#eef7ff;line-height:1.6}a{color:inherit}.wrap{width:min(1050px,calc(100% - 32px));margin:auto}.top{position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);background:rgba(7,17,31,.78);border-bottom:1px solid rgba(0,217,255,.18)}.nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0}.logo{font-size:1.5rem;font-weight:800;color:#00d9ff;letter-spacing:.08em}.nav-links{display:flex;gap:18px;align-items:center;font-size:.95rem}.nav-links a{color:#cfe7f8;text-decoration:none;transition:.2s}.nav-links a:hover{color:#fff}.hero{display:grid;grid-template-columns:220px 1fr;gap:28px;padding:44px 0 22px;align-items:center}.avatar{width:220px;height:220px;border-radius:28px;object-fit:cover;border:2px solid rgba(0,217,255,.25);box-shadow:0 0 30px rgba(0,217,255,.18);background:#0d1f35}.eyebrow{font-size:.72rem;letter-spacing:.2em;color:#7fdfff;font-weight:700;margin-bottom:10px}.h1{font-size:clamp(2.2rem,5vw,4rem);line-height:1.05;margin:0 0 10px}.h1 span{color:#00d9ff}.bio{max-width:640px;color:#d8ebff}.meta,.socials{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.meta span,.socials a,.skill{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;background:rgba(13,31,53,.9);border:1px solid rgba(0,217,255,.2);color:#d9f6ff;text-decoration:none;font-size:.82rem}.section{padding:18px 0 10px}.section h2{margin:0 0 18px;font-size:1.8rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.item{background:rgba(13,31,53,.82);border:1px solid rgba(0,217,255,.15);border-radius:18px;padding:20px;box-shadow:0 15px 35px rgba(0,0,0,.12)}.item h3{margin:0 0 8px;font-size:1.2rem}.muted{color:#8db3d5;font-size:.86rem;margin-bottom:8px}.skills,.contacts{display:flex;flex-wrap:wrap;gap:10px}.skill,.contact-pill{padding:10px 14px;border-radius:12px;background:#0d1f35;border:1px solid rgba(0,217,255,.18);color:#dfeeff;font-size:.92rem}.footer{padding:26px 0 40px;color:#8ea9c7;text-align:center;font-size:.92rem}.admin-gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#07111f;color:#eef7ff;font-family:Inter,Arial,sans-serif}.admin-box{max-width:500px;padding:28px;border-radius:18px;background:rgba(13,31,53,.9);border:1px solid rgba(0,217,255,.2);text-align:center}.admin-box h2{margin-bottom:8px}.admin-box p{color:#cfe7f8}.hidden{display:none!important}@media(max-width:650px){.hero{grid-template-columns:1fr;text-align:center}.avatar{margin:auto}.meta,.socials{justify-content:center}.grid{grid-template-columns:1fr}.nav-links{display:none}.section{padding-top:8px}}  </style>
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;background:#07111f;color:#eef7ff;line-height:1.6}a{color:inherit}.wrap{width:min(1050px,calc(100% - 32px));margin:auto}.top{position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);background:rgba(7,17,31,.78);border-bottom:1px solid rgba(0,217,255,.18)}.nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0}.logo{font-size:1.5rem;font-weight:800;color:#00d9ff;letter-spacing:.08em}.nav-links{display:flex;gap:18px;align-items:center;font-size:.95rem}.nav-links a{color:#cfe7f8;text-decoration:none;transition:.2s}.nav-links a:hover{color:#fff}.hero{display:grid;grid-template-columns:220px 1fr;gap:28px;padding:44px 0 22px;align-items:center}.avatar{width:220px;height:220px;border-radius:28px;object-fit:cover;border:2px solid rgba(0,217,255,.25);box-shadow:0 0 30px rgba(0,217,255,.18);background:#0d1f35}.eyebrow{font-size:.72rem;letter-spacing:.2em;color:#7fdfff;font-weight:700;margin-bottom:10px}.h1{font-size:clamp(2.2rem,5vw,4rem);line-height:1.05;margin:0 0 10px}.h1 span{color:#00d9ff}.bio{max-width:640px;color:#d8ebff}.meta,.socials{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.meta span,.socials a,.skill{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;background:rgba(13,31,53,.9);border:1px solid rgba(0,217,255,.2);color:#d9f6ff;text-decoration:none;font-size:.82rem}.section{padding:18px 0 10px}.section h2{margin:0 0 18px;font-size:1.8rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.item{background:rgba(13,31,53,.82);border:1px solid rgba(0,217,255,.15);border-radius:18px;padding:20px;box-shadow:0 15px 35px rgba(0,0,0,.12)}.item h3{margin:0 0 8px;font-size:1.2rem}.muted{color:#8db3d5;font-size:.86rem;margin-bottom:8px}.skills,.contacts{display:flex;flex-wrap:wrap;gap:10px}.skill,.contact-pill{padding:10px 14px;border-radius:12px;background:#0d1f35;border:1px solid rgba(0,217,255,.18);color:#dfeeff;font-size:.92rem}.footer{padding:26px 0 40px;color:#8ea9c7;text-align:center;font-size:.92rem}.hidden{display:none!important}@media(max-width:650px){.hero{grid-template-columns:1fr;text-align:center}.avatar{margin:auto}.meta,.socials{justify-content:center}.grid{grid-template-columns:1fr}.nav-links{display:none}.section{padding-top:8px}}  </style>
 </head>
 <body>
-  <div id="adminGate" class="admin-gate hidden">
-    <div class="admin-box">
-      <h2>Admin area</h2>
-      <p id="gateMessage">Sesi login tidak ditemukan.</p>
-    </div>
-  </div>
-
   <main id="portfolioContent" class="wrap">
     <header class="top">
       <div class="nav wrap">
@@ -122,16 +114,9 @@
       if (!value) return "";
       const cleaned = String(value).trim().replace(/^@/, "");
       if (!cleaned) return "";
-
-      if (type === 'tt') {
-        return `https://www.tiktok.com/@${encodeURIComponent(cleaned)}`;
-      }
-
-      if (type === 'ig') {
-        return `https://www.instagram.com/${encodeURIComponent(cleaned)}`;
-      }
-
-      return "";
+      return type === 'tt'
+        ? `https://www.tiktok.com/@${encodeURIComponent(cleaned)}`
+        : `https://www.instagram.com/${encodeURIComponent(cleaned)}`;
     }
 
     function setText(id, value, fallback = "-") {
@@ -140,112 +125,92 @@
       el.textContent = value || fallback;
     }
 
-    function showGateMessage(text, isError = false) {
-      const gate = document.getElementById("adminGate");
-      const message = document.getElementById("gateMessage");
-      const content = document.getElementById("portfolioContent");
-
-      if (!gate || !message || !content) return;
-
-      message.textContent = text;
-      message.style.color = isError ? '#ffb0b0' : '#dff8ff';
-      gate.classList.remove("hidden");
-      content.classList.add("hidden");
-    }
-
-    async function load() {
+    async function loadPublicProfile() {
       if (!supabase) {
-        const msg = "Sistem profil gagal dimuat. Silakan refresh halaman.";
-        showGateMessage(msg, true);
+        setText('about', 'Profil gagal dimuat. Silakan refresh halaman.');
         return;
       }
 
       try {
         const { data, error } = await supabase
-          .from("profiles")
-          .select("full_name,bio,location,whatsapp_url,tiktok_username,instagram_username,avatar_url")
-          .eq("id", "d95c5eb4-d0c7-45f5-9073-c501955e02a2")
+          .from('profiles')
+          .select('full_name,bio,location,whatsapp_url,tiktok_username,instagram_username,avatar_url')
+          .eq('id', 'd95c5eb4-d0c7-45f5-9073-c501955e02a2')
           .maybeSingle();
 
         if (error) throw error;
 
         if (!data) {
-          setText("about", "Profil belum tersedia.");
+          setText('about', 'Profil belum tersedia.');
           return;
         }
 
-        const nameEl = document.getElementById("name");
-        const bioEl = document.getElementById("bio");
-        const aboutEl = document.getElementById("about");
-        const avatarEl = document.getElementById("avatar");
-        const metaInfo = document.getElementById("metaInfo");
-        const socials = document.getElementById("socials");
+        const fullName = data.full_name || 'Rofidin Ilyas';
+        const location = data.location || 'Indonesia';
+        const avatarUrl = safeUrl(data.avatar_url || '');
+        const whatsappUrl = safeUrl(data.whatsapp_url || '');
+        const tiktokUrl = social('tt', data.tiktok_username);
+        const instagramUrl = social('ig', data.instagram_username);
 
-        const fullName = data.full_name || "Rofidin Ilyas";
-        const location = data.location || "Indonesia";
-        const avatarUrl = safeUrl(data.avatar_url || "");
-        const whatsappUrl = safeUrl(data.whatsapp_url || "");
-        const tiktokUrl = social("tt", data.tiktok_username);
-        const instagramUrl = social("ig", data.instagram_username);
+        const nameEl = document.getElementById('name');
+        const bioEl = document.getElementById('bio');
+        const aboutEl = document.getElementById('about');
+        const avatarEl = document.getElementById('avatar');
 
-        nameEl.innerHTML = fullName.replace(/\s+\S+$/, " <span>$&</span>") || "Rofidin <span>Ilyas</span>";
-        bioEl.textContent = data.bio || "Portfolio digital Rofidin Ilyas.";
-        aboutEl.textContent = data.bio || "Portfolio digital Rofidin Ilyas.";
+        nameEl.innerHTML = fullName.replace(/\s+\S+$/, ' <span>$&</span>') || 'Rofidin <span>Ilyas</span>';
+        bioEl.textContent = data.bio || 'Portfolio digital Rofidin Ilyas.';
+        aboutEl.textContent = data.bio || 'Portfolio digital Rofidin Ilyas.';
 
         if (avatarUrl) {
           avatarEl.src = avatarUrl;
-          avatarEl.style.display = "block";
+          avatarEl.style.display = 'block';
         }
 
+        const metaInfo = document.getElementById('metaInfo');
         metaInfo.innerHTML = `
           <span>${location}</span>
           <span>Portfolio Digital</span>
         `;
 
+        const socials = document.getElementById('socials');
         const links = [
-          whatsappUrl ? `<a href="${whatsappUrl}" target="_blank" rel="noopener">WhatsApp</a>` : "",
-          tiktokUrl ? `<a href="${tiktokUrl}" target="_blank" rel="noopener">TikTok</a>` : "",
-          instagramUrl ? `<a href="${instagramUrl}" target="_blank" rel="noopener">Instagram</a>` : ""
+          whatsappUrl ? `<a href="${whatsappUrl}" target="_blank" rel="noopener">WhatsApp</a>` : '',
+          tiktokUrl ? `<a href="${tiktokUrl}" target="_blank" rel="noopener">TikTok</a>` : '',
+          instagramUrl ? `<a href="${instagramUrl}" target="_blank" rel="noopener">Instagram</a>` : ''
         ].filter(Boolean);
 
-        socials.innerHTML = links.length ? links.join("") : '<span>Profil sosial belum diatur</span>';
-      } catch (error) {
-        console.error("Failed to load profile:", error);
-        showGateMessage("Profil gagal dimuat. Silakan coba beberapa saat lagi.", true);
-      }
-    }
+        socials.innerHTML = links.length ? links.join('') : '<span>Profil sosial belum diatur</span>';
 
-    async function checkAdmin() {
-      if (!supabase) {
-        showGateMessage("Sistem admin gagal dimuat. Silakan refresh halaman.", true);
-        return;
-      }
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (sessionData?.session && sessionData.session.user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', sessionData.session.user.id)
+            .maybeSingle();
 
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-
-        if (error) throw error;
-
-        if (!session) {
-          showGateMessage("Silakan login terlebih dahulu untuk membuka dashboard admin.", true);
-          setTimeout(() => {
-            window.location.href = new URL("login.html", window.location.href).href;
-          }, 1800);
-          return;
+          if (profile?.role === 'admin') {
+            const adminLink = document.createElement('a');
+            adminLink.href = 'dashboard.html';
+            adminLink.textContent = 'Open Dashboard';
+            adminLink.style.display = 'inline-flex';
+            adminLink.style.marginTop = '18px';
+            adminLink.style.padding = '10px 14px';
+            adminLink.style.borderRadius = '999px';
+            adminLink.style.background = 'rgba(0,217,255,.12)';
+            adminLink.style.border = '1px solid rgba(0,217,255,.28)';
+            adminLink.style.color = '#dff9ff';
+            adminLink.style.textDecoration = 'none';
+            document.querySelector('.hero > div').appendChild(adminLink);
+          }
         }
-
-        const gate = document.getElementById("adminGate");
-        const content = document.getElementById("portfolioContent");
-        if (gate) gate.classList.add("hidden");
-        if (content) content.classList.remove("hidden");
       } catch (error) {
-        console.error("Failed to check admin session:", error);
-        showGateMessage("Gagal mengecek sesi admin. Silakan coba lagi.", true);
+        console.error('Failed to load public profile:', error);
+        setText('about', 'Profil gagal dimuat. Silakan coba beberapa saat lagi.');
       }
     }
 
-    checkAdmin();
-    load();
+    loadPublicProfile();
   </script>
 </body>
 </html>
