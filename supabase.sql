@@ -117,3 +117,47 @@ for delete to authenticated using (
  bucket_id='profile-avatars' and (storage.foldername(name))[1]=(select auth.uid())::text and
  exists (select 1 from public.admin_profiles ap where ap.auth_user_id=(select auth.uid()) and ap.role='super_admin' and ap.is_active=true)
 );
+
+-- Public user registration records. These are not Supabase Auth accounts.
+-- Personal data is write-only for public clients and readable only by active super-admins.
+create table if not exists public.user_registrations (
+  id uuid primary key default gen_random_uuid(),
+  full_name text not null,
+  region text not null,
+  phone text not null,
+  gender text not null check (gender in ('Laki-laki','Perempuan','Lainnya')),
+  birth_date date not null check (birth_date <= current_date),
+  status text not null default 'pending' check (status in ('pending','approved','rejected')),
+  created_at timestamptz not null default now(),
+  constraint user_registrations_full_name_length check (char_length(full_name) between 2 and 120),
+  constraint user_registrations_region_length check (char_length(region) between 2 and 100),
+  constraint user_registrations_phone_format check (phone ~ '^\+62[0-9]{9,13}$')
+);
+
+create unique index if not exists user_registrations_phone_unique
+  on public.user_registrations (phone);
+
+alter table public.user_registrations enable row level security;
+
+revoke all on table public.user_registrations from anon, authenticated;
+grant insert on table public.user_registrations to anon, authenticated;
+grant select on table public.user_registrations to authenticated;
+
+drop policy if exists "Anyone can submit registration" on public.user_registrations;
+create policy "Anyone can submit registration"
+on public.user_registrations
+for insert to anon, authenticated
+with check (true);
+
+drop policy if exists "Active super admins can view registrations" on public.user_registrations;
+create policy "Active super admins can view registrations"
+on public.user_registrations
+for select to authenticated
+using (
+  exists (
+    select 1 from public.admin_profiles ap
+    where ap.auth_user_id = (select auth.uid())
+      and ap.role = 'super_admin'
+      and ap.is_active = true
+  )
+);
