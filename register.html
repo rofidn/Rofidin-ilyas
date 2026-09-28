@@ -24,6 +24,7 @@
     </form>
 
     <div id="message" class="message" role="alert" aria-live="polite"></div>
+    <div id="verificationActions" class="login-link" style="display:none"><button type="button" id="resendButton" style="margin-top:10px;width:100%;padding:11px;border:1px solid rgba(0,217,255,.3);border-radius:999px;background:transparent;color:#7fe8ff;font-weight:700;cursor:pointer">Kirim Ulang Email Verifikasi</button></div>
     <div class="login-link">Sudah punya akun? <a href="login.html">Login di sini</a></div>
     <div class="security">🔒 SECURE ACCOUNT REGISTRATION</div>
   </div>
@@ -32,6 +33,9 @@
     const SUPABASE_URL = "https://vufpdlobkoeyjjxjhhzr.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
     const LOGIN_URL = new URL("login.html", window.location.href).href;
+    const resendButton = document.getElementById("resendButton");
+    const verificationActions = document.getElementById("verificationActions");
+    let registeredEmail = "";
     const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
 
     const form = document.getElementById("registerForm");
@@ -85,15 +89,34 @@
           const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: LOGIN_URL, data: { full_name: fullName } } });
           if (error) throw error;
           if (!data?.user) throw new Error("Akun tidak berhasil dibuat.");
-          showMessage("Registrasi berhasil! Silakan cek email dan klik tautan verifikasi. Setelah verifikasi selesai, silakan login.", "success");
-          form.reset();
-          setTimeout(() => { window.location.href = LOGIN_URL; }, 2500);
+          registeredEmail = email;
+          showMessage("Registrasi berhasil! Kami sudah mengirim email verifikasi ke " + email + ". Tetap di halaman ini, buka email Anda, lalu klik tautan verifikasi. Setelah verifikasi selesai, buka halaman login.", "success");
+          verificationActions.style.display = "block";
+          form.style.display = "none";
         } catch (err) {
           console.error(err);
           showMessage(errorText(err), "error");
         } finally {
           button.disabled = false;
           button.textContent = "CREATE ACCOUNT";
+        }
+      });
+
+      resendButton.addEventListener("click", async () => {
+        if (!registeredEmail) return;
+        resendButton.disabled = true;
+        resendButton.textContent = "Mengirim...";
+        try {
+          const { error } = await supabase.auth.resend({ type: "signup", email: registeredEmail, options: { emailRedirectTo: LOGIN_URL } });
+          if (error) throw error;
+          showMessage("Email verifikasi berhasil dikirim ulang ke " + registeredEmail + ".", "success");
+        } catch (err) {
+          const msg = (err && err.message ? err.message : "").toLowerCase();
+          if (msg.includes("rate limit")) showMessage("Terlalu banyak permintaan. Tunggu beberapa saat sebelum mengirim ulang.", "error");
+          else showMessage("Gagal mengirim ulang email verifikasi. Silakan coba lagi nanti.", "error");
+        } finally {
+          resendButton.disabled = false;
+          resendButton.textContent = "Kirim Ulang Email Verifikasi";
         }
       });
     }
