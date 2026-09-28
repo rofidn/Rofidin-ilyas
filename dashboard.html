@@ -372,24 +372,24 @@
       if (!supabase || !currentUser) return;
 
       try {
-        if (originalData.avatar_url) {
-          const oldPath = originalData.avatar_url.split('/').pop();
-          await supabase.storage.from(STORAGE_BUCKET).remove([`${currentUser.id}/${oldPath}`]);
-        }
-
-        await supabase
+        const oldAvatarPath = originalData.avatar_path;
+        const { error: updateError } = await supabase
           .from('profiles')
-          .update({ avatar_url: null })
+          .update({ avatar_url: null, avatar_path: null })
           .eq('id', currentUser.id);
+
+        if (updateError) throw updateError;
+
+        if (oldAvatarPath) {
+          const { error: removeError } = await supabase.storage
+            .from(STORAGE_BUCKET)
+            .remove([oldAvatarPath]);
+          if (removeError) console.warn('Avatar object cleanup failed:', removeError);
+        }
 
         selectedFile = null;
         await loadProfile();
-        showNotice('✅ Foto berhasil dihapus!', 'success');
-      } catch (error) {
-        console.error('Failed to remove avatar:', error);
-        showNotice('❌ Gagal menghapus foto.', 'error');
-      }
-    });
+        showNotice('✅ Foto berhasil dihapus!', 'success');    });
 
     // Save & Reset buttons
     $('saveBtn').addEventListener('click', saveProfile);
