@@ -5,237 +5,48 @@
   <title>Rofidin Ilyas | Portfolio</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
   <style>
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;background:#07111f;color:#eef7ff;line-height:1.6}a{color:inherit}.wrap{width:min(1050px,calc(100% - 32px));margin:auto}.top{position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);background:rgba(7,17,31,.78);border-bottom:1px solid rgba(0,217,255,.18)}.nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0}.logo{font-size:1.5rem;font-weight:800;color:#00d9ff;letter-spacing:.08em}.nav-links{display:flex;gap:18px;align-items:center;font-size:.95rem}.nav-links a{color:#cfe7f8;text-decoration:none;transition:.2s}.nav-links a:hover{color:#fff}.hero{display:grid;grid-template-columns:220px 1fr;gap:28px;padding:44px 0 22px;align-items:center}.avatar{width:220px;height:220px;border-radius:28px;object-fit:cover;border:2px solid rgba(0,217,255,.25);box-shadow:0 0 30px rgba(0,217,255,.18);background:#0d1f35}.eyebrow{font-size:.72rem;letter-spacing:.2em;color:#7fdfff;font-weight:700;margin-bottom:10px}.h1{font-size:clamp(2.2rem,5vw,4rem);line-height:1.05;margin:0 0 10px}.h1 span{color:#00d9ff}.bio{max-width:640px;color:#d8ebff}.meta,.socials{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.meta span,.socials a,.skill{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;background:rgba(13,31,53,.9);border:1px solid rgba(0,217,255,.2);color:#d9f6ff;text-decoration:none;font-size:.82rem}.section{padding:18px 0 10px}.section h2{margin:0 0 18px;font-size:1.8rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.item{background:rgba(13,31,53,.82);border:1px solid rgba(0,217,255,.15);border-radius:18px;padding:20px;box-shadow:0 15px 35px rgba(0,0,0,.12)}.item h3{margin:0 0 8px;font-size:1.2rem}.muted{color:#8db3d5;font-size:.86rem;margin-bottom:8px}.skills,.contacts{display:flex;flex-wrap:wrap;gap:10px}.skill,.contact-pill{padding:10px 14px;border-radius:12px;background:#0d1f35;border:1px solid rgba(0,217,255,.18);color:#dfeeff;font-size:.92rem}.footer{padding:26px 0 40px;color:#8ea9c7;text-align:center;font-size:.92rem}.hidden{display:none!important}@media(max-width:650px){.hero{grid-template-columns:1fr;text-align:center}.avatar{margin:auto}.meta,.socials{justify-content:center}.grid{grid-template-columns:1fr}.nav-links{display:none}.section{padding-top:8px}}  </style>
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;background:#07111f;color:#eef7ff;line-height:1.6}a{color:inherit}.wrap{width:min(1050px,calc(100% - 32px));margin:auto}.top{position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);background:rgba(7,17,31,.78);border-bottom:1px solid rgba(0,217,255,.18)}.nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0}.logo{font-size:1.5rem;font-weight:800;color:#00d9ff;letter-spacing:.08em}.nav-links{display:flex;gap:18px;align-items:center;font-size:.95rem}.nav-links a{color:#cfe7f8;text-decoration:none;transition:.2s}.nav-links a:hover{color:#fff}.hero{display:grid;grid-template-columns:220px 1fr;gap:28px;padding:44px 0 22px;align-items:center}.avatar{width:220px;height:220px;border-radius:28px;object-fit:cover;border:2px solid rgba(0,217,255,.25);box-shadow:0 0 30px rgba(0,217,255,.18);background:#0d1f35}.eyebrow{font-size:.72rem;letter-spacing:.2em;color:#7fdfff;font-weight:700;margin-bottom:10px}.h1{font-size:clamp(2.2rem,5vw,4rem);line-height:1.05;margin:0 0 10px}.h1 span{color:#00d9ff}.bio{max-width:640px;color:#d8ebff}.meta,.socials{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.meta span,.socials a,.skill{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;background:rgba(13,31,53,.9);border:1px solid rgba(0,217,255,.2);color:#d9f6ff;text-decoration:none;font-size:.82rem}.section{padding:18px 0 10px}.section h2{margin:0 0 18px;font-size:1.8rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.item{background:rgba(13,31,53,.82);border:1px solid rgba(0,217,255,.15);border-radius:18px;padding:20px;box-shadow:0 15px 35px rgba(0,0,0,.12)}.item h3{margin:0 0 8px;font-size:1.2rem}.muted{color:#8db3d5;font-size:.86rem;margin-bottom:8px}.skills,.contacts{display:flex;flex-wrap:wrap;gap:10px}.skill,.contact-pill{padding:10px 14px;border-radius:12px;background:#0d1f35;border:1px solid rgba(0,217,255,.18);color:#dfeeff;font-size:.92rem}.footer{padding:26px 0 40px;color:#8ea9c7;text-align:center;font-size:.92rem}.hidden{display:none!important}@media(max-width:650px){.hero{grid-template-columns:1fr;text-align:center}.avatar{margin:auto}.meta,.socials{justify-content:center}.grid{grid-template-columns:1fr}.nav-links{display:none}.section{padding-top:8px}}
+  </style>
 </head>
 <body>
   <main id="portfolioContent" class="wrap">
-    <header class="top">
-      <div class="nav wrap">
-        <div class="logo">RI</div>
-        <nav class="nav-links">
-          <a href="#aboutSection">Tentang</a>
-          <a href="#pengalaman">Pengalaman</a>
-          <a href="#keahlian">Keahlian</a>
-          <a href="#project">Project</a>
-          <a href="#sertifikat">Sertifikat</a>
-        </nav>
-      </div>
-    </header>
-
-    <section class="hero">
-      <img id="avatar" class="avatar" alt="Foto profil" style="display:none">
-      <div>
-        <div class="eyebrow">PORTFOLIO DIGITAL</div>
-        <h1 id="name" class="h1">Rofidin <span>Ilyas</span></h1>
-        <p id="bio" class="bio">Memuat profil...</p>
-        <div class="meta" id="metaInfo"></div>
-        <div class="socials" id="socials"></div>
-      </div>
-    </section>
-
-    <section id="aboutSection" class="section">
-      <h2>Tentang Saya</h2>
-      <p id="about" class="bio">Memuat profil...</p>
-    </section>
-
-    <section id="pengalaman" class="section">
-      <h2>Pengalaman Kerja</h2>
-      <div class="grid">
-        <article class="item">
-          <h3>Regional Quality Control</h3>
-          <div class="muted">Quality Control • Telecom</div>
-          <p>Mengawasi kualitas layanan dan proyek telekomunikasi di area regional, memastikan standar teknis dan operasional terpenuhi.</p>
-        </article>
-        <article class="item">
-          <h3>Timekeeping & Administration</h3>
-          <div class="muted">Operational • Workforce Management</div>
-          <p>Menangani pencatatan kehadiran, data staf, serta administrasi kerja agar proses operasional berjalan tertib dan akurat.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="keahlian" class="section">
-      <h2>Keahlian</h2>
-      <div class="skills">
-        <span class="skill">Quality Control</span>
-        <span class="skill">Regional QC</span>
-        <span class="skill">Timekeeping</span>
-        <span class="skill">Data Administration</span>
-        <span class="skill">Telecommunication</span>
-        <span class="skill">Field Monitoring</span>
-      </div>
-    </section>
-
-    <section id="project" class="section">
-      <h2>Project</h2>
-      <div class="grid">
-        <article class="item">
-          <h3>FWA / Wireless Installation</h3>
-          <div class="muted">Telecommunication</div>
-          <p>Pengalaman pada aktivitas instalasi dan pemeliharaan jaringan wireless untuk mendukung layanan internet dan konektivitas area.</p>
-        </article>
-        <article class="item">
-          <h3>Operational Quality Review</h3>
-          <div class="muted">QA & Compliance</div>
-          <p>Melakukan evaluasi kualitas kerja lapangan agar hasil sesuai SOP, keamanan, dan kebutuhan pelanggan.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="sertifikat" class="section">
-      <h2>Sertifikat</h2>
-      <div class="skills">
-        <span class="skill">First Aid</span>
-        <span class="skill">Electrical</span>
-        <span class="skill">Telecom QA</span>
-        <span class="skill">Safety Awareness</span>
-      </div>
-    </section>
-
+    <header class="top"><div class="nav wrap"><div class="logo">RI</div><nav class="nav-links"><a href="#aboutSection">Tentang</a><a href="#pengalaman">Pengalaman</a><a href="#keahlian">Keahlian</a><a href="#project">Project</a><a href="#sertifikat">Sertifikat</a></nav></div></header>
+    <section class="hero"><img id="avatar" class="avatar" alt="Foto profil" style="display:none"><div><div class="eyebrow">PORTFOLIO DIGITAL</div><h1 id="name" class="h1">Rofidin <span>Ilyas</span></h1><p id="bio" class="bio">Memuat profil...</p><div class="meta" id="metaInfo"></div><div class="socials" id="socials"></div></div></section>
+    <section id="aboutSection" class="section"><h2>Tentang Saya</h2><p id="about" class="bio">Memuat profil...</p></section>
+    <section id="pengalaman" class="section"><h2>Pengalaman Kerja</h2><div class="grid"><article class="item"><h3>Regional Quality Control</h3><div class="muted">Quality Control • Telecom</div><p>Mengawasi kualitas layanan dan proyek telekomunikasi di area regional, memastikan standar teknis dan operasional terpenuhi.</p></article><article class="item"><h3>Timekeeping & Administration</h3><div class="muted">Operational • Workforce Management</div><p>Menangani pencatatan kehadiran, data staf, serta administrasi kerja agar proses operasional berjalan tertib dan akurat.</p></article></div></section>
+    <section id="keahlian" class="section"><h2>Keahlian</h2><div class="skills"><span class="skill">Quality Control</span><span class="skill">Regional QC</span><span class="skill">Timekeeping</span><span class="skill">Data Administration</span><span class="skill">Telecommunication</span><span class="skill">Field Monitoring</span></div></section>
+    <section id="project" class="section"><h2>Project</h2><div class="grid"><article class="item"><h3>FWA / Wireless Installation</h3><div class="muted">Telecommunication</div><p>Pengalaman pada aktivitas instalasi dan pemeliharaan jaringan wireless untuk mendukung layanan internet dan konektivitas area.</p></article><article class="item"><h3>Operational Quality Review</h3><div class="muted">QA & Compliance</div><p>Melakukan evaluasi kualitas kerja lapangan agar hasil sesuai SOP, keamanan, dan kebutuhan pelanggan.</p></article></div></section>
+    <section id="sertifikat" class="section"><h2>Sertifikat</h2><div class="skills"><span class="skill">First Aid</span><span class="skill">Electrical</span><span class="skill">Telecom QA</span><span class="skill">Safety Awareness</span></div></section>
     <footer class="footer">© 2026 Rofidin Ilyas • Portfolio</footer>
   </main>
-
   <script>
-    const SUPABASE_URL = "https://vufpdlobkoeyjjxjhhzr.supabase.co";
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
-    const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
-
-    function safeUrl(v) {
-      if (!v || typeof v !== 'string') return "";
-      try {
-        const u = new URL(v);
-        return ["http:", "https:"].includes(u.protocol) ? u.href : "";
-      } catch {
-        return "";
-      }
+    const SUPABASE_URL="https://vufpdlobkoeyjjxjhhzr.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY="sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
+    const supabase=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY):null;
+    function safeUrl(v,protocols=["https:"]){if(!v||typeof v!=="string")return "";try{const u=new URL(v.trim());return protocols.includes(u.protocol)?u.href:""}catch{return ""}}
+    function social(type,value){const cleaned=String(value||"").trim().replace(/^@/,"");if(!/^[A-Za-z0-9._-]{1,50}$/.test(cleaned))return "";return type==="tt"?`https://www.tiktok.com/@${encodeURIComponent(cleaned)}`:`https://www.instagram.com/${encodeURIComponent(cleaned)}`}
+    function setText(id,value,fallback="-"){const el=document.getElementById(id);if(el)el.textContent=value||fallback}
+    function addPill(parent,text){const el=document.createElement("span");el.textContent=text;parent.appendChild(el)}
+    function addLink(parent,label,url){if(!url)return;const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=label;parent.appendChild(a)}
+    async function findPublicProfile(){if(!supabase)return null;const {data,error}=await supabase.from("profiles").select("full_name,bio,location,whatsapp_url,tiktok_username,instagram_username,avatar_url").eq("is_public",true).eq("is_primary",true).maybeSingle();if(error)throw error;return data||null}
+    async function loadPublicProfile(){
+      if(!supabase){setText("about","Profil gagal dimuat. Silakan refresh halaman.");return}
+      try{
+        const profile=await findPublicProfile();
+        if(!profile){setText("bio","Profil publik belum tersedia.");setText("about","Profil publik belum tersedia.");return}
+        const fullName=profile.full_name||"Rofidin Ilyas",location=profile.location||"Indonesia";
+        const avatarUrl=safeUrl(profile.avatar_url),whatsappUrl=safeUrl(profile.whatsapp_url);
+        const tiktokUrl=social("tt",profile.tiktok_username),instagramUrl=social("ig",profile.instagram_username);
+        const nameEl=document.getElementById("name");nameEl.replaceChildren();
+        const parts=fullName.trim().split(/\s+/),last=parts.pop()||"Ilyas",first=parts.join(" ");
+        if(first)nameEl.append(document.createTextNode(first+" "));
+        const accent=document.createElement("span");accent.textContent=last;nameEl.append(accent);
+        setText("bio",profile.bio,"Portfolio digital Rofidin Ilyas.");setText("about",profile.bio,"Portfolio digital Rofidin Ilyas.");
+        const avatarEl=document.getElementById("avatar");if(avatarUrl){avatarEl.src=avatarUrl;avatarEl.style.display="block"}
+        const metaInfo=document.getElementById("metaInfo");metaInfo.replaceChildren();addPill(metaInfo,location);addPill(metaInfo,"Portfolio Digital");
+        const socials=document.getElementById("socials");socials.replaceChildren();addLink(socials,"WhatsApp",whatsappUrl);addLink(socials,"TikTok",tiktokUrl);addLink(socials,"Instagram",instagramUrl);if(!socials.children.length)addPill(socials,"Profil sosial belum diatur");
+      }catch(error){console.error("Failed to load public profile:",error);setText("bio","Profil gagal dimuat. Silakan coba beberapa saat lagi.");setText("about","Profil gagal dimuat. Silakan coba beberapa saat lagi.")}
     }
-
-    function social(type, value) {
-      if (!value) return "";
-      const cleaned = String(value).trim().replace(/^@/, "");
-      if (!cleaned) return "";
-      return type === 'tt'
-        ? `https://www.tiktok.com/@${encodeURIComponent(cleaned)}`
-        : `https://www.instagram.com/${encodeURIComponent(cleaned)}`;
-    }
-
-    function setText(id, value, fallback = "-") {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.textContent = value || fallback;
-    }
-
-    async function findProfile() {
-      if (!supabase) return null;
-
-      try {
-        const { data: sessionData } = await supabase.auth.getSession();
-        if (sessionData?.session?.user) {
-          const { data, error } = await supabase
-            .from('profiles')
-            .select('full_name,bio,location,whatsapp_url,tiktok_username,instagram_username,avatar_url,role')
-            .eq('id', sessionData.session.user.id)
-            .maybeSingle();
-
-          if (error) {
-            console.error('Session profile query failed:', error);
-          }
-          if (data) return data;
-        }
-
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('full_name,bio,location,whatsapp_url,tiktok_username,instagram_username,avatar_url,role')
-          .order('created_at', { ascending: true })
-          .limit(1);
-
-        if (error) throw error;
-        return Array.isArray(data) && data.length ? data[0] : null;
-      } catch (error) {
-        console.error('Failed to find profile:', error);
-        return null;
-      }
-    }
-
-    async function loadPublicProfile() {
-      if (!supabase) {
-        setText('about', 'Profil gagal dimuat. Silakan refresh halaman.');
-        return;
-      }
-
-      try {
-        const profile = await findProfile();
-
-        if (!profile) {
-          setText('about', 'Profil belum tersedia.');
-          return;
-        }
-
-        const fullName = profile.full_name || 'Rofidin Ilyas';
-        const location = profile.location || 'Indonesia';
-        const avatarUrl = safeUrl(profile.avatar_url || '');
-        const whatsappUrl = safeUrl(profile.whatsapp_url || '');
-        const tiktokUrl = social('tt', profile.tiktok_username);
-        const instagramUrl = social('ig', profile.instagram_username);
-
-        const nameEl = document.getElementById('name');
-        const bioEl = document.getElementById('bio');
-        const aboutEl = document.getElementById('about');
-        const avatarEl = document.getElementById('avatar');
-
-        nameEl.innerHTML = fullName.replace(/\s+\S+$/, ' <span>$&</span>') || 'Rofidin <span>Ilyas</span>';
-        bioEl.textContent = profile.bio || 'Portfolio digital Rofidin Ilyas.';
-        aboutEl.textContent = profile.bio || 'Portfolio digital Rofidin Ilyas.';
-
-        if (avatarUrl) {
-          avatarEl.src = avatarUrl;
-          avatarEl.style.display = 'block';
-        }
-
-        const metaInfo = document.getElementById('metaInfo');
-        metaInfo.innerHTML = `
-          <span>${location}</span>
-          <span>Portfolio Digital</span>
-        `;
-
-        const socials = document.getElementById('socials');
-        const links = [
-          whatsappUrl ? `<a href="${whatsappUrl}" target="_blank" rel="noopener">WhatsApp</a>` : '',
-          tiktokUrl ? `<a href="${tiktokUrl}" target="_blank" rel="noopener">TikTok</a>` : '',
-          instagramUrl ? `<a href="${instagramUrl}" target="_blank" rel="noopener">Instagram</a>` : ''
-        ].filter(Boolean);
-
-        socials.innerHTML = links.length ? links.join('') : '<span>Profil sosial belum diatur</span>';
-
-        const { data: sessionData } = await supabase.auth.getSession();
-        if (sessionData?.session && sessionData.session.user) {
-          const { data: currentProfile } = await supabase
-            .from('profiles')
-            .select('role')
-            .eq('id', sessionData.session.user.id)
-            .maybeSingle();
-
-          if (currentProfile?.role === 'admin') {
-            const adminLink = document.createElement('a');
-            adminLink.href = 'dashboard.html';
-            adminLink.textContent = 'Open Dashboard';
-            adminLink.style.display = 'inline-flex';
-            adminLink.style.marginTop = '18px';
-            adminLink.style.padding = '10px 14px';
-            adminLink.style.borderRadius = '999px';
-            adminLink.style.background = 'rgba(0,217,255,.12)';
-            adminLink.style.border = '1px solid rgba(0,217,255,.28)';
-            adminLink.style.color = '#dff9ff';
-            adminLink.style.textDecoration = 'none';
-            document.querySelector('.hero > div').appendChild(adminLink);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to load public profile:', error);
-        setText('about', 'Profil gagal dimuat. Silakan coba beberapa saat lagi.');
-      }
-    }
-
     loadPublicProfile();
   </script>
 </body>
