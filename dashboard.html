@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
+html{scroll-behavior:smooth}
 body{min-height:100vh;background:#020817;color:#fff}
 button,a{font:inherit}
 .container{width:min(1180px,calc(100% - 24px));margin:auto;padding:14px 0 30px}
@@ -17,12 +18,16 @@ button,a{font:inherit}
 .logo{font-size:25px;font-weight:800;color:#00d9ff}
 .right{display:flex;align-items:center;gap:10px}
 .email{font-size:12px;color:#91aac3;max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.menu-btn{width:44px;height:44px;border-radius:12px;border:1px solid #00d9ff44;background:#07192d;color:#fff;font-size:22px;cursor:pointer}
-.menu-btn:hover{border-color:#00d9ff99}
-.dropdown{position:absolute;right:0;top:55px;width:230px;background:#07192d;border:1px solid #00d9ff44;border-radius:16px;padding:8px;display:none;box-shadow:0 18px 45px #0008}
-.dropdown.open{display:block}
-.dropdown a,.dropdown button{display:flex;width:100%;align-items:center;gap:11px;padding:12px;border:0;border-radius:10px;background:transparent;color:#dcefff;text-decoration:none;text-align:left;cursor:pointer}
-.dropdown a:hover,.dropdown button:hover{background:#0b2239}
+.menu-btn{width:44px;height:44px;border-radius:12px;border:1px solid #00d9ff44;background:#07192d;color:#fff;font-size:22px;cursor:pointer;transition:.2s}
+.menu-btn:hover{border-color:#00d9ff99;transform:translateY(-1px)}
+.dropdown{position:absolute;right:0;top:55px;width:250px;background:#07192d;border:1px solid #00d9ff44;border-radius:16px;padding:8px;display:none;box-shadow:0 18px 45px #0008;backdrop-filter:blur(14px)}
+.dropdown.open{display:block;animation:menuIn .18s ease-out}
+@keyframes menuIn{from{opacity:0;transform:translateY(-7px) scale(.98)}to{opacity:1;transform:none}}
+.dropdown .menu-title{padding:9px 12px 6px;font-size:10px;font-weight:800;letter-spacing:1.2px;color:#5e86a4;text-transform:uppercase}
+.dropdown a,.dropdown button{display:flex;width:100%;align-items:center;gap:11px;padding:12px;border:0;border-radius:10px;background:transparent;color:#dcefff;text-decoration:none;text-align:left;cursor:pointer;transition:.18s}
+.dropdown a:hover,.dropdown button:hover{background:#0b2239;transform:translateX(2px)}
+.dropdown .section-link{border:1px solid transparent}
+.dropdown .section-link:hover{border-color:#00d9ff2b;background:#08243c}
 .dropdown .danger{color:#ffb0b0}
 .viewer{background:#07192d;border:1px solid #00d9ff2e;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px #0005}
 .viewer-head{padding:16px 18px;border-bottom:1px solid #00d9ff22;display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -37,7 +42,7 @@ button,a{font:inherit}
 .viewer{border-radius:15px}
 .viewer-head{padding:13px}
 .portfolio-frame{height:calc(100vh - 105px);min-height:700px}
-.dropdown{right:0;width:215px}
+.dropdown{right:0;width:225px}
 }
 </style>
 </head>
@@ -50,6 +55,11 @@ button,a{font:inherit}
 <div style="position:relative">
 <button class="menu-btn" id="menuButton" type="button" aria-label="Buka menu">☰</button>
 <nav class="dropdown" id="dropdownMenu">
+<div class="menu-title">Navigasi CV</div>
+<a class="section-link" href="#pengalaman" data-section="pengalaman">💼 <span>1. Pengalaman Kerja</span></a>
+<a class="section-link" href="#keahlian" data-section="keahlian">🛠️ <span>2. Keahlian</span></a>
+<a class="section-link" href="#sertifikat" data-section="sertifikat">🏆 <span>3. Sertifikat</span></a>
+<div class="menu-title">Sosial</div>
 <a href="https://wa.me/" id="whatsappLink" target="_blank" rel="noopener">📱 WhatsApp</a>
 <a href="#" id="tiktokLink" target="_blank" rel="noopener">🎵 TikTok</a>
 <a href="#" id="instagramLink" target="_blank" rel="noopener">📸 Instagram</a>
@@ -65,14 +75,14 @@ button,a{font:inherit}
 <section class="viewer">
 <div class="viewer-head">
 <strong>CV Digital / Portfolio</strong>
-<span>Preview lengkap</span>
+<span>Preview lengkap • pilih menu untuk slide ke bagian</span>
 </div>
 <iframe class="portfolio-frame" id="portfolioFrame" src="index.html" title="Portfolio Rofidin Ilyas"></iframe>
 </section>
 </main>
 
 <script>
-const supabase=window.supabase.createClient("https://vufpdlobkoeyjjxjhhzr.supabase.co","sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq");
+const supabase=window.supabase.createClient("https://vufpdlobkoeyjjxhhzr.supabase.co","sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq");
 const $=id=>document.getElementById(id);
 let currentUser=null;
 
@@ -106,8 +116,31 @@ async function init(){
 }
 
 $("menuButton").addEventListener("click",()=>$("dropdownMenu").classList.toggle("open"));
+
 document.addEventListener("click",e=>{
  if(!e.target.closest(".right")) $("dropdownMenu").classList.remove("open");
+});
+
+document.querySelectorAll(".section-link").forEach(link=>{
+ link.addEventListener("click",e=>{
+   e.preventDefault();
+   const section=link.dataset.section;
+   $("dropdownMenu").classList.remove("open");
+   const frame=$("portfolioFrame");
+   try{
+     const doc=frame.contentDocument||frame.contentWindow.document;
+     const target=doc.getElementById(section);
+     if(target){
+       target.scrollIntoView({behavior:"smooth",block:"start"});
+       target.animate([
+         {transform:"translateY(18px)",opacity:.72},
+         {transform:"translateY(0)",opacity:1}
+       ],{duration:520,easing:"cubic-bezier(.2,.8,.2,1)"});
+       return;
+     }
+   }catch(err){}
+   showNotice("Bagian "+section+" belum tersedia di Portfolio.");
+ });
 });
 
 $("whatsappLink").addEventListener("click",e=>{
