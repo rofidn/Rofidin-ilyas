@@ -31,12 +31,12 @@ drop policy if exists "Public profiles are readable by everyone" on public.profi
 drop policy if exists "Public profiles are viewable by everyone." on public.profiles;
 drop policy if exists "Public can read published profiles" on public.profiles;
 drop policy if exists "Users can read their own profile" on public.profiles;
+drop policy if exists "Public and owners can read profiles" on public.profiles;
 drop policy if exists "Users can insert a private own profile" on public.profiles;
 drop policy if exists "Users can update their own profile" on public.profiles;
-create policy "Public can read published profiles" on public.profiles
-for select to anon, authenticated using (is_public = true);
-create policy "Users can read their own profile" on public.profiles
-for select to authenticated using ((select auth.uid()) = id);
+create policy "Public and owners can read profiles" on public.profiles
+for select to anon, authenticated
+using (is_public = true or (select auth.uid()) = id);
 create policy "Users can insert a private own profile" on public.profiles
 for insert to authenticated with check ((select auth.uid()) = id and is_public = false);
 create policy "Users can update their own profile" on public.profiles
