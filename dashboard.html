@@ -98,6 +98,7 @@
     <div class="tabs">
       <button class="tab-btn active" data-tab="editor">📝 Editor Profile</button>
       <button class="tab-btn" data-tab="preview">👁️ Preview</button>
+      <button class="tab-btn" data-tab="registrations">👥 Registrasi User</button>
     </div>
 
     <div id="editor" class="tab-content active">
@@ -155,6 +156,35 @@
         <div style="display:flex;gap:12px;margin-top:28px">
           <button class="btn" id="saveBtn" style="flex:1">💾 Simpan Perubahan</button>
           <button class="btn btn-secondary" id="resetBtn" style="flex:1">↩️ Batal</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="registrations" class="tab-content">
+      <div class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+          <div>
+            <h2 style="color:#00d9ff">Data Registrasi User</h2>
+            <p style="color:#71869d;font-size:12px;margin-top:5px">Data hanya dapat dilihat oleh admin aktif.</p>
+          </div>
+          <button class="btn btn-secondary" id="refreshRegistrationsBtn" type="button">↻ Refresh</button>
+        </div>
+        <div id="registrationStatus" style="color:#91aac3;font-size:13px;margin-bottom:12px">Memuat data...</div>
+        <div style="overflow:auto;border:1px solid #00d9ff22;border-radius:14px">
+          <table style="width:100%;border-collapse:collapse;min-width:760px">
+            <thead>
+              <tr style="background:#0a1a2e;color:#bdefff;text-align:left">
+                <th style="padding:12px">Nama Lengkap</th>
+                <th style="padding:12px">Daerah</th>
+                <th style="padding:12px">Nomor HP</th>
+                <th style="padding:12px">Jenis Kelamin</th>
+                <th style="padding:12px">Tanggal Lahir</th>
+                <th style="padding:12px">Status</th>
+                <th style="padding:12px">Tanggal Daftar</th>
+              </tr>
+            </thead>
+            <tbody id="registrationBody"></tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -377,6 +407,50 @@
       }
     }
 
+    async function loadRegistrations() {
+      if (!supabase || !currentUser) return;
+
+      const statusEl = $('registrationStatus');
+      const bodyEl = $('registrationBody');
+      statusEl.textContent = 'Memuat data...';
+      bodyEl.replaceChildren();
+
+      try {
+        const { data, error } = await supabase
+          .from('user_registrations')
+          .select('full_name,region,phone,gender,birth_date,status,created_at')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+          statusEl.textContent = 'Belum ada registrasi user.';
+          return;
+        }
+
+        statusEl.textContent = data.length + ' registrasi ditemukan.';
+        data.forEach((item) => {
+          const row = document.createElement('tr');
+          [item.full_name,item.region,item.phone,item.gender,item.birth_date,item.status,
+            new Date(item.created_at).toLocaleString('id-ID')].forEach((value) => {
+            const cell = document.createElement('td');
+            cell.textContent = value ?? '-';
+            cell.style.padding = '11px 12px';
+            cell.style.borderTop = '1px solid #00d9ff18';
+            cell.style.color = '#dcefff';
+            row.appendChild(cell);
+          });
+          bodyEl.appendChild(row);
+        });
+      } catch (error) {
+        console.error('Failed to load registrations:', error);
+        statusEl.textContent = 'Data registrasi belum dapat dimuat.';
+        showNotice('Gagal memuat data registrasi.', 'error');
+      }
+    }
+
+    $('refreshRegistrationsBtn').addEventListener('click', loadRegistrations);
+
     // Tab switching
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -385,6 +459,7 @@
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         btn.classList.add('active');
         $(tab).classList.add('active');
+        if (tab === 'registrations') void loadRegistrations();
       });
     });
 
@@ -504,6 +579,7 @@
       currentUser = user;
       $('userEmail').textContent = user.email || 'Akun';
       await loadProfile();
+      await loadRegistrations();
     }
 
     init();
