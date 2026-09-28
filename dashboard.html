@@ -114,7 +114,7 @@
             <div class="upload-area">
               <input type="file" id="fileInput" class="file-input" accept="image/*">
               <div class="upload-btn" id="uploadBtn">📤 Pilih Foto</div>
-              <p style="font-size:12px;color:#8db3d5;margin-top:8px">Max 5MB. Format: JPG, PNG</p>
+              <p style="font-size:12px;color:#8db3d5;margin-top:8px">Maksimal 2MB. Format: JPG, PNG, WEBP</p>
               <button class="btn btn-secondary" id="removeAvatarBtn" style="margin-top:8px;width:100%;display:none">Hapus Foto</button>
             </div>
           </div>
@@ -268,8 +268,37 @@
       }
     }
 
+    function validateProfileInput() {
+      const whatsapp = $('whatsappUrl').value.trim();
+      const tiktok = $('tiktokUsername').value.trim().replace(/^@/, '');
+      const instagram = $('instagramUsername').value.trim().replace(/^@/, '');
+
+      if (whatsapp) {
+        try {
+          const url = new URL(whatsapp);
+          if (url.protocol !== 'https:' || url.hostname !== 'wa.me') {
+            throw new Error();
+          }
+        } catch {
+          return 'URL WhatsApp harus menggunakan format https://wa.me/nomor.';
+        }
+      }
+
+      const usernamePattern = /^[A-Za-z0-9._-]{1,50}$/;
+      if (tiktok && !usernamePattern.test(tiktok)) return 'Username TikTok tidak valid.';
+      if (instagram && !usernamePattern.test(instagram)) return 'Username Instagram tidak valid.';
+
+      return '';
+    }
+
     async function saveProfile() {
       if (!supabase || !currentUser) return;
+
+      const validationError = validateProfileInput();
+      if (validationError) {
+        showNotice(validationError, 'error');
+        return;
+      }
 
       $("saveBtn").disabled = true;
       $("saveBtn").textContent = '💾 Menyimpan...';
