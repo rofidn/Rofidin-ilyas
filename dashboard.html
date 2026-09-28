@@ -1,54 +1,136 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Dashboard | Rofidin Ilyas</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}body{min-height:100vh;color:#fff;background:#020817}button,a{font:inherit}.container{width:min(1180px,calc(100% - 32px));margin:auto;padding:24px 0 50px}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:22px}.logo{font-size:28px;font-weight:800;color:#00d9ff}.user{color:#91aac3;font-size:13px;text-align:right}.user strong{display:block;color:#fff;margin-top:3px;word-break:break-all}.hero,.menu,.profile-panel{background:#07192d;border:1px solid #00d9ff2e;border-radius:20px}.hero{padding:30px;margin-bottom:18px}.badge{display:inline-block;color:#00d9ff;border:1px solid #00d9ff55;border-radius:999px;padding:7px 12px;font-size:11px;font-weight:700;letter-spacing:.7px}.hero h1{font-size:clamp(30px,5vw,48px);margin:14px 0 8px}.hero h1 span{color:#00d9ff}.hero p{color:#b9cce0;line-height:1.7;max-width:760px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.primary,.secondary{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:11px 17px;text-decoration:none;font-weight:700;cursor:pointer;border:1px solid transparent}.primary{background:#00bfff;color:#00101c}.secondary{background:#0b2239;color:#ccefff;border-color:#00d9ff44}.primary:hover,.secondary:hover{transform:translateY(-1px)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.menu{padding:21px;min-height:145px;transition:.15s}.menu.clickable{cursor:pointer}.menu.clickable:hover{transform:translateY(-2px);border-color:#00d9ff77}.icon{font-size:23px;margin-bottom:13px}.menu h2{font-size:17px;margin-bottom:7px}.menu p{font-size:13px;color:#91aac3;line-height:1.6}.profile-panel{display:none;margin-top:18px;padding:28px}.profile-panel.open{display:block}.profile-header{margin-bottom:20px}.profile-header h2{font-size:22px}.profile-header p{color:#91aac3;font-size:13px;margin-top:5px}.profile-form{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{display:block;color:#b9cce0;font-size:13px}.field.full{grid-column:1/-1}.field input,.field textarea{width:100%;margin-top:7px;padding:12px 13px;border:1px solid #00d9ff33;border-radius:11px;background:#041224;color:#fff;outline:none}.field textarea{min-height:125px;resize:vertical}.field input:focus,.field textarea:focus{border-color:#00d9ff88}.hint{display:block;margin-top:6px;color:#71869d;font-size:11px}.avatar-wrap{display:flex;align-items:center;gap:16px;padding:14px;background:#041224;border:1px solid #00d9ff22;border-radius:14px;margin-top:7px}.avatar-preview{width:82px;height:82px;border-radius:50%;object-fit:cover;border:2px solid #00d9ff55;background:#0b2239}.profile-actions{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap}.status{grid-column:1/-1;color:#91aac3;font-size:13px;min-height:20px}.notice{display:none;padding:12px;border-radius:11px;margin-bottom:16px;font-size:13px}.notice.show{display:block}.error{background:#ff003318;border:1px solid #ff446655;color:#ffaaaa}.success{background:#00ff9918;border:1px solid #00ff9955;color:#9dffd0}
-@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.profile-form{grid-template-columns:1fr}}
-@media(max-width:560px){.container{width:min(100% - 20px,1180px);padding-top:16px}.top{align-items:flex-start}.user{max-width:58%;font-size:12px}.hero{padding:23px}.grid{grid-template-columns:1fr}.menu{min-height:auto}.profile-panel{padding:20px}.profile-actions>*{flex:1}.actions>*{flex:1}}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
+body{min-height:100vh;background:#020817;color:#fff}
+button,a{font:inherit}
+.container{width:min(1180px,calc(100% - 24px));margin:auto;padding:14px 0 30px}
+.top{height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;z-index:20}
+.logo{font-size:25px;font-weight:800;color:#00d9ff}
+.right{display:flex;align-items:center;gap:10px}
+.email{font-size:12px;color:#91aac3;max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.menu-btn{width:44px;height:44px;border-radius:12px;border:1px solid #00d9ff44;background:#07192d;color:#fff;font-size:22px;cursor:pointer}
+.menu-btn:hover{border-color:#00d9ff99}
+.dropdown{position:absolute;right:0;top:55px;width:230px;background:#07192d;border:1px solid #00d9ff44;border-radius:16px;padding:8px;display:none;box-shadow:0 18px 45px #0008}
+.dropdown.open{display:block}
+.dropdown a,.dropdown button{display:flex;width:100%;align-items:center;gap:11px;padding:12px;border:0;border-radius:10px;background:transparent;color:#dcefff;text-decoration:none;text-align:left;cursor:pointer}
+.dropdown a:hover,.dropdown button:hover{background:#0b2239}
+.dropdown .danger{color:#ffb0b0}
+.viewer{background:#07192d;border:1px solid #00d9ff2e;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px #0005}
+.viewer-head{padding:16px 18px;border-bottom:1px solid #00d9ff22;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.viewer-head strong{font-size:14px}
+.viewer-head span{font-size:11px;color:#71869d}
+.portfolio-frame{display:block;width:100%;height:calc(100vh - 125px);min-height:760px;border:0;background:#020817}
+.notice{position:fixed;left:50%;top:78px;transform:translateX(-50%);z-index:50;background:#07192d;border:1px solid #00d9ff55;color:#dff8ff;border-radius:12px;padding:11px 15px;font-size:12px;display:none;box-shadow:0 12px 35px #0008}
+.notice.show{display:block}
+@media(max-width:600px){
+.container{width:calc(100% - 14px);padding-top:7px}
+.email{display:none}
+.viewer{border-radius:15px}
+.viewer-head{padding:13px}
+.portfolio-frame{height:calc(100vh - 105px);min-height:700px}
+.dropdown{right:0;width:215px}
+}
 </style>
 </head>
-<body><main class="container">
-<header class="top"><div class="logo">RI</div><div class="user">Login sebagai<strong id="userEmail">Memuat...</strong></div></header>
-<div id="message" class="notice"></div>
-<section class="hero"><span class="badge">ADMIN / PORTFOLIO DASHBOARD</span><h1>Selamat datang, <span id="userName">Rofidin</span> 👋</h1><p>Kelola seluruh isi portfolio dari satu dashboard. Edit data di sini, lalu lihat hasilnya di portfolio publik.</p><div class="actions"><a class="primary" href="index.html">Lihat Portfolio</a><button id="logoutButton" class="secondary" type="button">Logout</button></div></section>
-<section class="grid">
-<div class="menu clickable" id="profileMenu"><div class="icon">👤</div><h2>Profil & Data Diri</h2><p>Nama, bio, lokasi, foto, WhatsApp, TikTok, dan Instagram.</p></div>
-<div class="menu"><div class="icon">💼</div><h2>Pengalaman</h2><p>Riwayat kerja, posisi, tanggung jawab, dan periode kerja.</p></div>
-<div class="menu"><div class="icon">🛠️</div><h2>Keahlian</h2><p>Skill dan kompetensi profesional yang ingin ditampilkan.</p></div>
-<div class="menu"><div class="icon">📁</div><h2>Project</h2><p>Project telecom, QC, administrasi, dan project lainnya.</p></div>
-<div class="menu"><div class="icon">📜</div><h2>Sertifikat</h2><p>First Aid, Electrical, dan sertifikat pendukung lainnya.</p></div>
-<div class="menu"><div class="icon">⚙️</div><h2>Pengaturan</h2><p>Pengaturan akun dan keamanan akan ditambahkan berikutnya.</p></div>
+<body>
+<main class="container">
+<header class="top">
+<div class="logo">RI</div>
+<div class="right">
+<div class="email" id="userEmail">Memuat...</div>
+<div style="position:relative">
+<button class="menu-btn" id="menuButton" type="button" aria-label="Buka menu">☰</button>
+<nav class="dropdown" id="dropdownMenu">
+<a href="https://wa.me/" id="whatsappLink" target="_blank" rel="noopener">📱 WhatsApp</a>
+<a href="#" id="tiktokLink" target="_blank" rel="noopener">🎵 TikTok</a>
+<a href="#" id="instagramLink" target="_blank" rel="noopener">📸 Instagram</a>
+<a href="index.html" target="_blank" rel="noopener">🌐 Portfolio Publik</a>
+<button class="danger" id="logoutButton" type="button">↪️ Logout</button>
+</nav>
+</div>
+</div>
+</header>
+
+<div class="notice" id="notice"></div>
+
+<section class="viewer">
+<div class="viewer-head">
+<strong>CV Digital / Portfolio</strong>
+<span>Preview lengkap</span>
+</div>
+<iframe class="portfolio-frame" id="portfolioFrame" src="index.html" title="Portfolio Rofidin Ilyas"></iframe>
 </section>
-<section class="profile-panel" id="profilePanel">
-<div class="profile-header"><h2>Profil & Data Diri</h2><p>Data ini akan digunakan pada portfolio publik.</p></div>
-<form class="profile-form" id="profileForm">
-<label class="field">Nama Lengkap<input id="fullName" maxlength="100" placeholder="Nama lengkap"></label>
-<label class="field">Lokasi<input id="location" maxlength="100" placeholder="Contoh: Cirebon, Jawa Barat"></label>
-<label class="field full">Bio / Tentang Saya<textarea id="bio" maxlength="1000" placeholder="Ceritakan singkat tentang diri kamu"></textarea></label>
-<label class="field">Link WhatsApp<input id="whatsappUrl" maxlength="300" type="url" placeholder="https://wa.me/628xxxxxxxxxx"></label>
-<label class="field">Username TikTok<input id="tiktokUsername" maxlength="100" placeholder="@username atau username"></label>
-<label class="field">Username Instagram<input id="instagramUsername" maxlength="100" placeholder="@username atau username"></label>
-<label class="field full">Foto Profil<div class="avatar-wrap"><img id="avatarPreview" class="avatar-preview" alt="Preview foto" style="display:none"><input id="avatarFile" type="file" accept="image/jpeg,image/png,image/webp"><span class="hint">JPG, PNG, WebP • maksimal 2 MB</span></div></label>
-<div class="profile-actions"><button class="primary" id="saveProfile" type="submit">Simpan Profil</button><button class="secondary" id="closeProfile" type="button">Tutup</button></div>
-<div class="status" id="profileStatus"></div>
-</form></section>
 </main>
+
 <script>
 const supabase=window.supabase.createClient("https://vufpdlobkoeyjjxjhhzr.supabase.co","sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq");
 const $=id=>document.getElementById(id);
-const emailEl=$("userEmail"),nameEl=$("userName"),message=$("message"),profilePanel=$("profilePanel"),profileMenu=$("profileMenu"),profileForm=$("profileForm"),profileStatus=$("profileStatus"),avatarFile=$("avatarFile"),avatarPreview=$("avatarPreview"),closeProfile=$("closeProfile");
 let currentUser=null;
-function showMessage(text,type="error"){message.textContent=text;message.className="notice show "+type}
-async function init(){const {data:{user},error}=await supabase.auth.getUser();if(error||!user){window.location.replace("login.html");return}currentUser=user;emailEl.textContent=user.email||"Akun";nameEl.textContent=user.user_metadata?.full_name||user.email?.split("@")[0]||"Rofidin"}
-async function loadProfile(){if(!currentUser)return;profileStatus.textContent="Memuat...";const {data,error}=await supabase.from("profiles").select("full_name,bio,location,whatsapp_url,tiktok_username,instagram_username,avatar_url").eq("id",currentUser.id).maybeSingle();if(error){profileStatus.textContent="Gagal memuat profil: "+error.message;return}if(!data){profileStatus.textContent="Belum ada data profil.";return}$("fullName").value=data.full_name||"";$("bio").value=data.bio||"";$("location").value=data.location||"";$("whatsappUrl").value=data.whatsapp_url||"";$("tiktokUsername").value=data.tiktok_username||"";$("instagramUsername").value=data.instagram_username||"";if(data.avatar_url){avatarPreview.src=data.avatar_url;avatarPreview.style.display="block"}else{avatarPreview.removeAttribute("src");avatarPreview.style.display="none"}profileStatus.textContent=""}
-avatarFile.addEventListener("change",()=>{const file=avatarFile.files?.[0];if(!file)return;if(!["image/jpeg","image/png","image/webp"].includes(file.type)){showMessage("Format foto harus JPG, PNG, atau WebP.");avatarFile.value="";return}if(file.size>2*1024*1024){showMessage("Foto terlalu besar. Maksimal 2 MB.");avatarFile.value="";return}avatarPreview.src=URL.createObjectURL(file);avatarPreview.style.display="block";message.className="notice"});
-profileMenu.addEventListener("click",async()=>{profilePanel.classList.add("open");await loadProfile();profilePanel.scrollIntoView({behavior:"smooth",block:"start"})});
-closeProfile.addEventListener("click",()=>profilePanel.classList.remove("open"));
-profileForm.addEventListener("submit",async e=>{e.preventDefault();if(!currentUser)return;const btn=$("saveProfile");btn.disabled=true;btn.textContent="Menyimpan...";profileStatus.textContent="";let avatarUrlValue="";const file=avatarFile.files?.[0];if(file){const ext=(file.name.split(".").pop()||"jpg").toLowerCase();const path=currentUser.id+"/avatar-"+Date.now()+"."+ext;const {error}=await supabase.storage.from("profile-avatars").upload(path,file,{contentType:file.type,upsert:false,cacheControl:"3600"});if(error){profileStatus.textContent="Gagal upload foto: "+error.message;btn.disabled=false;btn.textContent="Simpan Profil";return}avatarUrlValue=supabase.storage.from("profile-avatars").getPublicUrl(path).data.publicUrl}else{const {data}=await supabase.from("profiles").select("avatar_url").eq("id",currentUser.id).maybeSingle();avatarUrlValue=data?.avatar_url||""}const payload={id:currentUser.id,full_name:$("fullName").value.trim(),bio:$("bio").value.trim(),location:$("location").value.trim(),whatsapp_url:$("whatsappUrl").value.trim(),tiktok_username:$("tiktokUsername").value.trim(),instagram_username:$("instagramUsername").value.trim(),avatar_url:avatarUrlValue,updated_at:new Date().toISOString()};const {error}=await supabase.from("profiles").upsert(payload,{onConflict:"id"});if(error)profileStatus.textContent="Gagal menyimpan: "+error.message;else{profileStatus.textContent="Profil berhasil disimpan.";showMessage("Profil berhasil disimpan.","success");nameEl.textContent=payload.full_name||currentUser.email?.split("@")[0]||"Rofidin";avatarFile.value=""}btn.disabled=false;btn.textContent="Simpan Profil"});
-$("logoutButton").addEventListener("click",async()=>{const b=$("logoutButton");b.disabled=true;b.textContent="Logout...";const {error}=await supabase.auth.signOut({scope:"local"});if(error){showMessage("Logout gagal: "+error.message);b.disabled=false;b.textContent="Logout";return}window.location.replace("login.html")});
-supabase.auth.onAuthStateChange((event,session)=>{if(event==="SIGNED_OUT"||!session)window.location.replace("login.html")});init();
-</script></body></html>
+
+function showNotice(text){
+ const el=$("notice");el.textContent=text;el.classList.add("show");
+ setTimeout(()=>el.classList.remove("show"),2500);
+}
+
+async function init(){
+ const {data:{user},error}=await supabase.auth.getUser();
+ if(error||!user){window.location.replace("login.html");return}
+ currentUser=user;
+ $("userEmail").textContent=user.email||"Akun";
+
+ const {data:profile}=await supabase.from("profiles")
+ .select("whatsapp_url,tiktok_username,instagram_username")
+ .eq("id",user.id).maybeSingle();
+
+ if(profile){
+   if(profile.whatsapp_url) $("whatsappLink").href=profile.whatsapp_url;
+   else $("whatsappLink").href="#";
+   if(profile.tiktok_username){
+     const u=profile.tiktok_username.replace(/^@/,"");
+     $("tiktokLink").href="https://www.tiktok.com/@"+u;
+   }
+   if(profile.instagram_username){
+     const u=profile.instagram_username.replace(/^@/,"");
+     $("instagramLink").href="https://www.instagram.com/"+u;
+   }
+ }
+}
+
+$("menuButton").addEventListener("click",()=>$("dropdownMenu").classList.toggle("open"));
+document.addEventListener("click",e=>{
+ if(!e.target.closest(".right")) $("dropdownMenu").classList.remove("open");
+});
+
+$("whatsappLink").addEventListener("click",e=>{
+ if($("whatsappLink").getAttribute("href")==="#"){e.preventDefault();showNotice("Link WhatsApp belum diatur di Profil.");}
+});
+$("tiktokLink").addEventListener("click",e=>{
+ if($("tiktokLink").getAttribute("href")==="#"){e.preventDefault();showNotice("Username TikTok belum diatur di Profil.");}
+});
+$("instagramLink").addEventListener("click",e=>{
+ if($("instagramLink").getAttribute("href")==="#"){e.preventDefault();showNotice("Username Instagram belum diatur di Profil.");}
+});
+
+$("logoutButton").addEventListener("click",async()=>{
+ const b=$("logoutButton");b.disabled=true;b.textContent="↪️ Logout...";
+ const {error}=await supabase.auth.signOut({scope:"local"});
+ if(error){showNotice("Logout gagal.");b.disabled=false;b.textContent="↪️ Logout";return}
+ window.location.replace("login.html");
+});
+
+supabase.auth.onAuthStateChange((event,session)=>{
+ if(event==="SIGNED_OUT"||!session) window.location.replace("login.html");
+});
+init();
+</script>
+</body>
+</html>
