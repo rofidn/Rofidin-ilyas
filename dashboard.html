@@ -389,7 +389,12 @@
 
         selectedFile = null;
         await loadProfile();
-        showNotice('✅ Foto berhasil dihapus!', 'success');    });
+        showNotice('✅ Foto berhasil dihapus!', 'success');
+      } catch (error) {
+        console.error('Failed to remove avatar:', error);
+        showNotice('❌ Gagal menghapus foto.', 'error');
+      }
+    });
 
     // Save & Reset buttons
     $('saveBtn').addEventListener('click', saveProfile);
