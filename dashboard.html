@@ -280,14 +280,9 @@
 
         // Upload avatar jika ada file baru
         if (selectedFile) {
-          // Hapus avatar lama jika ada
-          if (originalData.avatar_url) {
-            const oldPath = originalData.avatar_url.split('/').pop();
-            await supabase.storage.from(STORAGE_BUCKET).remove([`${currentUser.id}/${oldPath}`]);
-          }
-
           const mimeToExt = {'image/jpeg':'jpg','image/png':'png','image/webp':'webp'};
           const fileExt = mimeToExt[selectedFile.type];
+          if (!fileExt) throw new Error('Format avatar tidak didukung.');
           const fileName = `${Date.now()}.${fileExt}`;
           const filePath = `${currentUser.id}/${fileName}`;
 
