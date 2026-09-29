@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Registrasi Admin | Rofidin Ilyas</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
+<style>
+*{box-sizing:border-box;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;color:#fff;background:radial-gradient(circle at top right,#003b73,transparent 35%),radial-gradient(circle at bottom left,#001f3f,transparent 35%),#020817}.box{width:100%;max-width:430px;padding:35px 28px;border:1px solid #00d9ff44;border-radius:25px;background:#051428c7;box-shadow:0 0 45px #0077ff22}h1{text-align:center;color:#00d9ff;margin-bottom:8px}.sub{text-align:center;color:#91aac3;font-size:14px;line-height:1.5;margin-bottom:28px}label{display:block;margin:14px 0 7px;color:#bdefff;font-size:14px}input{width:100%;padding:14px;border-radius:12px;border:1px solid #00d9ff44;background:#061426;color:#fff;outline:none}button{width:100%;margin-top:22px;padding:14px;border:0;border-radius:25px;background:#00bfff;color:#00101c;font-weight:700;font-size:16px}.message{display:none;margin-top:18px;padding:12px;border-radius:10px;text-align:center;font-size:14px;line-height:1.5}.error{display:block;background:#ff003322;color:#ff9b9b}.success{display:block;background:#00ff9922;color:#8affc1}.links{text-align:center;margin-top:22px;font-size:14px;line-height:2}.links a{color:#00d9ff;text-decoration:none}
+</style>
+</head>
+<body><main class="box"><h1>Registrasi Admin</h1><p class="sub">Buat akun admin utama untuk mengakses dashboard Rofidin Ilyas.</p>
+<form id="form"><label>Email</label><input id="email" type="email" autocomplete="email" required placeholder="Masukkan email">
+<label>Password</label><input id="password" type="password" minlength="8" maxlength="128" autocomplete="new-password" required placeholder="Minimal 8 karakter">
+<label>Konfirmasi Password</label><input id="confirm" type="password" minlength="8" maxlength="128" autocomplete="new-password" required placeholder="Ulangi password">
+<button id="btn" type="submit">Daftar sebagai Admin</button></form>
+<div id="msg" class="message" role="alert"></div>
+<div class="links"><a href="login.html">Sudah punya akun? Login</a><br><a href="index.html">← Kembali ke Portfolio</a></div></main>
+<script>
+const SUPABASE_URL="https://vufpdlobkoeyjjxjhhzr.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
+const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const form=document.getElementById("form"),btn=document.getElementById("btn"),msg=document.getElementById("msg");
+function show(t,c){msg.textContent=t;msg.className="message "+c}
+async function activateAdmin(session){
+ const {data,error}=await supabase.functions.invoke("admin-register",{headers:{Authorization:"Bearer "+session.access_token},body:{}});
+ if(error) throw new Error(error.message||"Aktivasi admin gagal.");
+ if(!data?.success) throw new Error(data?.error||"Aktivasi admin gagal.");
+ show("Registrasi admin berhasil. Mengarahkan ke dashboard...","success");
+ setTimeout(()=>location.replace("dashboard.html"),700);
+}
+form.addEventListener("submit",async e=>{
+ e.preventDefault();
+ const email=document.getElementById("email").value.trim().toLowerCase(), password=document.getElementById("password").value, confirm=document.getElementById("confirm").value;
+ if(password.length<8){show("Password minimal 8 karakter.","error");return}
+ if(password!==confirm){show("Konfirmasi password tidak sama.","error");return}
+ btn.disabled=true;btn.textContent="Mendaftarkan...";
+ try{
+  const {data,error}=await supabase.auth.signUp({email,password});
+  if(error) throw error;
+  if(data.session){await activateAdmin(data.session)}
+  else show("Pendaftaran berhasil. Cek email untuk verifikasi, lalu login dengan akun tersebut. Sistem akan mengaktifkan akun sebagai admin utama setelah login.","success");
+ }catch(e){show(e.message||"Registrasi gagal. Silakan coba lagi.","error")}
+ finally{btn.disabled=false;btn.textContent="Daftar sebagai Admin"}
+});
+</script></body></html>
