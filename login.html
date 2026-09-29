@@ -3,111 +3,195 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Login admin portfolio Rofidin Ilyas">
-  <title>Login Admin | Rofidin Ilyas</title>
+  <meta name="description" content="Login ke dashboard portfolio Rofidin Ilyas">
+  <title>Login | Rofidin Ilyas</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
-    body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;color:#fff;background:radial-gradient(circle at top right,#003b73,transparent 35%),radial-gradient(circle at bottom left,#001f3f,transparent 35%),#020817}
-    .login-box{width:100%;max-width:430px;padding:35px 28px;border:1px solid #00d9ff44;border-radius:25px;background:rgba(5,20,40,.82);backdrop-filter:blur(15px);box-shadow:0 0 45px #0077ff22}
-    .logo{text-align:center;font-size:42px;font-weight:700;color:#00d9ff;text-shadow:0 0 20px #00d9ff;margin-bottom:10px}
-    h1{text-align:center;margin-bottom:8px;font-size:28px;font-weight:600}.subtitle{text-align:center;color:#91aac3;margin-bottom:30px;line-height:1.5;font-size:14px}
-    label{display:block;margin-bottom:8px;color:#bdefff;font-size:14px;font-weight:500}
-    input{width:100%;padding:14px;margin-bottom:18px;border-radius:12px;border:1px solid #00d9ff44;outline:none;background:#061426;color:white;font-size:15px}
-    input:focus{border-color:#00d9ff;box-shadow:0 0 12px #00d9ff33}
-    button{width:100%;padding:14px;border:none;border-radius:25px;background:#00bfff;color:#00101c;font-size:16px;font-weight:600;cursor:pointer;box-shadow:0 0 20px #00bfff55}
-    button:disabled{opacity:.6;cursor:not-allowed}
-    .message{display:none;margin-top:18px;padding:12px;border-radius:10px;text-align:center;font-size:14px;line-height:1.5}.error{display:block;background:#ff003322;border:1px solid #ff446655;color:#ff9b9b}.success{display:block;background:#00ff9922;border:1px solid #00ff9966;color:#8affc1}
-    .links{margin-top:25px;text-align:center;line-height:2;font-size:14px}.links a{color:#00d9ff;text-decoration:none}.back{display:block;margin-top:18px;color:#71869d!important;font-size:13px}
-    .loading{display:inline-block;width:4px;height:4px;background:currentColor;border-radius:50%;animation:blink 1.4s infinite;vertical-align:middle;margin-left:8px}.loading:nth-child(2){animation-delay:.2s}.loading:nth-child(3){animation-delay:.4s}
-    @keyframes blink{0%,60%,100%{opacity:.3}30%{opacity:1}}
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: white;
+      background:
+        radial-gradient(circle at top right, #003b73, transparent 35%),
+        radial-gradient(circle at bottom left, #001f3f, transparent 35%),
+        #020817;
+    }
+    .login-box {
+      width: 100%; max-width: 430px; padding: 35px 28px; border: 1px solid #00d9ff44;
+      border-radius: 25px; background: rgba(5, 20, 40, 0.78); backdrop-filter: blur(15px);
+      box-shadow: 0 0 45px #0077ff22;
+    }
+    .logo { text-align: center; font-size: 42px; font-weight: 700; color: #00d9ff; text-shadow: 0 0 20px #00d9ff; margin-bottom: 10px; }
+    h1 { text-align: center; margin-bottom: 8px; font-size: 28px; font-weight: 600; }
+    .subtitle { text-align: center; color: #91aac3; margin-bottom: 30px; line-height: 1.5; font-size: 14px; }
+    label { display: block; margin-bottom: 8px; color: #bdefff; font-size: 14px; font-weight: 500; }
+    input {
+      width: 100%; padding: 14px; margin-bottom: 18px; border-radius: 12px; border: 1px solid #00d9ff44;
+      outline: none; background: #061426; color: white; font-size: 15px; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input::placeholder { color: #5a7a8f; }
+    input:focus { border-color: #00d9ff; box-shadow: 0 0 12px #00d9ff33; }
+    button {
+      width: 100%; padding: 14px; border: none; border-radius: 25px; background: #00bfff;
+      color: #00101c; font-size: 16px; font-weight: 600; cursor: pointer;
+      box-shadow: 0 0 20px #00bfff55; transition: opacity 0.2s, transform 0.2s;
+    }
+    button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 0 30px #00bfff77; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .message { display: none; margin-top: 18px; padding: 12px; border-radius: 10px; text-align: center; font-size: 14px; line-height: 1.5; animation: slideDown 0.25s ease; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    .error { display: block; background: #ff003322; border: 1px solid #ff446655; color: #ff9b9b; }
+    .success { display: block; background: #00ff9922; border: 1px solid #00ff9966; color: #8affc1; }
+    .links { margin-top: 25px; text-align: center; line-height: 2; font-size: 14px; }
+    .links a { color: #00d9ff; text-decoration: none; transition: opacity 0.2s; }
+    .links a:hover { opacity: 0.8; text-decoration: underline; }
+    .back { display: block; margin-top: 18px; color: #71869d !important; font-size: 13px; }
+    .loading { display: inline-block; width: 4px; height: 4px; background: currentColor; border-radius: 50%; animation: blink 1.4s infinite; vertical-align: middle; margin-left: 8px; }
+    .loading:nth-child(2) { animation-delay: 0.2s; }
+    .loading:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink { 0%, 60%, 100% { opacity: 0.3; } 30% { opacity: 1; } }
   </style>
 </head>
 <body>
-  <main class="login-box">
+  <div class="login-box">
     <div class="logo">RI</div>
-    <h1>Login Admin</h1>
-    <p class="subtitle">Masuk ke dashboard Rofidin Ilyas</p>
+    <h1>Login</h1>
+    <p class="subtitle">Masuk ke Rofidin Ilyas Portfolio</p>
+
     <form id="loginForm">
-      <label for="fullName">Nama</label>
-      <input type="text" id="fullName" placeholder="Nama admin" autocomplete="name" required>
       <label for="email">Email</label>
-      <input type="email" id="email" placeholder="email admin" autocomplete="username" required>
+      <input type="email" id="email" placeholder="Masukkan email" autocomplete="email" required>
+
       <label for="password">Password</label>
       <input type="password" id="password" placeholder="Masukkan password" autocomplete="current-password" required>
+
       <button type="submit" id="loginButton">Login</button>
     </form>
-    <div id="message" class="message" role="alert" aria-live="polite"></div>
-    <div class="links"><a href="register.html">Registrasi User</a><a href="index.html" class="back">← Kembali ke Portfolio</a></div>
-  </main>
+
+    <div id="message" class="message" role="alert" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="links">
+      <a href="forgot-password.html">Lupa password?</a>
+      <br>
+      Belum punya akun?
+      <a href="register.html">Daftar</a>
+      <a href="index.html" class="back">← Kembali ke Portfolio</a>
+    </div>
+  </div>
 
   <script>
     const SUPABASE_URL = "https://vufpdlobkoeyjjxjhhzr.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
     const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
-    const form=document.getElementById("loginForm"),button=document.getElementById("loginButton"),message=document.getElementById("message");
 
-    function showMessage(text,type){message.textContent=text;message.className="message "+type}
-    function errorText(error){
-      const msg=(error?.message||"").toLowerCase();
-      if(msg.includes("too many requests")||msg.includes("rate limit")) return "Terlalu banyak percobaan login. Tunggu beberapa saat lalu coba lagi.";
-      if(msg.includes("invalid login credentials")) return "Nama, email, atau password salah.";
-      return "Login gagal. Silakan periksa data login Anda.";
+    const form = document.getElementById("loginForm");
+    const button = document.getElementById("loginButton");
+    const message = document.getElementById("message");
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = "message " + type;
     }
 
-    async function redirectIfAdmin(session,enteredName){
-      if(!session?.user)return false;
-      const [{data:adminProfile,error:adminError},{data:profile,error:profileError}]=await Promise.all([
-        supabase.from("admin_profiles").select("role,is_active").eq("auth_user_id",session.user.id).eq("is_active",true).maybeSingle(),
-        supabase.from("profiles").select("full_name").eq("id",session.user.id).maybeSingle()
-      ]);
-      if(adminError||profileError){
-        console.error("Admin authorization check failed:",adminError||profileError);
-        showMessage("Login berhasil, tetapi akses admin belum dapat diverifikasi. Silakan coba lagi.","error");
-        return false;
-      }
-      const expectedName=(profile?.full_name||"").trim().toLowerCase();
-      if(!adminProfile||adminProfile.role!=="super_admin"||!expectedName||expectedName!==enteredName.trim().toLowerCase()){
-        await supabase.auth.signOut({scope:"local"});
-        showMessage("Data login tidak sesuai dengan akun admin.","error");
-        return false;
-      }
-      window.location.replace(new URL("dashboard.html",window.location.href).href);
-      return true;
+    function errorText(e) {
+      const msg = (e && e.message ? e.message : "").toLowerCase();
+      if (msg.includes("email not confirmed") || msg.includes("email not verified")) return "Email belum diverifikasi. Silakan cek inbox dan klik tautan verifikasi terlebih dahulu.";
+      if (msg.includes("invalid login credentials")) return "Email atau password salah.";
+      if (msg.includes("too many requests") || msg.includes("rate limit")) return "Terlalu banyak percobaan login. Tunggu beberapa saat lalu coba lagi.";
+      if (msg.includes("user not found")) return "Akun dengan email tersebut tidak ditemukan.";
+      return "Login gagal. Silakan periksa email dan password Anda.";
     }
 
-    if(!supabase){
-      showMessage("Sistem login gagal dimuat. Silakan refresh halaman.","error");button.disabled=true;
-    }else{
-      supabase.auth.onAuthStateChange((event,session)=>{
-        if(event==="SIGNED_IN"&&session){
-          const enteredName=sessionStorage.getItem("adminLoginName")||"";
-          void redirectIfAdmin(session,enteredName);
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    if (!supabase) {
+      showMessage("Sistem login gagal dimuat. Silakan refresh halaman.", "error");
+      button.disabled = true;
+    } else {
+      async function redirectIfAdmin(session) {
+        if (!session?.user) return false;
+
+        const { data: adminProfile, error } = await supabase
+          .from("admin_profiles")
+          .select("role,is_active")
+          .eq("auth_user_id", session.user.id)
+          .eq("is_active", true)
+          .maybeSingle();
+
+        if (error) {
+          console.error("Admin authorization check failed:", error);
+          showMessage("Login berhasil, tetapi akses dashboard belum dapat diverifikasi. Silakan coba lagi.", "error");
+          return false;
+        }
+
+        if (!adminProfile || adminProfile.role !== "super_admin") {
+          showMessage("Akun berhasil login, tetapi tidak memiliki akses ke dashboard admin.", "error");
+          return false;
+        }
+
+        window.location.replace(new URL("dashboard.html", window.location.href).href);
+        return true;
+      }
+
+      supabase.auth.onAuthStateChange((event, session) => {
+        if (event === "SIGNED_IN" && session) {
+          void redirectIfAdmin(session);
         }
       });
 
-      form.addEventListener("submit",async(event)=>{
+      form.addEventListener("submit", async (event) => {
         event.preventDefault();
-        const enteredName=document.getElementById("fullName").value.trim();
-        const email=document.getElementById("email").value.trim().toLowerCase();
-        const password=document.getElementById("password").value;
-        if(enteredName.length<2){showMessage("Nama admin harus diisi.","error");return}
-        if(!/^\S+@\S+\.\S+$/.test(email)){showMessage("Format email tidak valid.","error");return}
-        if(!password){showMessage("Password harus diisi.","error");return}
-        sessionStorage.setItem("adminLoginName",enteredName);
-        button.disabled=true;button.innerHTML='Memproses<span class="loading"></span><span class="loading"></span><span class="loading"></span>';message.className="message";message.textContent="";
-        try{
-          const {data,error}=await supabase.auth.signInWithPassword({email,password});
-          if(error){showMessage(errorText(error),"error");sessionStorage.removeItem("adminLoginName");return}
-          if(data?.session){
-            showMessage("Login berhasil. Memverifikasi akses admin...","success");
-            await redirectIfAdmin(data.session,enteredName);
+
+        const email = document.getElementById("email").value.trim().toLowerCase();
+        const password = document.getElementById("password").value;
+
+        if (!email || !isValidEmail(email)) {
+          showMessage("Format email tidak valid.", "error");
+          return;
+        }
+
+        if (!password) {
+          showMessage("Password harus diisi.", "error");
+          return;
+        }
+
+        button.disabled = true;
+        button.innerHTML = 'Memproses<span class="loading"></span><span class="loading"></span><span class="loading"></span>';
+        message.className = "message";
+        message.textContent = "";
+
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+          if (error) {
+            showMessage(errorText(error), "error");
+            return;
           }
-        }catch(error){
-          console.error(error);showMessage("Terjadi kesalahan saat login. Silakan coba lagi.","error");sessionStorage.removeItem("adminLoginName");
-        }finally{button.disabled=false;button.textContent="Login"}
+
+          if (data?.session) {
+            showMessage("Login berhasil. Memverifikasi akses dashboard...", "success");
+            await redirectIfAdmin(data.session);
+          }
+        } catch (err) {
+          showMessage("Terjadi kesalahan saat login. Silakan coba lagi.", "error");
+        } finally {
+          button.disabled = false;
+          button.textContent = "Login";
+        }
       });
     }
   </script>
 </body>
 </html>
+
+
