@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Dashboard User | Rofidin Ilyas</title>
+<style>*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,Arial,sans-serif;background:#020817;color:#eef7ff}.wrap{width:min(900px,calc(100% - 24px));margin:auto}.top{display:flex;justify-content:space-between;align-items:center;padding:18px 0}.logo{color:#00d9ff;font-weight:800;font-size:22px}.menu{position:relative}.menu button{border:1px solid #00d9ff44;background:#07192d;color:#fff;border-radius:12px;padding:10px 14px;cursor:pointer}.drop{display:none;position:absolute;right:0;top:48px;width:210px;background:#07192d;border:1px solid #00d9ff44;border-radius:14px;padding:8px;z-index:5;box-shadow:0 18px 40px #0008}.drop.open{display:block}.drop button,.drop a{display:block;width:100%;padding:11px;border:0;background:transparent;color:#dcefff;text-align:left;text-decoration:none;border-radius:9px;cursor:pointer}.drop button:hover,.drop a:hover{background:#0b2239}.hero,.card{background:#07192d;border:1px solid #00d9ff2e;border-radius:20px;padding:24px;box-shadow:0 20px 60px #0005}.hero{margin-top:10px}.eyebrow{color:#00d9ff;font-size:12px;font-weight:800;letter-spacing:1.5px}.h1{font-size:clamp(28px,6vw,44px);margin:8px 0}.muted{color:#91aac3}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px}.card h3{color:#00d9ff;margin-top:0}.value{font-size:17px;margin-top:6px;word-break:break-word}.notice{margin-top:18px;padding:12px;border-radius:10px;background:#ff003322;color:#ffb0b0;border:1px solid #ff446655;display:none}@media(max-width:650px){.grid{grid-template-columns:1fr}.hero,.card{padding:18px}}</style></head>
+<body><main class="wrap"><header class="top"><div class="logo">ROFIDIN ILYAS</div><div class="menu"><button id="menuBtn">☰ MENU</button><div id="drop" class="drop"><a href="index.html">🌐 Portfolio</a><button id="logout">↪️ Logout</button></div></div></header>
+<section class="hero"><div class="eyebrow">USER DASHBOARD</div><h1 id="name">Memuat...</h1><p class="muted" id="email">Memuat...</p><p class="muted">Akun Anda berhasil login. Data registrasi Anda tersimpan di sistem.</p></section>
+<div id="notice" class="notice"></div><section class="grid">
+<article class="card"><h3>📍 Daerah</h3><div class="value" id="region">-</div></article>
+<article class="card"><h3>📱 Nomor HP</h3><div class="value" id="phone">-</div></article>
+<article class="card"><h3>⚧ Jenis Kelamin</h3><div class="value" id="gender">-</div></article>
+<article class="card"><h3>🎂 Tanggal Lahir</h3><div class="value" id="birth">-</div></article>
+<article class="card"><h3>📌 Status</h3><div class="value" id="status">-</div></article>
+</section></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script><script>
+const supabase=window.supabase.createClient("https://vufpdlobkoeyjjxjhhzr.supabase.co","sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq");
+const $=id=>document.getElementById(id);
+$("menuBtn").onclick=()=>$("drop").classList.toggle("open");
+document.addEventListener("click",e=>{if(!e.target.closest(".menu"))$("drop").classList.remove("open")});
+$("logout").onclick=async()=>{if(!confirm("Apakah Anda yakin ingin logout?"))return;const {error}=await supabase.auth.signOut({scope:"local"});if(error){$("notice").textContent="Logout gagal. Silakan coba lagi.";$("notice").style.display="block";return}location.replace("login.html")};
+async function init(){
+ const {data:{session}}=await supabase.auth.getSession();
+ if(!session?.user){location.replace("login.html");return}
+ const {data:admin}=await supabase.from("admin_profiles").select("role,is_active").eq("auth_user_id",session.user.id).eq("is_active",true).maybeSingle();
+ if(admin){location.replace("dashboard.html");return}
+ const {data,error}=await supabase.from("user_registrations").select("full_name,email,region,phone,gender,birth_date,status").eq("auth_user_id",session.user.id).maybeSingle();
+ if(error||!data){await supabase.auth.signOut({scope:"local"});location.replace("login.html");return}
+ $("name").textContent=data.full_name||"User";$("email").textContent=data.email||session.user.email||"";$("region").textContent=data.region||"-";$("phone").textContent=data.phone||"-";$("gender").textContent=data.gender||"-";$("birth").textContent=data.birth_date?new Date(data.birth_date+"T00:00:00").toLocaleDateString("id-ID",{day:"2-digit",month:"long",year:"numeric"}):"-";$("status").textContent=data.status||"approved";
+}
+supabase.auth.onAuthStateChange((event)=>{if(event==="SIGNED_OUT")location.replace("login.html")});init();
+</script></body></html>
