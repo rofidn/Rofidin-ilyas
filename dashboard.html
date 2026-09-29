@@ -96,16 +96,13 @@
     <div class="notice" id="notice"></div>
 
     <div class="tabs">
-      <button class="tab-btn active" data-tab="overview">📊 Overview</button>
-      <button class="tab-btn" data-tab="editor">📝 Editor Profile</button>
+      <button class="tab-btn active" data-tab="editor">📝 Editor Profile</button>
       <button class="tab-btn" data-tab="preview">👁️ Preview</button>
       <button class="tab-btn" data-tab="registrations">👥 Registrasi User</button>
       <button class="tab-btn" data-tab="password">🔐 Reset Password Admin</button>
     </div>
 
-    <div id="overview" class="tab-content active"><div class="panel"><h2 style="color:#00d9ff;margin-bottom:8px">📊 Overview</h2><p style="color:#71869d;font-size:13px;margin-bottom:22px">Ringkasan profil publik dan tautan media sosial yang tampil di header portfolio.</p><div class="grid-2"><div class="field-card"><h4>👤 Nama</h4><div id="overviewName">Memuat...</div></div><div class="field-card"><h4>📍 Lokasi</h4><div id="overviewLocation">Memuat...</div></div><div class="field-card"><h4>📱 WhatsApp</h4><a id="overviewWhatsapp" href="#" target="_blank" rel="noopener">Belum diatur</a></div><div class="field-card"><h4>🎵 TikTok</h4><a id="overviewTiktok" href="#" target="_blank" rel="noopener">Belum diatur</a></div><div class="field-card"><h4>📸 Instagram</h4><a id="overviewInstagram" href="#" target="_blank" rel="noopener">Belum diatur</a></div><div class="field-card"><h4>🌐 Portfolio</h4><a href="index.html" target="_blank" rel="noopener" style="color:#00d9ff">Buka Portfolio Publik ↗</a></div></div><div style="margin-top:20px;padding:14px;border-radius:12px;background:#061426;border:1px solid #00d9ff22;color:#91aac3;font-size:12px">Header portfolio: <strong style="color:#dcefff">RI → Pengalaman → Keahlian → Sertifikat → WhatsApp → TikTok → Instagram</strong></div></div></div>
-
-    <div id="editor" class="tab-content">
+    <div id="editor" class="tab-content active">
       <div class="panel">
         <h2 style="margin-bottom:24px;color:#00d9ff">Edit Profil Portfolio</h2>
 
@@ -315,7 +312,6 @@
         }
 
         originalData = { ...data };
-        updateOverview(data);
 
         $('fullName').value = data.full_name || '';
         $('bio').value = data.bio || '';
@@ -335,10 +331,6 @@
         showNotice("Gagal memuat profil. Silakan refresh halaman.", 'error');
       }
     }
-
-    function updateOverview(data){$("overviewName").textContent=data.full_name||"Rofidin Ilyas";$("overviewLocation").textContent=data.location||"Belum diatur";setOverviewLink("overviewWhatsapp",data.whatsapp_url,"WhatsApp belum diatur");setOverviewLink("overviewTiktok",normalizeSocial("tiktok",data.tiktok_username),data.tiktok_username?"@"+String(data.tiktok_username).replace(/^@/,""):"TikTok belum diatur");setOverviewLink("overviewInstagram",normalizeSocial("instagram",data.instagram_username),data.instagram_username?"@"+String(data.instagram_username).replace(/^@/,""):"Instagram belum diatur");}
-    function setOverviewLink(id,url,emptyText){const el=$(id);if(url){el.href=url;el.textContent=url;el.style.pointerEvents="auto";}else{el.href="#";el.textContent=emptyText;el.style.pointerEvents="none";}}
-    function normalizeSocial(type,value){const username=String(value||"").trim().replace(/^@/,"");if(!/^[A-Za-z0-9._-]{1,50}$/.test(username))return "";return type==="tiktok"?"https://www.tiktok.com/@"+encodeURIComponent(username):"https://www.instagram.com/"+encodeURIComponent(username);}
 
     function validateProfileInput() {
       const whatsapp = $('whatsappUrl').value.trim();
