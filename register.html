@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Registrasi User | Rofidin Ilyas</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}body{min-height:100vh;font-family:Arial,sans-serif;background:linear-gradient(135deg,#07111f,#0c1830 50%,#111827);color:#ebf7ff}.box{width:min(460px,calc(100% - 28px));margin:28px auto;padding:28px 22px;border:1px solid #00d9ff44;border-radius:24px;background:#081527ee;box-shadow:0 20px 60px #0006}.logo{text-align:center;color:#00d9ff;font-size:34px;font-weight:800;margin-bottom:8px}h1{text-align:center;margin-bottom:6px}p.sub{text-align:center;color:#91aac3;margin-bottom:22px;font-size:14px}.group{margin-bottom:14px}label{display:block;color:#bdefff;margin-bottom:7px;font-size:13px;font-weight:700}input,select{width:100%;padding:12px;border:1px solid #00d9ff44;border-radius:11px;background:#061426;color:#fff;outline:none}input:focus,select:focus{border-color:#00d9ff;box-shadow:0 0 10px #00d9ff22}button{width:100%;padding:13px;border:0;border-radius:22px;background:#00c3ff;color:#00101c;font-weight:800;cursor:pointer;margin-top:5px}button:disabled{opacity:.6}.msg{display:none;margin-top:15px;padding:11px;border-radius:10px;text-align:center;font-size:13px}.msg.error{display:block;background:#ff003322;color:#ffb0b0;border:1px solid #ff446655}.msg.success{display:block;background:#00ff9922;color:#8affc1;border:1px solid #00ff9966}.links{text-align:center;margin-top:18px;line-height:1.9;font-size:13px}.links a{color:#00d9ff;text-decoration:none}
+*{box-sizing:border-box;margin:0;padding:0}body{min-height:100vh;font-family:Arial,sans-serif;background:linear-gradient(135deg,#07111f,#0c1830 50%,#111827);color:#ebf7ff}.box{width:min(460px,calc(100% - 28px));margin:28px auto;padding:28px 22px;border:1px solid #00d9ff44;border-radius:24px;background:#081527ee;box-shadow:0 20px 60px #0006}.logo{text-align:center;color:#00d9ff;font-size:34px;font-weight:800;margin-bottom:8px}h1{text-align:center;margin-bottom:6px}p.sub{text-align:center;color:#91aac3;margin-bottom:22px;font-size:14px}.group{margin-bottom:14px}label{display:block;color:#bdefff;margin-bottom:7px;font-size:13px;font-weight:700}input,select{width:100%;padding:12px;border:1px solid #00d9ff44;border-radius:11px;background:#061426;color:#fff;outline:none}.password-wrap{position:relative}.password-wrap input{padding-right:52px}.toggle-password{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:38px;height:34px;margin:0;padding:0;border:0;border-radius:9px;background:#0b223b;color:#8feaff;font-size:18px;cursor:pointer}.password-wrap + .password-wrap{margin-top:0}input:focus,select:focus{border-color:#00d9ff;box-shadow:0 0 10px #00d9ff22}button{width:100%;padding:13px;border:0;border-radius:22px;background:#00c3ff;color:#00101c;font-weight:800;cursor:pointer;margin-top:5px}button:disabled{opacity:.6}.msg{display:none;margin-top:15px;padding:11px;border-radius:10px;text-align:center;font-size:13px}.msg.error{display:block;background:#ff003322;color:#ffb0b0;border:1px solid #ff446655}.msg.success{display:block;background:#00ff9922;color:#8affc1;border:1px solid #00ff9966}.links{text-align:center;margin-top:18px;line-height:1.9;font-size:13px}.links a{color:#00d9ff;text-decoration:none}
 </style>
 </head>
 <body>
@@ -17,8 +17,8 @@
 <div class="group"><label>Jenis Kelamin</label><select id="gender" required><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option><option>Lainnya</option></select></div>
 <div class="group"><label>Tanggal Lahir</label><input id="birthDate" type="date" required></div>
 <div class="group"><label>Email</label><input id="email" type="email" autocomplete="email" required></div>
-<div class="group"><label>Password</label><input id="password" type="password" minlength="8" maxlength="128" autocomplete="new-password" placeholder="Minimal 8 karakter" required></div>
-<div class="group"><label>Konfirmasi Password</label><input id="confirmPassword" type="password" minlength="8" maxlength="128" autocomplete="new-password" required></div>
+<div class="group"><label>Password</label><div class="password-wrap"><input id="password" type="password" minlength="8" maxlength="128" autocomplete="new-password" placeholder="Min. 8: huruf besar, kecil & angka" required><button type="button" class="toggle-password" data-target="password" aria-label="Perlihatkan password" aria-pressed="false">👁</button></div></div>
+<div class="group"><label>Konfirmasi Password</label><div class="password-wrap"><input id="confirmPassword" type="password" minlength="8" maxlength="128" autocomplete="new-password" required><button type="button" class="toggle-password" data-target="confirmPassword" aria-label="Perlihatkan password" aria-pressed="false">👁</button></div></div>
 <button id="submit" type="submit">DAFTAR</button>
 </form>
 <div id="msg" class="msg"></div>
@@ -30,6 +30,16 @@ const supabase=window.supabase.createClient("https://vufpdlobkoeyjjxjhhzr.supaba
 const form=document.getElementById("form"),btn=document.getElementById("submit"),msg=document.getElementById("msg"),birth=document.getElementById("birthDate");
 birth.max=new Date().toISOString().slice(0,10);
 function show(t,c){msg.textContent=t;msg.className="msg "+c}
+document.querySelectorAll(".toggle-password").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  const input=document.getElementById(btn.dataset.target);
+  const visible=input.type==="text";
+  input.type=visible?"password":"text";
+  btn.textContent=visible?"👁":"🙈";
+  btn.setAttribute("aria-label",visible?"Perlihatkan password":"Sembunyikan password");
+  btn.setAttribute("aria-pressed",String(!visible));
+ });
+});
 function phone(v){const d=v.replace(/\D/g,"");return d.startsWith("62")?"+"+d:d.startsWith("0")?"+62"+d.slice(1):""}
 form.addEventListener("submit",async e=>{
  e.preventDefault();
@@ -39,6 +49,9 @@ form.addEventListener("submit",async e=>{
  if(!gender||!birthDate||birthDate>birth.max){show("Lengkapi data pribadi dengan benar.","error");return}
  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){show("Email tidak valid.","error");return}
  if(password.length<8){show("Password minimal 8 karakter.","error");return}
+if(!/[a-z]/.test(password)||!/[A-Z]/.test(password)||!/[0-9]/.test(password)){
+ show("Password harus mengandung minimal 1 huruf kecil, 1 huruf besar, dan 1 angka.","error");return
+}
  if(password!==confirm){show("Konfirmasi password tidak cocok.","error");return}
  btn.disabled=true;btn.textContent="MEMPROSES...";
  try{
@@ -50,7 +63,7 @@ form.addEventListener("submit",async e=>{
  }catch(err){
    console.error(err);
    const m=(err.message||"").toLowerCase();
-   show(m.includes("already")||m.includes("registered")?"Email tersebut sudah terdaftar.":"Registrasi gagal. Periksa data lalu coba lagi.","error");
+   show(m.includes("already")||m.includes("registered")?"Email tersebut sudah terdaftar.":m.includes("password should contain")||m.includes("password")&&m.includes("character")?"Password harus mengandung minimal 1 huruf kecil, 1 huruf besar, dan 1 angka.":m.includes("rate limit")||m.includes("too many")?"Terlalu banyak percobaan. Tunggu beberapa saat lalu coba lagi.":"Registrasi gagal. Periksa data lalu coba lagi.","error");
  }finally{btn.disabled=false;btn.textContent="DAFTAR"}
 });
 </script>
