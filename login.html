@@ -79,9 +79,6 @@
 
     <div class="links">
       <a href="forgot-password.html">Lupa password?</a>
-      <br>
-      Belum punya akun?
-      <a href="register-admin.html">Registrasi Admin</a>
       <a href="index.html" class="back">← Kembali ke Portfolio</a>
     </div>
   </div>
@@ -135,19 +132,7 @@
         }
 
         if (!adminProfile) {
-          try {
-            const { data: bootstrap, error: bootstrapError } = await supabase.functions.invoke("admin-register", {
-              headers: { Authorization: `Bearer ${session.access_token}` },
-              body: {}
-            });
-            if (!bootstrapError && bootstrap?.success) {
-              window.location.replace(new URL("dashboard.html", window.location.href).href);
-              return true;
-            }
-          } catch (e) {
-            console.error("Admin bootstrap failed:", e);
-          }
-          showMessage("Akun berhasil login, tetapi belum terdaftar sebagai admin. Jika ini adalah akun admin pertama, gunakan Registrasi Admin.", "error");
+          showMessage("Akun tidak memiliki akses ke dashboard admin.", "error");
           return false;
         }
 
