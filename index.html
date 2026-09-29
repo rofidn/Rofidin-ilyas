@@ -10,9 +10,8 @@
 </head>
 <body>
   <main id="portfolioContent" class="wrap">
-    <header class="top"><div class="nav wrap"><div class="logo">RI</div><nav class="nav-links"><a href="#aboutSection">Tentang</a><a href="#pengalaman">Pengalaman</a><a href="#keahlian">Keahlian</a><a href="#project">Project</a><a href="#sertifikat">Sertifikat</a></nav></div></header>
+    <header class="top"><div class="nav wrap"><div class="logo">RI</div><nav class="nav-links"><a href="#pengalaman">Pengalaman</a><a href="#keahlian">Keahlian</a><a href="#project">Project</a><a href="#sertifikat">Sertifikat</a></nav></div></header>
     <section class="hero"><img id="avatar" class="avatar" alt="Foto profil" style="display:none"><div><div class="eyebrow">PORTFOLIO DIGITAL</div><h1 id="name" class="h1">Rofidin <span>Ilyas</span></h1><p id="bio" class="bio">Memuat profil...</p><div class="meta" id="metaInfo"></div><div class="socials" id="socials"></div></div></section>
-    <section id="aboutSection" class="section"><h2>Tentang Saya</h2><p id="about" class="bio">Memuat profil...</p></section>
     <section id="pengalaman" class="section"><h2>Pengalaman Kerja</h2><div class="grid"><article class="item"><h3>Regional Quality Control</h3><div class="muted">Quality Control • Telecom</div><p>Mengawasi kualitas layanan dan proyek telekomunikasi di area regional, memastikan standar teknis dan operasional terpenuhi.</p></article><article class="item"><h3>Timekeeping & Administration</h3><div class="muted">Operational • Workforce Management</div><p>Menangani pencatatan kehadiran, data staf, serta administrasi kerja agar proses operasional berjalan tertib dan akurat.</p></article></div></section>
     <section id="keahlian" class="section"><h2>Keahlian</h2><div class="skills"><span class="skill">Quality Control</span><span class="skill">Regional QC</span><span class="skill">Timekeeping</span><span class="skill">Data Administration</span><span class="skill">Telecommunication</span><span class="skill">Field Monitoring</span></div></section>
     <section id="project" class="section"><h2>Project</h2><div class="grid"><article class="item"><h3>FWA / Wireless Installation</h3><div class="muted">Telecommunication</div><p>Pengalaman pada aktivitas instalasi dan pemeliharaan jaringan wireless untuk mendukung layanan internet dan konektivitas area.</p></article><article class="item"><h3>Operational Quality Review</h3><div class="muted">QA & Compliance</div><p>Melakukan evaluasi kualitas kerja lapangan agar hasil sesuai SOP, keamanan, dan kebutuhan pelanggan.</p></article></div></section>
@@ -42,11 +41,11 @@
         const parts=fullName.trim().split(/\s+/),last=parts.pop()||"Ilyas",first=parts.join(" ");
         if(first)nameEl.append(document.createTextNode(first+" "));
         const accent=document.createElement("span");accent.textContent=last;nameEl.append(accent);
-        setText("bio",profile.bio,"Portfolio digital Rofidin Ilyas.");setText("about",profile.bio,"Portfolio digital Rofidin Ilyas.");
+        setText("bio",profile.bio,"Portfolio digital Rofidin Ilyas.");
         const avatarEl=document.getElementById("avatar");if(avatarUrl){avatarEl.src=avatarUrl;avatarEl.style.display="block"}
         const metaInfo=document.getElementById("metaInfo");metaInfo.replaceChildren();addPill(metaInfo,location);addPill(metaInfo,"Portfolio Digital");
         const socials=document.getElementById("socials");socials.replaceChildren();addLink(socials,"WhatsApp",whatsappUrl);addLink(socials,"TikTok",tiktokUrl);addLink(socials,"Instagram",instagramUrl);if(!socials.children.length)addPill(socials,"Profil sosial belum diatur");
-      }catch(error){console.error("Failed to load public profile:",error);setText("bio","Profil gagal dimuat. Silakan coba beberapa saat lagi.");setText("about","Profil gagal dimuat. Silakan coba beberapa saat lagi.")}
+      }catch(error){console.error("Failed to load public profile:",error);setText("bio","Profil gagal dimuat. Silakan coba beberapa saat lagi.")}
     }
     function openCertificate(type){const files={"certificate-catu-daya":"assets/certificates/sertifikat-catu-daya.jpg","certificate-first-aid":"assets/certificates/sertifikat-first-aid.jpg"};document.getElementById("certificateImage").src=files[type];document.getElementById("certificateModal").classList.add("open")}function closeCertificate(){document.getElementById("certificateModal").classList.remove("open")}document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCertificate()});loadPublicProfile();
   </script>
