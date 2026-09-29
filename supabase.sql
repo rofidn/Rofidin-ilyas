@@ -37,24 +37,17 @@ drop policy if exists "Users can update their own profile" on public.profiles;
 create policy "Public and owners can read profiles" on public.profiles
 for select to anon, authenticated
 using (is_public = true or (select auth.uid()) = id);
-create policy "Users can insert a private own profile" on public.profiles
-for insert to authenticated with check ((select auth.uid()) = id and is_public = false);
-create policy "Users can update their own profile" on public.profiles
-for update to authenticated using ((select auth.uid()) = id) with check ((select auth.uid()) = id);
-
+drop policy if exists "Users can insert a private own profile" on public.profiles;
+drop policy if exists "Users can update their own profile" on public.profiles;
+create policy "Active admins can update portfolio profile" on public.profiles
+for update to authenticated
+using (exists (select 1 from public.admin_profiles ap where ap.auth_user_id=(select auth.uid()) and ap.role in ('admin','super_admin') and ap.is_active=true))
+with check (exists (select 1 from public.admin_profiles ap where ap.auth_user_id=(select auth.uid()) and ap.role in ('admin','super_admin') and ap.is_active=true));
 revoke all on table public.profiles from anon;
 grant select on table public.profiles to anon;
 
 revoke all on table public.profiles from authenticated;
 grant select on table public.profiles to authenticated;
-grant insert (
-  id, full_name, bio, location, whatsapp_url,
-  tiktok_username, instagram_username, avatar_url, avatar_path
-) on table public.profiles to authenticated;
-grant update (
-  full_name, bio, location, whatsapp_url,
-  tiktok_username, instagram_username, avatar_url, avatar_path
-) on table public.profiles to authenticated;
 
 -- Keep updated_at server-controlled.
 create or replace function public.set_updated_at() returns trigger
@@ -122,6 +115,8 @@ for delete to authenticated using (
 -- Personal data is write-only for public clients and readable only by active super-admins.
 create table if not exists public.user_registrations (
   id uuid primary key default gen_random_uuid(),
+  auth_user_id uuid references auth.users(id) on delete cascade,
+  email text,
   full_name text not null,
   region text not null,
   phone text not null,
@@ -134,6 +129,8 @@ create table if not exists public.user_registrations (
   constraint user_registrations_phone_format check (phone ~ '^\+62[0-9]{9,13}$')
 );
 
+create unique index if not exists user_registrations_auth_user_unique on public.user_registrations (auth_user_id) where auth_user_id is not null;
+create unique index if not exists user_registrations_email_unique on public.user_registrations (lower(email)) where email is not null;
 create unique index if not exists user_registrations_phone_unique
   on public.user_registrations (phone);
 
@@ -154,10 +151,18 @@ create policy "Active super admins can view registrations"
 on public.user_registrations
 for select to authenticated
 using (
-  exists (
-    select 1 from public.admin_profiles ap
-    where ap.auth_user_id = (select auth.uid())
-      and ap.role = 'super_admin'
-      and ap.is_active = true
-  )
+  exists (select 1 from public.admin_profiles ap where ap.auth_user_id=(select auth.uid()) and ap.role='super_admin' and ap.is_active=true)
+  or (select auth.uid()) = auth_user_id
 );
+
+create or replace function public.handle_new_user_registration()
+returns trigger language plpgsql security definer set search_path=public as $
+declare m jsonb := coalesce(new.raw_user_meta_data, '{}'::jsonb);
+begin
+  if coalesce(m->>'account_type','') <> 'user' then return new; end if;
+  insert into public.user_registrations(auth_user_id,email,full_name,region,phone,gender,birth_date,status)
+  values(new.id,lower(new.email),trim(m->>'full_name'),trim(m->>'region'),trim(m->>'phone'),trim(m->>'gender'),(m->>'birth_date')::date,'approved');
+  return new;
+end; $;
+drop trigger if exists on_auth_user_created_registration on auth.users;
+create trigger on_auth_user_created_registration after insert on auth.users for each row execute function public.handle_new_user_registration();
