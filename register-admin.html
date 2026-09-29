@@ -9,7 +9,8 @@
 </style>
 </head>
 <body><main class="box"><h1>Registrasi Admin</h1><p class="sub">Buat akun admin utama untuk mengakses dashboard Rofidin Ilyas.</p>
-<form id="form"><label>Email</label><input id="email" type="email" autocomplete="email" required placeholder="Masukkan email">
+<form id="form"><label>Nama Lengkap</label><input id="fullName" type="text" autocomplete="name" required maxlength="100" placeholder="Masukkan nama lengkap">
+<label>Email</label><input id="email" type="email" autocomplete="email" required placeholder="Masukkan email">
 <label>Password</label><input id="password" type="password" minlength="8" maxlength="128" autocomplete="new-password" required placeholder="Minimal 8 karakter">
 <label>Konfirmasi Password</label><input id="confirm" type="password" minlength="8" maxlength="128" autocomplete="new-password" required placeholder="Ulangi password">
 <button id="btn" type="submit">Daftar sebagai Admin</button></form>
@@ -30,12 +31,13 @@ async function activateAdmin(session){
 }
 form.addEventListener("submit",async e=>{
  e.preventDefault();
- const email=document.getElementById("email").value.trim().toLowerCase(), password=document.getElementById("password").value, confirm=document.getElementById("confirm").value;
+ const fullName=document.getElementById("fullName").value.trim(), email=document.getElementById("email").value.trim().toLowerCase(), password=document.getElementById("password").value, confirm=document.getElementById("confirm").value;
+ if(!fullName){show("Nama lengkap harus diisi.","error");return}
  if(password.length<8){show("Password minimal 8 karakter.","error");return}
  if(password!==confirm){show("Konfirmasi password tidak sama.","error");return}
  btn.disabled=true;btn.textContent="Mendaftarkan...";
  try{
-  const {data,error}=await supabase.auth.signUp({email,password});
+  const {data,error}=await supabase.auth.signUp({email,password,options:{data:{full_name:fullName}}});
   if(error) throw error;
   if(data.session){await activateAdmin(data.session)}
   else show("Pendaftaran berhasil. Cek email untuk verifikasi, lalu login dengan akun tersebut. Sistem akan mengaktifkan akun sebagai admin utama setelah login.","success");
