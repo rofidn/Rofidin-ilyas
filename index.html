@@ -40,9 +40,9 @@
         const parts=fullName.trim().split(/\s+/),last=parts.pop()||"Ilyas",first=parts.join(" ");
         if(first)nameEl.append(document.createTextNode(first+" "));
         const accent=document.createElement("span");accent.textContent=last;nameEl.append(accent);
-        setText("bio",profile.bio,"Portfolio digital Rofidin Ilyas.");
+        setText("bio",profile.bio,"Profil Rofidin Ilyas.");
         const avatarEl=document.getElementById("avatar");if(avatarUrl){avatarEl.src=avatarUrl;avatarEl.style.display="block"}
-        const metaInfo=document.getElementById("metaInfo");metaInfo.replaceChildren();addPill(metaInfo,location);addPill(metaInfo,"Portfolio Digital");
+        const metaInfo=document.getElementById("metaInfo");metaInfo.replaceChildren();addPill(metaInfo,location);
         const socials=document.getElementById("socials");socials.replaceChildren();addLink(socials,"WhatsApp",whatsappUrl);addLink(socials,"TikTok",tiktokUrl);addLink(socials,"Instagram",instagramUrl);if(!socials.children.length)addPill(socials,"Profil sosial belum diatur");
       }catch(error){console.error("Failed to load public profile:",error);setText("bio","Profil gagal dimuat. Silakan coba beberapa saat lagi.")}
     }
