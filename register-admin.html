@@ -22,12 +22,10 @@ const SUPABASE_PUBLISHABLE_KEY="sb_publishable_Za2pqw2-OpNY2ypVP036aw_Xzdk_nkq";
 const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const form=document.getElementById("form"),btn=document.getElementById("btn"),msg=document.getElementById("msg");
 function show(t,c){msg.textContent=t;msg.className="message "+c}
-async function activateAdmin(session){
- const {data,error}=await supabase.functions.invoke("admin-register",{headers:{Authorization:"Bearer "+session.access_token},body:{}});
- if(error) throw new Error(error.message||"Aktivasi admin gagal.");
- if(!data?.success) throw new Error(data?.error||"Aktivasi admin gagal.");
- show("Registrasi admin berhasil. Mengarahkan ke dashboard...","success");
- setTimeout(()=>location.replace("dashboard.html"),700);
+async function registerAdmin(email,password,fullName){
+ const {data,error}=await supabase.functions.invoke("admin-register",{body:{email,password,full_name:fullName}});
+ if(error) throw new Error(error.message||"Registrasi admin gagal.");
+ if(!data?.success) throw new Error(data?.error||"Registrasi admin gagal.");
 }
 form.addEventListener("submit",async e=>{
  e.preventDefault();
@@ -37,10 +35,9 @@ form.addEventListener("submit",async e=>{
  if(password!==confirm){show("Konfirmasi password tidak sama.","error");return}
  btn.disabled=true;btn.textContent="Mendaftarkan...";
  try{
-  const {data,error}=await supabase.auth.signUp({email,password,options:{data:{full_name:fullName}}});
-  if(error) throw error;
-  if(data.session){await activateAdmin(data.session)}
-  else show("Pendaftaran berhasil. Cek email untuk verifikasi, lalu login dengan akun tersebut. Sistem akan mengaktifkan akun sebagai admin utama setelah login.","success");
+  await registerAdmin(email,password,fullName);
+  show("Registrasi admin berhasil. Email sudah dikonfirmasi dan akun siap digunakan. Mengarahkan ke login...","success");
+  setTimeout(()=>location.replace("login.html"),900);
  }catch(e){show(e.message||"Registrasi gagal. Silakan coba lagi.","error")}
  finally{btn.disabled=false;btn.textContent="Daftar sebagai Admin"}
 });
