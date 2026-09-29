@@ -137,6 +137,14 @@
           <input type="text" id="location" placeholder="Kota, Negara">
         </div>
 
+        <h3 style="margin-top:28px;margin-bottom:16px;color:#00d9ff;font-size:16px">Keterampilan</h3>
+        <div class="grid-2">
+          <div class="field-card"><h4>1</h4><input type="text" id="skill1" value="People Management"></div>
+          <div class="field-card"><h4>2</h4><input type="text" id="skill2" value="Team Leadership"></div>
+          <div class="field-card"><h4>3</h4><input type="text" id="skill3" value="Microsoft Office Suite"></div>
+          <div class="field-card"><h4>4</h4><input type="text" id="skill4" value="Quality Controling"></div>
+        </div>
+
         <h3 style="margin-top:28px;margin-bottom:16px;color:#00d9ff;font-size:16px">Social Media</h3>
 
         <div class="grid-2">
@@ -319,6 +327,8 @@
         $('whatsappUrl').value = data.whatsapp_url || '';
         $('tiktokUsername').value = data.tiktok_username || '';
         $('instagramUsername').value = data.instagram_username || '';
+        const skills = Array.isArray(data.skills) && data.skills.length ? data.skills : ['People Management','Team Leadership','Microsoft Office Suite','Quality Controling'];
+        ['skill1','skill2','skill3','skill4'].forEach((id,index) => { $(id).value = skills[index] || ''; });
 
         if (data.avatar_url) {
           $('avatarPreview').src = data.avatar_url;
@@ -436,6 +446,7 @@
             whatsapp_url: $('whatsappUrl').value.trim(),
             tiktok_username: parseSocialInput('tiktok', $('tiktokUsername').value),
             instagram_username: parseSocialInput('instagram', $('instagramUsername').value),
+            skills: ['skill1','skill2','skill3','skill4'].map(id => $(id).value.trim()).filter(Boolean),
             avatar_url: avatarUrl,
             avatar_path: avatarPath
           })
