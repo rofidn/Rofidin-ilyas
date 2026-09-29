@@ -146,11 +146,11 @@
           </div>
           <div class="field-card">
             <h4>🎵 TikTok</h4>
-            <input type="text" id="tiktokUsername" placeholder="@username atau username">
+            <input type="text" id="tiktokUsername" placeholder="@username, username, atau link lengkap">
           </div>
           <div class="field-card">
             <h4>📸 Instagram</h4>
-            <input type="text" id="instagramUsername" placeholder="@username atau username">
+            <input type="text" id="instagramUsername" placeholder="@username, username, atau link lengkap">
           </div>
         </div>
 
@@ -332,10 +332,43 @@
       }
     }
 
+    function parseSocialInput(type, value) {
+      const raw = String(value || '').trim();
+      if (!raw) return '';
+
+      const usernamePattern = /^[A-Za-z0-9._-]{1,50}$/;
+      const domain = type === 'tiktok' ? 'www.tiktok.com' : 'www.instagram.com';
+
+      // Username biasa: @username atau username
+      const direct = raw.replace(/^@/, '');
+      if (usernamePattern.test(direct)) return direct;
+
+      // Link lengkap, termasuk query string seperti ?stkn=...
+      try {
+        const candidate = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+        const url = new URL(candidate);
+        const host = url.hostname.toLowerCase();
+        if (host !== domain && host !== domain.replace(/^www\./, '')) return null;
+
+        const parts = url.pathname.split('/').filter(Boolean);
+        if (type === 'tiktok') {
+          if (parts.length !== 1) return null;
+          const username = parts[0].replace(/^@/, '');
+          return usernamePattern.test(username) ? username : null;
+        }
+
+        if (parts.length !== 1) return null;
+        const username = parts[0].replace(/^@/, '');
+        return usernamePattern.test(username) ? username : null;
+      } catch {
+        return null;
+      }
+    }
+
     function validateProfileInput() {
       const whatsapp = $('whatsappUrl').value.trim();
-      const tiktok = $('tiktokUsername').value.trim().replace(/^@/, '');
-      const instagram = $('instagramUsername').value.trim().replace(/^@/, '');
+      const tiktok = parseSocialInput('tiktok', $('tiktokUsername').value);
+      const instagram = parseSocialInput('instagram', $('instagramUsername').value);
 
       if (whatsapp) {
         try {
@@ -348,9 +381,8 @@
         }
       }
 
-      const usernamePattern = /^[A-Za-z0-9._-]{1,50}$/;
-      if (tiktok && !usernamePattern.test(tiktok)) return 'Username TikTok tidak valid.';
-      if (instagram && !usernamePattern.test(instagram)) return 'Username Instagram tidak valid.';
+      if (tiktok === null) return 'Link/username TikTok tidak valid. Contoh: @rf.den atau https://www.tiktok.com/@rf.den';
+      if (instagram === null) return 'Link/username Instagram tidak valid. Contoh: @broo_dent atau https://www.instagram.com/broo_dent?stkn=...';
 
       return '';
     }
@@ -402,8 +434,8 @@
             bio: $('bio').value.trim(),
             location: $('location').value.trim(),
             whatsapp_url: $('whatsappUrl').value.trim(),
-            tiktok_username: $('tiktokUsername').value.trim(),
-            instagram_username: $('instagramUsername').value.trim(),
+            tiktok_username: parseSocialInput('tiktok', $('tiktokUsername').value),
+            instagram_username: parseSocialInput('instagram', $('instagramUsername').value),
             avatar_url: avatarUrl,
             avatar_path: avatarPath
           })
